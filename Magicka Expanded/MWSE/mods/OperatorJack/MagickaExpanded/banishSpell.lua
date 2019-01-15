@@ -14,10 +14,11 @@ local Banish = {
 local function spawnBanishActivator(previousLocation)
     common.debugMessage("[Magicka Expanded: INFO] Spawning Acti")
     -- Spawn activator behind PC
-    local ref = mwscript.placeAtPC{object="OJ_ME_BanishMummy"}
+    local ref = mwscript.placeAtPC{object="OJ_ME_BanishItem"}
     ref.orientation = previousLocation.orientation:copy()
     ref.position = previousLocation.position:copy()
-    ref.position = previousLocation.position.z + 50
+    ref.position.z = ref.position.z - 100
+
     -- Exploded spell for VFX
     mwscript.explodeSpell({
         reference = ref,
