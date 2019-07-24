@@ -1,3 +1,12 @@
+
+local debug = true
+local function debugMessage(string)
+	if debug then
+		tes3.messageBox(string)
+		mwse.log("[Astral Pocket: DEBUG] " .. string)
+	end
+end
+
 local common = require("OperatorJack.AstralPocket.common")
 
 local function readAstrologicalElements(e)

@@ -39,15 +39,87 @@ local function  castTeleportToAstralPocket(e)
 	end
 end
 
+local function createSpellSchoolLineBlock(parentBlock, schoolText)
+    local schoolBlock = parentBlock:createBlock({ id = tes3ui.registerID("Chrysopoeia:spellSchoolBlock")})
+    schoolBlock.autoHeight = true
+    schoolBlock.autoWidth = true
+    schoolBlock.flowDirection = "left_to_right"
+    schoolBlock.borderAllSides = 4
+
+        local schoolLabel = schoolBlock:createLabel({ id=tes3ui.registerID("AstralPocketSpell:spellSchoolTextLabel"), text = schoolText })
+        schoolLabel.autoHeight = false
+        schoolLabel.autoWidth = false
+        schoolLabel.height = 18
+
+    return schoolBlock
+end
+
+local function createSpellEffectIconBlock(parentBlock, iconPath)
+    local iconBlock = parentBlock:createBlock({})
+    iconBlock.autoHeight = false
+    iconBlock.autoWidth = false
+    iconBlock.height = 20
+    iconBlock.width = 16
+    iconBlock.flowDirection = "left_to_right"
+    iconBlock.borderRight = 10
+
+        local icon = iconBlock:createImage({ id=tes3ui.registerID("AstralPocketSpell:effectIconImage"), path=iconPath})
+        icon.autoHeight = false
+        icon.autoWidth = false
+        icon.height = 16
+        icon.width = 16
+
+    return iconBlock
+end
+
+local function createSpellEffectTextBlock(parentBlock, effectText)
+    local textBlock = parentBlock:createBlock({ id=tes3ui.registerID("AstralPocketSpell:effectTopRightBlock") })
+    textBlock.autoHeight = false
+    textBlock.autoWidth = true
+    textBlock.height = 18
+    textBlock.paddingTop = 2
+    textBlock.flowDirection = "top_to_bottom"
+
+        local skillLabel = textBlock:createLabel({ id=tes3ui.registerID("AstralPocketSpell:effectTextLabel"), text = effectText })
+        skillLabel.autoHeight = true
+        skillLabel.autoWidth = true
+
+    return textBlock
+end
+
+local function createSpellEffectLineBlock(parentBlock, iconPath, effectText)
+    local effectLineBlock = parentBlock:createBlock({ id=tes3ui.registerID("AstralPocketSpell:effectTopBlock") })
+    effectLineBlock.autoHeight = true
+    effectLineBlock.autoWidth = true
+    effectLineBlock.borderAllSides = 4
+
+    createSpellEffectIconBlock(effectLineBlock, iconPath)
+    createSpellEffectTextBlock(effectLineBlock, effectText)
+
+    return effectLineBlock
+end
+
+local function createSpellEffectBlock(parentBlock, schoolText, iconPath, effectText)
+    local outerBlock = parentBlock:createBlock({ id=tes3ui.registerID("AstralPocketSpell:effectOuterBlock") })
+	outerBlock.flowDirection = "top_to_bottom"
+    outerBlock.autoWidth = true
+    outerBlock.autoHeight = true
+    outerBlock.borderAllSides = 4
+
+    createSpellSchoolLineBlock(outerBlock, schoolText)
+    createSpellEffectLineBlock(outerBlock, iconPath, effectText)
+
+    return outerBlock
+end
+
 local function setAstralPocketSpellTooltip(e)
-	mwse.log("[Astral Pocket: DEBUG] Setting Tooltip!")
+    local schoolText = "School:  Alteration"
+    local effectText = common.spellDescriptions.TeleportToAstralPocket
+    local iconPath = "Icons/s/Tx_S_mark.tga"
 
-	local uiText = common.spellDescriptions.TeleportToAstralPocket
-	local uiBlock = e.tooltip:createBlock()
-	uiBlock.autoHeight = true
-	uiBlock.autoWidth = true
+    e.tooltip:findChild(tes3ui.registerID("effect")):destroy()
 
-	local uiLabel = uiBlock:createLabel{text = uiText}
+    createSpellEffectBlock(e.tooltip, schoolText, iconPath, effectText)
 end
 
 local function initializeSpell()

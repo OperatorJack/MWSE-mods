@@ -43,4 +43,4 @@ Delete the mod's mwse folder and remove the ESP from your Data Files folder.
 
 ====Credits====
 -The Imperial Library for the text for "Astrological Elements." The text is adapted from Cosmology by the Temple Zero Society, originally published 8-17-1999. https://www.imperial-library.info/content/cosmology
--NullCascade, Greatness7, Merlod, Al3istr, and the other people over on the Morrowind Modding Discord.
+-NullCascade, Greatness7, Merlord, Al3istr, and the other people over on the Morrowind Modding Discord.
