@@ -1,13 +1,21 @@
-local spellsModule = include("SpellsModule.spellsModule")
 local common = include("OperatorJack.MagickaExpanded.common")
 
-local Blink = {
+local BlinkSpell = {
     name = "Blink",
     id = "OJ_ME_Blink",
-    tooltip = "Teleports the Caster to within a few paces of the target.",
-    }
+}
+	
+local BlinkEffect = {
+	name = "Blink",
+	id = "blink",
+	description = "Teleports the caster towards the location they are looking at. Teleportation distance scales with mysticism level."
+}
 
-local function  onBlinkSpellResist(e)
+common.claimSpellEffectId("blink", 221)
+
+local function onBlinkTick(e)
+	mwse.log("Spell state: %d", e.effectInstance.state)
+
 	if e.target then
 		local canTeleport = not tes3.worldController.flagTeleportingDisabled
 		if canTeleport then
@@ -23,44 +31,78 @@ local function  onBlinkSpellResist(e)
 			e.caster.position.x = destX
 			e.caster.position.y = destY
 			e.caster.position.z = e.target.position.z
+			
+			e.effectInstance.state = tes3.spellState.retired
+			return
 		else
 			tes3.messageBox("You are not able to cast that spell here.")
+			e.effectInstance.state = tes3.spellState.retired
+			return
 		end
 	end
 end
 
-local function onBlinkCombatStarted(e)
-	if e.actor ~= tes3.mobilePlayer and e.target then
-		local spellObject = tes3.getObject(Blink.id)
-		if common.canCastSpell(e.actor, spellObject) then
-			if e.target.position:distance(e.actor.position) > 250 then
-				if math.random(10) > 7 then
-					common.debugMessage("[Magicka Expanded: INFO] NPC Casting Blink")
-					common.castSpell({
-						actor = e.actor,
-						target = e.target,
-						spell = spellObject
-					})
-				end
-			end
-		end
-	end
+local function addBlinkMagicEffect()
+	tes3.addMagicEffect({
+		-- Base information.
+		id = tes3.effect.blink,
+		name = BlinkEffect.name,
+		description = BlinkEffect.description,
+		school = tes3.magicSchool.mysticism,
+
+		-- Basic dials.
+		baseCost = 2.0,
+		speed = 1,
+
+		-- Flags
+		allowEnchanting = false,
+		allowSpellmaking = true,
+		appliesOnce = true,
+		canCastSelf = true,
+		canCastTarget = false,
+		canCastTouch = false,
+		casterLinked = true, -- ?????
+		hasContinuousVFX = false,
+		hasNoDuration = true,
+		hasNoMagnitude = true,
+		illegalDaedra = false,
+		isHarmful = false,
+		nonRecastable = false,
+		targetAttributes = false,
+		targetSkills = false,
+		unreflectable = true,
+		usesNegativeLighting = false,
+
+		-- Graphics / sounds.
+		-- Must be updated to teleport VFX.
+		icon = "s\\tx_s_ab_attrib.tga",
+		particleTexture = "vfx_myst_flare01",
+		castSound = "conjuration cast",
+		castVFX = "VFX_ConjureCast",
+		boltSound = "conjuration bolt",
+		boltVFX = "VFX_ConjureBolt",
+		hitSound = "conjuration hit",
+		hitVFX = "VFX_DefaultHit",
+		areaSound = "conjuration area",
+		areaVFX = "VFX_ConjureArea",
+		lighting = { 0.99, 0.95, 0.67 },
+		size = 1,
+		sizeCap = 50,
+
+		-- Callbacks
+		onTick = onBlinkTick
+	})
 end
+
+event.register("magicEffectsResolved", addBlinkMagicEffect)
 
 local function registerSpell()
-    if spellsModule then
-        spellsModule.registerSpell(
-            Blink.id,
-            {
-				id = Blink.id,
-				name = Blink.name,
-				tooltipDesc = Blink.tooltip,
-				tooltipClear = true,
-				spellResistEvent = onBlinkSpellResist,
-				combatStartedEvent = onBlinkCombatStarted
-            }
-        )
-    end
+	local spell = common.createSimpleSpell({
+		id = BlinkSpell.id,
+		name = BlinkSpell.name,
+		effect = tes3.effect.blink,
+		range = tes3.effectRange.self
+	})
 end
 
 event.register("SpellsModule:Register", registerSpell)
