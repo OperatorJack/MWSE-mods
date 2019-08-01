@@ -12,7 +12,13 @@ end
 
 local function initialized(e)
     math.randomseed(os.time())
-	local blinkSpell = require("OperatorJack.MagickaExpanded.blinkSpell")
+
+    -- Register effects.
+    local blinkEffect = require("OperatorJack.MagickaExpanded.effects.blinkEffect"
+)
+
+    -- Register spells.
+	local blinkSpell = require("OperatorJack.MagickaExpanded.spells.blinkSpell")
 
     event.trigger("MagickaExpanded:Register")
 
