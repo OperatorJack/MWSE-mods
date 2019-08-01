@@ -18,9 +18,13 @@ local function onBanishDaedraTick(e)
 		return
 	end
 
-	tes3.setEnabled({ reference = e.effectInstance.target, enabled = false })
-	tes3.messageBox("%s has been banished!", e.effectInstance.target.baseObject)
-	
+	if (e.effectInstance.target.object.level >= e.magnitude.min) then
+		if (e.effectInstance.target.object.level <= e.magnitude.max) then
+			tes3.setEnabled({ reference = e.effectInstance.target, enabled = false })
+			tes3.messageBox("%s has been banished!", e.effectInstance.target.baseObject)
+		end
+	end
+
 	e.effectInstance.state = tes3.spellState.retired
 end
 
