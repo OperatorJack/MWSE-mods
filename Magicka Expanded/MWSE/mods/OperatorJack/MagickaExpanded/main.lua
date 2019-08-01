@@ -13,7 +13,6 @@ end
 local function initialized(e)
     math.randomseed(os.time())
 	local blinkSpell = require("OperatorJack.MagickaExpanded.blinkSpell")
-    local banishSpell = require("OperatorJack.MagickaExpanded.banishSpell")
 
     event.trigger("MagickaExpanded:Register")
 
