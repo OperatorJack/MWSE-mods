@@ -69,19 +69,6 @@ local function createLockpickCategory(page)
         }
     }
 
-    -- Create option to capture auto-equip on break.
-    category:createOnOffButton{
-        label = "Enable Lockpick Auto-Equip On Lockpick Break",
-        description = "Use this option to enable auto-equip functionality on activation. If enabled, a lockpick will automatically " ..
-        "be equipped based on your other configuration options, as if you had pressed the hotkey, when your current lockpick " ..
-        "breaks.",
-        variable = mwse.mcm.createTableVariable{
-            id = "lockpickAutoEquipOnBreak",
-            table = common.config,
-            restartRequired = true
-        }
-    }
-
     return category
 end
 
@@ -154,19 +141,6 @@ local function createProbeCategory(page)
         }
     }
 
-    -- Create option to capture auto-equip on break.
-    category:createOnOffButton{
-        label = "Enable Probe Auto-Equip On Probe Break",
-        description = "Use this option to enable auto-equip functionality on activation. If enabled, a Probe will automatically " ..
-        "be equipped based on your other configuration options, as if you had pressed the hotkey, when your current Probe " ..
-        "breaks.",
-        variable = mwse.mcm.createTableVariable{
-            id = "probeAutoEquipOnBreak",
-            table = common.config,
-            restartRequired = true
-        }
-    }
-
     return category
 end
 
@@ -174,16 +148,6 @@ local function createGeneralCategory(page)
     local category = page:createCategory{
         label = "General Settings"
     }
-
-    -- Create option to capture indicator mode.
-    --category:createOnOffButton{
-    --    label = "Enable Key Possession Indicator",
-    --    description = "Use this option to enable a key indicator when hovering over a locked object for which you have they key.",
-    --    variable = mwse.mcm.createTableVariable{
-    --        id = "enableKeyPossessionIndicator",
-    --        table = common.config
-    --    }
-    --}
 
     -- Create option to capture debug mode.
     category:createOnOffButton{
@@ -208,9 +172,9 @@ local function registerModConfig()
         description = "Hover over a setting to learn more about it."
     }
 
-    local generalCategory = createGeneralCategory(page)
-    local lockpickCategory = createLockpickCategory(page)
-    local probeCategory = createProbeCategory(page)
+    createGeneralCategory(page)
+    createLockpickCategory(page)
+    createProbeCategory(page)
 
     mwse.mcm.register(template)
 end

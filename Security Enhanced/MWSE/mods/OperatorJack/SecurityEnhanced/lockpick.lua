@@ -1,21 +1,10 @@
 local common = require("OperatorJack.SecurityEnhanced.common")
 
-local function isAutoEquipOnBreakEnabled()
-    if (common.config.lockpickAutoEquipOnBreak == common.options.lockpick.autoEquipOnActivate.On) then
-        return true
-    end
-    return false
-end
-
 local function isAutoEquipOnActivateEnabled()
-    if (common.config.lockpickAutoEquipOnActivate == common.options.lockpick.autoEquipOnBreak.On) then
+    if (common.config.lockpickAutoEquipOnActivate == common.options.lockpick.autoEquipOnActivate.On) then
         return true
     end
     return false
-end
-
-local function getHotkey()
-    return common.config.lockpickEquipHotKey
 end
 
 local function getHotkeyCycle()
@@ -185,10 +174,6 @@ lockpick.registerEvents = function ()
 
     if (isAutoEquipOnActivateEnabled()) then
         event.register("activate", autoEquipLockpick)
-    end
-
-    if (isAutoEquipOnBreakEnabled()) then
-
     end
 end
 

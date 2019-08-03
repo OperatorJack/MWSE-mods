@@ -1,21 +1,10 @@
 local common = require("OperatorJack.SecurityEnhanced.common")
 
-local function isAutoEquipOnBreakEnabled()
-    if (common.config.probeAutoEquipOnBreak == common.options.probe.autoEquipOnActivate.On) then
-        return true
-    end
-    return false
-end
-
 local function isAutoEquipOnActivateEnabled()
-    if (common.config.probeAutoEquipOnActivate == common.options.probe.autoEquipOnBreak.On) then
+    if (common.config.probeAutoEquipOnActivate == common.options.probe.autoEquipOnActivate.On) then
         return true
     end
     return false
-end
-
-local function getHotkey()
-    return common.config.probeEquipHotKey
 end
 
 local function getHotkeyCycle()
@@ -185,9 +174,6 @@ probe.registerEvents = function ()
 
     if (isAutoEquipOnActivateEnabled()) then
         event.register("activate", autoEquipProbeOnActivate)
-    end
-
-    if (isAutoEquipOnBreakEnabled()) then
     end
 end
 
