@@ -1,27 +1,65 @@
-if (mwse.buildDate == nil) or (mwse.buildDate < 20181211) then
-    local function warning()
-        tes3.messageBox(
-            "[Magicka Expanded ERROR] Your MWSE is out of date!"
-            .. " You will need to update to a more recent version to use this mod."
-        )
-    end
-    event.register("initialized", warning)
-    event.register("loaded", warning)
-    return
-end
+local common = require("OperatorJack.MagickaExpanded.common")
+local mcm = require("OperatorJack.MagickaExpanded.mcm")
 
-local function initialized(e)
+-- Will be moved to build soon.
+tes3.effectEventType = {
+	["bool"] = 0,
+	["boolean"] = 0,
+	["int"] = 1,
+	["integer"] = 1,
+	["float"] = 2,
+}
+tes3.effectAttribute = {
+	["attackBonus"] = 0,
+	["sanctuary"] = 1,
+	["resistMagicka"] = 2,
+	["resistFire"] = 3,
+	["resistFrost"] = 4,
+	["resistShock"] = 5,
+	["resistCommonDisease"] = 6,
+	["resistBlightDisease"] = 7,
+	["resistCorprus"] = 8,
+	["resistPoison"] = 9,
+	["resistParalysis"] = 10,
+	["chameleon"] = 11,
+	["resistNormalWeapons"] = 12,
+	["waterBreathing"] = 13,
+	["waterWalking"] = 14,
+	["swiftSwim"] = 15,
+	["jump"] = 16,
+	["levitate"] = 17,
+	["shield"] = 18,
+	["sound"] = 19,
+	["silence"] = 20,
+	["blind"] = 21,
+	["paralyze"] = 22,
+	["invisibility"] = 23,
+	["fight"] = 24,
+	["flee"] = 25,
+	["hello"] = 26,
+	["alarm"] = 27,
+	["nonResistable"] = 28,
+}
+
+-- Register effects.
+require("OperatorJack.MagickaExpanded.effects.blinkEffect")
+require("OperatorJack.MagickaExpanded.effects.banishDaedraEffect")
+require("OperatorJack.MagickaExpanded.effects.lightDamageEffect")
+require("OperatorJack.MagickaExpanded.effects.summonEffectSet")
+
+-- Register spells.
+require("OperatorJack.MagickaExpanded.spells")
+
+local function initialized()
     math.randomseed(os.time())
-
-    -- Register effects.
-    local blinkEffect = require("OperatorJack.MagickaExpanded.effects.blinkEffect"
-)
-
-    -- Register spells.
-	local blinkSpell = require("OperatorJack.MagickaExpanded.spells.blinkSpell")
-
-    event.trigger("MagickaExpanded:Register")
-
 	print("[Magicka Expanded: INFO] Initialized Magicka Expanded Spells")
 end
 event.register("initialized", initialized)
+
+local function loaded()
+    event.trigger("MagickaExpanded:Register")
+    common.addTestSpellsToPlayer()
+    print("[Magicka Expanded: INFO] Registered Magicka Expanded Spells")
+end
+
+event.register("loaded", loaded)

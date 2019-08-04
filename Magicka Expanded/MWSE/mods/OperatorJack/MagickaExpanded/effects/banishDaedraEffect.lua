@@ -1,16 +1,13 @@
 local common = include("OperatorJack.MagickaExpanded.common")
 
-local BanishDaedraEffect = {
-	name = "Banish Daedra",
-	id = "banishDaedra",
-	description = "Banishes a daedric creature back to its originating plane. The effect's magnitude is the maximum level of daedra that it can banish."
-}
-
-common.claimSpellEffectId("banishDaedria", 220)
+tes3.claimSpellEffectId("banishDaedra", 220)
 
 -- Written by NullCascade.
 local function onBanishDaedraTick(e)
-	mwse.log("Spell state: %d", e.effectInstance.state)
+	-- Trigger into the spell system.
+	if (not e:trigger()) then
+		return
+	end
 
 	-- Ignore any non-daedric opponents.
 	if (e.effectInstance.target.object.type ~= tes3.creatureType.daedra) then
@@ -18,11 +15,9 @@ local function onBanishDaedraTick(e)
 		return
 	end
 
-	if (e.effectInstance.target.object.level >= e.magnitude.min) then
-		if (e.effectInstance.target.object.level <= e.magnitude.max) then
-			tes3.setEnabled({ reference = e.effectInstance.target, enabled = false })
-			tes3.messageBox("%s has been banished!", e.effectInstance.target.baseObject)
-		end
+	if (e.effectInstance.target.object.level <= e.effectInstance.magnitude) then
+		tes3.setEnabled({ reference = e.effectInstance.target, enabled = false })
+		tes3.messageBox("%s has been banished!", e.effectInstance.target.baseObject)
 	end
 
 	e.effectInstance.state = tes3.spellState.retired
@@ -33,8 +28,8 @@ local function addBanishDaedraEffect()
 	tes3.addMagicEffect({
 		-- Base information.
 		id = tes3.effect.banishDaedra,
-		name = BanishDaedraEffect.name,
-		description = BanishDaedraEffect.description,
+		name = "Banish Daedra",
+		description = "Banishes a daedric creature back to its originating plane. The effect's magnitude is the level of daedra that it can banish.",
 		school = tes3.magicSchool.conjuration,
 
 		-- Basic dials.
@@ -62,7 +57,7 @@ local function addBanishDaedraEffect()
 
 		-- Graphics/sounds.
 		icon = "s\\tx_s_ab_attrib.tga",
-		particleTexture = "vfx_myst_flare01",
+		particleTexture = "vfx_myst_flare01.tga",
 		castSound = "conjuration cast",
 		castVFX = "VFX_ConjureCast",
 		boltSound = "conjuration bolt",

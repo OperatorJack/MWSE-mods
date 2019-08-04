@@ -1,38 +1,25 @@
 local common = include("OperatorJack.MagickaExpanded.common")
 
-local BlinkEffect = {
-	name = "Blink",
-	id = "blink",
-	description = "Teleports the caster towards the location they are looking at. Teleportation distance scales with mysticism level."
-}
+tes3.claimSpellEffectId("blink", 221)
 
-common.claimSpellEffectId("blink", 221)
-
-local function onBlinkTick(e)
-	mwse.log("Spell state: %d", e.effectInstance.state)
-
-	if e.target then
+local function onBlinkCollision(e)
+	if e.collision then
 		local canTeleport = not tes3.worldController.flagTeleportingDisabled
 		if canTeleport then
-			local casterX = e.caster.position.x
-			local casterY = e.caster.position.y
-			local targetX = e.target.position.x
-			local targetY = e.target.position.y
+			local casterX = e.sourceInstance.caster.position.x
+			local casterY = e.sourceInstance.caster.position.y
+			local collisionX = e.collision.point.x
+			local collisionY = e.collision.point.y
 
-			local percent = e.caster.mobile.mysticism.current / 100
+			local percent = e.sourceInstance.caster.mobile.mysticism.current / 100
 			percent = common.ternary( (percent >= 1) , .95, percent)
-			local destX, destY = common.linearInterpolation(casterX, casterY, targetX, targetY, percent)
+			local destX, destY = common.linearInterpolation(casterX, casterY, collisionX, collisionY, percent)
 
-			e.caster.position.x = destX
-			e.caster.position.y = destY
-			e.caster.position.z = e.target.position.z
-			
-			e.effectInstance.state = tes3.spellState.retired
-			return
+			e.sourceInstance.caster.position.x = destX
+			e.sourceInstance.caster.position.y = destY
+			e.sourceInstance.caster.position.z = e.collision.point.z
 		else
 			tes3.messageBox("You are not able to cast that spell here.")
-			e.effectInstance.state = tes3.spellState.retired
-			return
 		end
 	end
 end
@@ -41,51 +28,50 @@ local function addBlinkMagicEffect()
 	tes3.addMagicEffect({
 		-- Base information.
 		id = tes3.effect.blink,
-		name = BlinkEffect.name,
-		description = BlinkEffect.description,
+		name = "Blink",
+		description = "Teleports the caster towards the location they are looking at. Teleportation distance scales with mysticism level.",
 		school = tes3.magicSchool.mysticism,
 
 		-- Basic dials.
-		baseCost = 2.0,
+		baseCost = 100.0,
 		speed = 1,
 
 		-- Flags
-		allowEnchanting = false,
-		allowSpellmaking = true,
+		allowEnchanting = true,
+		allowSpellmaking = false,
 		appliesOnce = true,
-		canCastSelf = true,
-		canCastTarget = false,
+		canCastSelf = false,
+		canCastTarget = true,
 		canCastTouch = false,
-		casterLinked = true, -- ?????
+		casterLinked = false,
 		hasContinuousVFX = false,
 		hasNoDuration = true,
 		hasNoMagnitude = true,
 		illegalDaedra = false,
 		isHarmful = false,
 		nonRecastable = false,
-		targetAttributes = false,
-		targetSkills = false,
-		unreflectable = true,
+		targetsAttributes = false,
+		targetsSkills = false,
+		unreflectable = false,
 		usesNegativeLighting = false,
 
 		-- Graphics / sounds.
-		-- Must be updated to teleport VFX.
-		icon = "s\\tx_s_ab_attrib.tga",
-		particleTexture = "vfx_myst_flare01",
-		castSound = "conjuration cast",
-		castVFX = "VFX_ConjureCast",
-		boltSound = "conjuration bolt",
-		boltVFX = "VFX_ConjureBolt",
-		hitSound = "conjuration hit",
-		hitVFX = "VFX_DefaultHit",
-		areaSound = "conjuration area",
-		areaVFX = "VFX_ConjureArea",
-		lighting = { 0.99, 0.95, 0.67 },
+		icon = "s\\tx_s_recall.tga",
+		particleTexture = "vfx_particle064.tga",
+		castSound = "mysticism cast",
+		castVFX = "VFX_MysticismCast",
+		boltSound = "mysticism bolt",
+		boltVFX = "VFX_MysticismBolt",
+		hitSound = "mysticism hit",
+		hitVFX = "VFX_MysticismHit",
+		areaSound = "mysticism area",
+		areaVFX = "VFX_MysticismArea",
+		lighting = { 206 / 255, 237 / 255, 255 / 255 },
 		size = 1,
 		sizeCap = 50,
 
 		-- Callbacks
-		onTick = onBlinkTick
+		onCollision = onBlinkCollision
 	})
 end
 
