@@ -1,0 +1,94 @@
+local common = include("OperatorJack.MagickaExpanded.common")
+
+tes3.claimSpellEffectId("boundClaymore", 229)
+tes3.claimSpellEffectId("boundClub", 230)
+tes3.claimSpellEffectId("boundDaiKatana", 231)
+tes3.claimSpellEffectId("boundKatana", 232)
+tes3.claimSpellEffectId("boundShortSword", 233)
+tes3.claimSpellEffectId("boundStaff", 234)
+tes3.claimSpellEffectId("boundTanto", 235)
+tes3.claimSpellEffectId("boundWakizashi", 236)
+tes3.claimSpellEffectId("boundWarAxe", 237)
+tes3.claimSpellEffectId("boundWarhammer", 238)
+
+local function getDescription(weaponName)
+    return "The spell effect conjures a lesser Daedra bound in the form of  amagical, wondrously light Daedric " ..
+    weaponName .. ". The ".. weaponName .. " appear automatically equipped on the caster, displacing any currently " ..
+    " equipped weapon to inventory.  When the effect ends, the ".. weaponName .. " disappears, and any previously " .. 
+    " equipped weapon is automatically re-equipped."
+end
+
+local function addBoundWeaponEffects()
+    common.createSimpleBoundWeaponEffect({
+        id = tes3.effect.boundWarhammer,
+        name = "Bound Warhammer",
+        description = getDescription("Daedric Warhammer"),
+        cost = 2,
+        weaponId = "daedric warhammer"
+    })
+    common.createSimpleBoundWeaponEffect({
+        id = tes3.effect.boundWarAxe,
+        name = "Bound War Axe",
+        description = getDescription("Daedric War Axe"),
+        cost = 2,
+        weaponId = "daedric war axe"
+    })
+    common.createSimpleBoundWeaponEffect({
+        id = tes3.effect.boundWakizashi,
+        name = "Bound Wakizashi",
+        description = getDescription("Daedric Wakizashi"),
+        cost = 2,
+        weaponId = "daedric wakizashi"
+    })
+    common.createSimpleBoundWeaponEffect({
+        id = tes3.effect.boundTanto,
+        name = "Bound Tanto",
+        description = getDescription("Daedric Tanto"),
+        cost = 2,
+        weaponId = "daedric tanto"
+    })
+    common.createSimpleBoundWeaponEffect({
+        id = tes3.effect.boundStaff,
+        name = "Bound Staff",
+        description = getDescription("Daedric Staff"),
+        cost = 2,
+        weaponId = "daedric staff"
+    })
+    common.createSimpleBoundWeaponEffect({
+        id = tes3.effect.boundShortSword,
+        name = "Bound Shortsword",
+        description = getDescription("Daedric Shortsword"),
+        cost = 2,
+        weaponId = "daedric shortsword"
+    })
+    common.createSimpleBoundWeaponEffect({
+        id = tes3.effect.boundKatana,
+        name = "Bound Katana",
+        description = getDescription("Daedric Katana"),
+        cost = 2,
+        weaponId = "daedric katana"
+    })
+    common.createSimpleBoundWeaponEffect({
+        id = tes3.effect.boundDaiKatana,
+        name = "Bound Dai-Katana",
+        description = getDescription("Daedric Dai-Katana"),
+        cost = 2,
+        weaponId = "daedric dai-katana"
+    })
+    common.createSimpleBoundWeaponEffect({
+        id = tes3.effect.boundClub,
+        name = "Bound Club",
+        description = getDescription("Daedric Club"),
+        cost = 2,
+        weaponId = "daedric club"
+    })
+    common.createSimpleBoundWeaponEffect({
+        id = tes3.effect.boundClaymore,
+        name = "Bound Claymore",
+        description = getDescription("Daedric Claymore"),
+        cost = 2,
+        weaponId = "daedric claymore"
+    })
+end
+
+event.register("magicEffectsResolved", addBoundWeaponEffects)

@@ -41,15 +41,6 @@ tes3.effectAttribute = {
 	["nonResistable"] = 28,
 }
 
--- Register effects.
-require("OperatorJack.MagickaExpanded.effects.blinkEffect")
-require("OperatorJack.MagickaExpanded.effects.banishDaedraEffect")
-require("OperatorJack.MagickaExpanded.effects.lightDamageEffect")
-require("OperatorJack.MagickaExpanded.effects.summonEffectSet")
-
--- Register spells.
-require("OperatorJack.MagickaExpanded.spells")
-
 local function initialized()
     math.randomseed(os.time())
 	print("[Magicka Expanded: INFO] Initialized Magicka Expanded Spells")

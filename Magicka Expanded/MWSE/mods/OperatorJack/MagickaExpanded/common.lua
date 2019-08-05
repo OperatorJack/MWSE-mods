@@ -63,6 +63,111 @@ this.createSimpleSpell = function(params)
     return spell
 end
 
+this.createSimpleBoundArmorEffect = function(params)
+	tes3.addMagicEffect({
+		-- Base information.
+		id = params.id,
+		name = params.name,
+		description = params.description,
+		school = tes3.magicSchool.conjuration,
+
+		-- Basic dials.
+		baseCost = params.cost,
+		speed = 1,
+
+		-- Various flags.
+		allowEnchanting = true,
+		allowSpellmaking = true,
+		appliesOnce = true,
+		canCastSelf = true,
+		canCastTarget = false,
+		canCastTouch = false,
+		casterLinked = false,
+		hasContinuousVFX = false,
+		hasNoDuration = false,
+		hasNoMagnitude = true,
+		illegalDaedra = false,
+		isHarmful = false,
+		nonRecastable = true,
+		targetsAttributes = false,
+		targetsSkills = false,
+		unreflectable = false,
+		usesNegativeLighting = false,
+
+		-- Graphics/sounds.
+		icon = "s\\tx_s_ab_attrib.tga",
+		particleTexture = "vfx_myst_flare01.tga",
+		castSound = "conjuration cast",
+		castVFX = "VFX_ConjureCast",
+		boltSound = "conjuration bolt",
+		boltVFX = "VFX_ConjureBolt",
+		hitSound = "conjuration hit",
+		hitVFX = "VFX_DefaultHit",
+		areaSound = "conjuration area",
+		areaVFX = "VFX_ConjureArea",
+		lighting = { 0.99, 0.95, 0.67 },
+		size = 1,
+		sizeCap = 50,
+
+		-- Required callbacks.
+		onTick = function(e)
+			e:triggerBoundArmor(params.armorId, params.armorId2)
+		end,
+	})
+end
+this.createSimpleBoundWeaponEffect  = function(params)
+	tes3.addMagicEffect({
+		-- Base information.
+		id = params.id,
+		name = params.name,
+		description = params.description,
+		school = tes3.magicSchool.conjuration,
+
+		-- Basic dials.
+		baseCost = params.cost,
+		speed = 1,
+
+		-- Various flags.
+		allowEnchanting = true,
+		allowSpellmaking = true,
+		appliesOnce = true,
+		canCastSelf = true,
+		canCastTarget = false,
+		canCastTouch = false,
+		casterLinked = false,
+		hasContinuousVFX = false,
+		hasNoDuration = false,
+		hasNoMagnitude = true,
+		illegalDaedra = false,
+		isHarmful = false,
+		nonRecastable = true,
+		targetsAttributes = false,
+		targetsSkills = false,
+		unreflectable = false,
+		usesNegativeLighting = false,
+
+		-- Graphics/sounds.
+		icon = "s\\tx_s_ab_attrib.tga",
+		particleTexture = "vfx_myst_flare01.tga",
+		castSound = "conjuration cast",
+		castVFX = "VFX_ConjureCast",
+		boltSound = "conjuration bolt",
+		boltVFX = "VFX_ConjureBolt",
+		hitSound = "conjuration hit",
+		hitVFX = "VFX_DefaultHit",
+		areaSound = "conjuration area",
+		areaVFX = "VFX_ConjureArea",
+		lighting = { 0.99, 0.95, 0.67 },
+		size = 1,
+		sizeCap = 50,
+
+		-- Required callbacks.
+		onTick = function(e)
+			e:triggerBoundWeapon(params.weaponId)
+		end,
+	})
+end
+
 this.createSimpleSummoningEffect = function(params)
     tes3.addMagicEffect({
         -- Base information.
