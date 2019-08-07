@@ -1,4 +1,4 @@
-local common = include("OperatorJack.MagickaExpanded.common")
+local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
 tes3.claimSpellEffectId("boundClaymore", 229)
 tes3.claimSpellEffectId("boundClub", 230)
@@ -19,70 +19,70 @@ local function getDescription(weaponName)
 end
 
 local function addBoundWeaponEffects()
-    common.createSimpleBoundWeaponEffect({
+    framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundWarhammer,
         name = "Bound Warhammer",
         description = getDescription("Daedric Warhammer"),
         cost = 2,
         weaponId = "daedric warhammer"
     })
-    common.createSimpleBoundWeaponEffect({
+    framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundWarAxe,
         name = "Bound War Axe",
         description = getDescription("Daedric War Axe"),
         cost = 2,
         weaponId = "daedric war axe"
     })
-    common.createSimpleBoundWeaponEffect({
+    framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundWakizashi,
         name = "Bound Wakizashi",
         description = getDescription("Daedric Wakizashi"),
         cost = 2,
         weaponId = "daedric wakizashi"
     })
-    common.createSimpleBoundWeaponEffect({
+    framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundTanto,
         name = "Bound Tanto",
         description = getDescription("Daedric Tanto"),
         cost = 2,
         weaponId = "daedric tanto"
     })
-    common.createSimpleBoundWeaponEffect({
+    framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundStaff,
         name = "Bound Staff",
         description = getDescription("Daedric Staff"),
         cost = 2,
         weaponId = "daedric staff"
     })
-    common.createSimpleBoundWeaponEffect({
+    framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundShortSword,
         name = "Bound Shortsword",
         description = getDescription("Daedric Shortsword"),
         cost = 2,
         weaponId = "daedric shortsword"
     })
-    common.createSimpleBoundWeaponEffect({
+    framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundKatana,
         name = "Bound Katana",
         description = getDescription("Daedric Katana"),
         cost = 2,
         weaponId = "daedric katana"
     })
-    common.createSimpleBoundWeaponEffect({
+    framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundDaiKatana,
         name = "Bound Dai-Katana",
         description = getDescription("Daedric Dai-Katana"),
         cost = 2,
         weaponId = "daedric dai-katana"
     })
-    common.createSimpleBoundWeaponEffect({
+    framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundClub,
         name = "Bound Club",
         description = getDescription("Daedric Club"),
         cost = 2,
         weaponId = "daedric club"
     })
-    common.createSimpleBoundWeaponEffect({
+    framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundClaymore,
         name = "Bound Claymore",
         description = getDescription("Daedric Claymore"),

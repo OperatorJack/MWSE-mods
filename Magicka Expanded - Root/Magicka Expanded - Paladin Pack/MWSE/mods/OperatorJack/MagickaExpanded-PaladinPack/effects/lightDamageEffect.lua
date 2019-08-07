@@ -1,4 +1,4 @@
-local common = include("OperatorJack.MagickaExpanded.common")
+local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
 tes3.claimSpellEffectId("lightDamage", 222)
 
@@ -21,20 +21,19 @@ local function onLightDamageTick(e)
 
 	local damage = e.effectInstance.magnitude
 	e.effectInstance.target.mobile:applyHealthDamage(damage)
-	common.debug("Dealt " .. damage .. " to target " .. e.effectInstance.target.id)
+	framework.debug("Dealt " .. damage .. " to target " .. e.effectInstance.target.id)
 
 	e.effectInstance.state = tes3.spellState.retired
 end
 
 -- Written by NullCascade.
 local function addLightDamageEffect()
-	tes3.addMagicEffect({
+	framework.effects.restoration.createBasicEffect({
 		-- Base information.
 		id = tes3.effect.lightDamage,
 		name = "Light Damage",
         description = "Produces a manifestation of pure light." ..
         " Upon contact with the undead, this manifestation intensifies, causing damage.",
-		school = tes3.magicSchool.restoration,
 
 		-- Basic dials.
 		baseCost = 2.0,
@@ -47,17 +46,7 @@ local function addLightDamageEffect()
 		canCastSelf = true,
 		canCastTarget = true,
 		canCastTouch = true,
-		casterLinked = false,
-		hasContinuousVFX = false,
-		hasNoDuration = false,
-		hasNoMagnitude = false,
-		illegalDaedra = false,
-		isHarmful = false,
 		nonRecastable = true,
-		targetsAttributes = false,
-		targetsSkills = false,
-		unreflectable = false,
-		usesNegativeLighting = false,
 
 		-- Graphics/sounds.
 		icon = "OJ\\ME\\LightEffectIcon.tga",
@@ -71,8 +60,6 @@ local function addLightDamageEffect()
 		areaSound = "destruction area",
 		areaVFX = "VFX_LightDamageArea",
 		lighting = { 255 / 255, 255 / 255, 255 / 255 },
-		size = 1,
-		sizeCap = 50,
 
 		-- Required callbacks.
 		onTick = onLightDamageTick,

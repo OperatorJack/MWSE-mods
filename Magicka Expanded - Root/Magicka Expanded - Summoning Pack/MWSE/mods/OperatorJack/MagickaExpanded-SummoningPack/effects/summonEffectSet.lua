@@ -1,4 +1,4 @@
-local common = include("OperatorJack.MagickaExpanded.common")
+local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
 tes3.claimSpellEffectId("summonGoblinGrunt", 223)
 tes3.claimSpellEffectId("summonGoblinBruiser", 224)
@@ -14,42 +14,42 @@ local function getDescription(creatureName)
     " disappears, returning to Oblivion. If summoned in town, the guards will attack you and the summoning on sight."
 end
 local function addSummoningEffects()
-	common.createSimpleSummoningEffect({
+	framework.effects.conjuration.createBasicSummoningEffect({
 		id = tes3.effect.summonGoblinGrunt,
 		name = "Summon Goblin",
 		description = getDescription("Goblin"),
 		cost = 7,
 		creatureId = "goblin_grunt",
 	})
-	common.createSimpleSummoningEffect({
+	framework.effects.conjuration.createBasicSummoningEffect({
 		id = tes3.effect.summonGoblinFootSoldier,
 		name = "Summon Goblin Foot Soldier",
 		description = getDescription("Goblin Foot Soldier"),
 		cost = 16,
 		creatureId = "goblin_footsoldier",
 	})
-	common.createSimpleSummoningEffect({
+	framework.effects.conjuration.createBasicSummoningEffect({
 		id = tes3.effect.summonGoblinBruiser,
 		name = "Summon Goblin Bruiser",
 		description = getDescription("Goblin Bruiser"),
 		cost = 25,
 		creatureId = "goblin_bruiser",
 	})
-	common.createSimpleSummoningEffect({
+	framework.effects.conjuration.createBasicSummoningEffect({
 		id = tes3.effect.summonGoblinHandler,
 		name = "Summon Goblin Handler",
 		description = getDescription("Goblin Handler"),
 		cost = 40,
 		creatureId = "goblin_handler",
 	})
-	common.createSimpleSummoningEffect({
+	framework.effects.conjuration.createBasicSummoningEffect({
 		id = tes3.effect.summonGoblinOfficer,
 		name = "Summon Goblin Officer",
 		description = getDescription("Goblin Officer"),
 		cost = 60,
 		creatureId = "goblin_officer",
 	})
-	common.createSimpleSummoningEffect({
+	framework.effects.conjuration.createBasicSummoningEffect({
 		id = tes3.effect.summonLich,
 		name = "Summon Lich",
 		description = getDescription("Lich"),

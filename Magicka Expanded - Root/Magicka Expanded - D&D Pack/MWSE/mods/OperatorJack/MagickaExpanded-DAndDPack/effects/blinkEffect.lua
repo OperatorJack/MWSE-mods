@@ -1,4 +1,4 @@
-local common = include("OperatorJack.MagickaExpanded.common")
+local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
 tes3.claimSpellEffectId("blink", 221)
 
@@ -12,8 +12,8 @@ local function onBlinkCollision(e)
 			local collisionY = e.collision.point.y
 
 			local percent = e.sourceInstance.caster.mobile.mysticism.current / 100
-			percent = common.ternary( (percent >= 1) , .95, percent)
-			local destX, destY = common.linearInterpolation(casterX, casterY, collisionX, collisionY, percent)
+			percent = framework.functions.ternary( (percent >= 1) , .95, percent)
+			local destX, destY = framework.functions.linearInterpolation(casterX, casterY, collisionX, collisionY, percent)
 
 			e.sourceInstance.caster.position.x = destX
 			e.sourceInstance.caster.position.y = destY
@@ -25,50 +25,26 @@ local function onBlinkCollision(e)
 end
 
 local function addBlinkMagicEffect()
-	tes3.addMagicEffect({
+	framework.effects.mysticism.createBasicEffect({
 		-- Base information.
 		id = tes3.effect.blink,
 		name = "Blink",
 		description = "Teleports the caster towards the location they are looking at. Teleportation distance scales with mysticism level.",
-		school = tes3.magicSchool.mysticism,
 
 		-- Basic dials.
 		baseCost = 100.0,
-		speed = 1,
 
 		-- Flags
 		allowEnchanting = true,
-		allowSpellmaking = false,
 		appliesOnce = true,
-		canCastSelf = false,
 		canCastTarget = true,
-		canCastTouch = false,
-		casterLinked = false,
-		hasContinuousVFX = false,
 		hasNoDuration = true,
 		hasNoMagnitude = true,
-		illegalDaedra = false,
-		isHarmful = false,
-		nonRecastable = false,
-		targetsAttributes = false,
-		targetsSkills = false,
-		unreflectable = false,
-		usesNegativeLighting = false,
 
 		-- Graphics / sounds.
 		icon = "s\\tx_s_recall.tga",
 		particleTexture = "vfx_particle064.tga",
-		castSound = "mysticism cast",
-		castVFX = "VFX_MysticismCast",
-		boltSound = "mysticism bolt",
-		boltVFX = "VFX_MysticismBolt",
-		hitSound = "mysticism hit",
-		hitVFX = "VFX_MysticismHit",
-		areaSound = "mysticism area",
-		areaVFX = "VFX_MysticismArea",
 		lighting = { 206 / 255, 237 / 255, 255 / 255 },
-		size = 1,
-		sizeCap = 50,
 
 		-- Callbacks
 		onCollision = onBlinkCollision

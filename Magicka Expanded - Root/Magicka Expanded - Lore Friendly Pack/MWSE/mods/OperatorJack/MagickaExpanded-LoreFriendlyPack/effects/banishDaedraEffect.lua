@@ -1,4 +1,4 @@
-local common = include("OperatorJack.MagickaExpanded.common")
+local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
 tes3.claimSpellEffectId("banishDaedra", 220)
 
@@ -25,50 +25,29 @@ end
 
 -- Written by NullCascade.
 local function addBanishDaedraEffect()
-	tes3.addMagicEffect({
+	framework.effects.conjuration.createBasicEffect({
 		-- Base information.
 		id = tes3.effect.banishDaedra,
 		name = "Banish Daedra",
 		description = "Banishes a daedric creature back to its originating plane. The effect's magnitude is the level of daedra that it can banish.",
-		school = tes3.magicSchool.conjuration,
 
 		-- Basic dials.
 		baseCost = 2.0,
-		speed = 1,
 
 		-- Various flags.
 		allowEnchanting = true,
 		allowSpellmaking = true,
 		appliesOnce = true,
-		canCastSelf = false,
 		canCastTarget = true,
 		canCastTouch = true,
-		casterLinked = false,
-		hasContinuousVFX = false,
 		hasNoDuration = true,
-		hasNoMagnitude = false,
-		illegalDaedra = false,
-		isHarmful = false,
 		nonRecastable = true,
-		targetsAttributes = false,
-		targetsSkills = false,
 		unreflectable = true,
-		usesNegativeLighting = false,
 
 		-- Graphics/sounds.
 		icon = "s\\tx_s_ab_attrib.tga",
 		particleTexture = "vfx_myst_flare01.tga",
-		castSound = "conjuration cast",
-		castVFX = "VFX_ConjureCast",
-		boltSound = "conjuration bolt",
-		boltVFX = "VFX_ConjureBolt",
-		hitSound = "conjuration hit",
-		hitVFX = "VFX_DefaultHit",
-		areaSound = "conjuration area",
-		areaVFX = "VFX_ConjureArea",
 		lighting = { 0.99, 0.95, 0.67 },
-		size = 1,
-		sizeCap = 50,
 
 		-- Required callbacks.
 		onTick = onBanishDaedraTick,
