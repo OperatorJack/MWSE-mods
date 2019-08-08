@@ -4,7 +4,6 @@ local this = {}
 
 this.createBasicSpell = function(params)
     local spell = tes3.getObject(params.id) or tes3spell.create(params.id, params.name)
-    spell.magickaCost = 0
 
     local effect = spell.effects[1]
     effect.id = params.effect

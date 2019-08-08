@@ -4,7 +4,7 @@ require("OperatorJack.MagickaExpanded-PaladinPack.effects.lightDamageEffect")
 
 local function registerSpells()
   framework.spells.createBasicSpell({
-    id = "OJ_ME_StendarrsAura",
+    id = "OJ_ME_StendarrsAuraSpell",
     name = "Stendarr's Aura",
     effect = tes3.effect.lightDamage,
     range = tes3.effectRange.target,
@@ -14,7 +14,7 @@ local function registerSpells()
     radius = 10
   })
   framework.spells.createBasicSpell({
-    id = "OJ_ME_StendarrsTouch",
+    id = "OJ_ME_StendarrsTouchSpell",
     name = "Stendarr's Touch",
     effect = tes3.effect.lightDamage,
     range = tes3.effectRange.touch,

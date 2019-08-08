@@ -24,70 +24,70 @@ local function addBoundWeaponEffects()
         name = "Bound Warhammer",
         description = getDescription("Daedric Warhammer"),
         cost = 2,
-        weaponId = "daedric warhammer"
+        weaponId = "OJ_ME_BoundWarhammer"
     })
     framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundWarAxe,
         name = "Bound War Axe",
         description = getDescription("Daedric War Axe"),
         cost = 2,
-        weaponId = "daedric war axe"
+        weaponId = "OJ_ME_BoundWarAxe"
     })
     framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundWakizashi,
         name = "Bound Wakizashi",
         description = getDescription("Daedric Wakizashi"),
         cost = 2,
-        weaponId = "daedric wakizashi"
+        weaponId = "OJ_ME_BoundWakizashi"
     })
     framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundTanto,
         name = "Bound Tanto",
         description = getDescription("Daedric Tanto"),
         cost = 2,
-        weaponId = "daedric tanto"
+        weaponId = "OJ_ME_BoundTanto"
     })
     framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundStaff,
         name = "Bound Staff",
         description = getDescription("Daedric Staff"),
         cost = 2,
-        weaponId = "daedric staff"
+        weaponId = "OJ_ME_BoundStaff"
     })
     framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundShortSword,
         name = "Bound Shortsword",
         description = getDescription("Daedric Shortsword"),
         cost = 2,
-        weaponId = "daedric shortsword"
+        weaponId = "OJ_ME_BoundShortsword"
     })
     framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundKatana,
         name = "Bound Katana",
         description = getDescription("Daedric Katana"),
         cost = 2,
-        weaponId = "daedric katana"
+        weaponId = "OJ_ME_BoundKatana"
     })
     framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundDaiKatana,
         name = "Bound Dai-Katana",
         description = getDescription("Daedric Dai-Katana"),
         cost = 2,
-        weaponId = "daedric dai-katana"
+        weaponId = "OJ_ME_BoundDaiKatana"
     })
     framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundClub,
         name = "Bound Club",
         description = getDescription("Daedric Club"),
         cost = 2,
-        weaponId = "daedric club"
+        weaponId = "OJ_ME_BoundClub"
     })
     framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundClaymore,
         name = "Bound Claymore",
         description = getDescription("Daedric Claymore"),
         cost = 2,
-        weaponId = "daedric claymore"
+        weaponId = "OJ_ME_BoundClaymore"
     })
 end
 

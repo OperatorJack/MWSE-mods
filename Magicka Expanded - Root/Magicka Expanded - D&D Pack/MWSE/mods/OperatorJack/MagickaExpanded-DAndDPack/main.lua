@@ -4,7 +4,7 @@ require("OperatorJack.MagickaExpanded-DAndDPack.effects.blinkEffect")
 
 local function registerSpells()
   framework.spells.createBasicSpell({
-    id = "OJ_ME_Blink",
+    id = "OJ_ME_BlinkSpell",
     name = "Blink",
     effect = tes3.effect.blink,
     range = tes3.effectRange.target
