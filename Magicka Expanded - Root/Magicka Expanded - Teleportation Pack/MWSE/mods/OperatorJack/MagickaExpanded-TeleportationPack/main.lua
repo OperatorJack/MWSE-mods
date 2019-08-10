@@ -48,7 +48,7 @@ local function registerSpells()
   framework.spells.createBasicSpell({
     id = "OJ_ME_TeleportToMolagMar",
     name = "Teleport to Molag Mar",
-    effect = tes3.effect.MolagMar,
+    effect = tes3.effect.teleportToMolagMar,
     range = tes3.effectRange.self
   })
   framework.spells.createBasicSpell({

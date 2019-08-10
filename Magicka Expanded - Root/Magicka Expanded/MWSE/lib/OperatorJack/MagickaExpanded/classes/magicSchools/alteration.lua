@@ -32,7 +32,7 @@ this.createBasicEffect = function(params)
 		usesNegativeLighting = params.usesNegativeLighting or false,
 
 		-- Graphics/sounds.
-		icon = params.icon or "s\\tx_s_ab_attrib.tga",
+		icon = params.icon or "RFD\\RFD_ms_alteration.tga",
 		particleTexture = params.particleTexture or "vfx_alt_glow.tga",
 		castSound = params.castSound or "alteration cast",
 		castVFX = params.castVFX or "VFX_AlterationCast",

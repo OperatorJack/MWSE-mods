@@ -55,7 +55,7 @@ local function addTeleportationEffects()
 	})
 	framework.effects.mysticism.createBasicTeleportationEffect({
 		id = tes3.effect.teleportToMolagMar,
-		name = "Teleport To Molag-Mar",
+		name = "Teleport To Molag Mar",
 		description = getDescription("Molag Mar"),
 		cost = 7,
 		positionCell = {

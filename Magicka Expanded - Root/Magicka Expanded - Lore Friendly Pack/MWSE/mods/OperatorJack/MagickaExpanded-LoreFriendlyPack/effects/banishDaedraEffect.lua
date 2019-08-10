@@ -45,7 +45,7 @@ local function addBanishDaedraEffect()
 		unreflectable = true,
 
 		-- Graphics/sounds.
-		icon = "s\\tx_s_ab_attrib.tga",
+		icon = "RFD\\RFD_lf_banish.dds",
 		particleTexture = "vfx_myst_flare01.tga",
 		lighting = { 0.99, 0.95, 0.67 },
 

@@ -13,6 +13,7 @@ local function onBlinkCollision(e)
 
 			local percent = e.sourceInstance.caster.mobile.mysticism.current / 100
 			percent = framework.functions.ternary( (percent >= 1) , .95, percent)
+			percent = framework.functions.ternary( (percent <= .8) , .8, percent)
 			local destX, destY = framework.functions.linearInterpolation(casterX, casterY, collisionX, collisionY, percent)
 
 			e.sourceInstance.caster.position.x = destX
@@ -42,7 +43,7 @@ local function addBlinkMagicEffect()
 		hasNoMagnitude = true,
 
 		-- Graphics / sounds.
-		icon = "s\\tx_s_recall.tga",
+		icon = "RFD\\RFD_dnd_blink.dds",
 		particleTexture = "vfx_particle064.tga",
 		lighting = { 206 / 255, 237 / 255, 255 / 255 },
 

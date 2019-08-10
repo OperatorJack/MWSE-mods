@@ -31,7 +31,7 @@ this.createBasicEffect = function(params)
 		usesNegativeLighting = params.usesNegativeLighting or false,
 
 		-- Graphics/sounds.
-		icon = params.icon or "s\\tx_s_ab_attrib.tga",
+		icon = params.icon or "RFD\\RFD_ms_conjuration.tga",
 		particleTexture = params.particleTexture or "vfx_conj_flare02.tga",
 		castSound = params.castSound or "conjuration cast",
 		castVFX = params.castVFX or "VFX_ConjureCast",
@@ -73,7 +73,8 @@ this.createBasicBoundArmorEffect = function(params)
         hasNoMagnitude = true,
 
 		-- Graphics/sounds.
-		icon = "s\\tx_s_ab_attrib.tga",
+		icon = params.icon or "RFD\\RFD_ms_conjuration.tga",
+		particleTexture = params.particleTexture or "vfx_conj_flare02.tga",
         lighting = { 0.99, 0.95, 0.67 },
 
 		-- Required callbacks.
@@ -105,7 +106,8 @@ this.createBasicBoundWeaponEffect = function(params)
         hasNoMagnitude = true,
 
 		-- Graphics/sounds.
-		icon = "s\\tx_s_ab_attrib.tga",
+		icon = params.icon or "RFD\\RFD_ms_conjuration.tga",
+		particleTexture = params.particleTexture or "vfx_conj_flare02.tga",
         lighting = { 0.99, 0.95, 0.67 },
 
 		-- Required callbacks.
@@ -137,7 +139,8 @@ this.createBasicSummoningEffect = function(params)
         hasNoMagnitude = true,
 
 		-- Graphics/sounds.
-		icon = "s\\tx_s_ab_attrib.tga",
+		icon = params.icon or "RFD\\RFD_ms_conjuration.tga",
+		particleTexture = params.particleTexture or "vfx_conj_flare02.tga",
         lighting = { 0.99, 0.95, 0.67 },
 
 		-- Required callbacks.

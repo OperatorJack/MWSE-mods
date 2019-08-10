@@ -1,3 +1,5 @@
+local common = require("OperatorJack.MagickaExpanded.common")
+
 local this = {}
 this.createBasicEffect = function(params)
 	local effect = tes3.addMagicEffect({
@@ -31,7 +33,7 @@ this.createBasicEffect = function(params)
 		usesNegativeLighting = params.usesNegativeLighting or false,
 
 		-- Graphics/sounds.
-		icon = params.icon or "s\\tx_s_ab_attrib.tga",
+		icon = params.icon or "RFD\\RFD_ms_mysticism.tga",
 		particleTexture = params.particleTexture or "vfx_myst_flare01.tga",
 		castSound = params.castSound or "mysticism cast",
 		castVFX = params.castVFX or "VFX_MysticismCast",
@@ -64,20 +66,23 @@ this.createBasicTeleportationEffect = function(params)
 		baseCost = params.cost,
 
 		-- Various flags.
-		allowEnchanting = true,
 		appliesOnce = true,
 		canCastSelf = true,
 		hasNoDuration = true,
 		hasNoMagnitude = true,
 		nonRecastable = true,
-		unreflectable = true,
 
 		-- Graphics/sounds.
-		icon = "s\\tx_s_ab_attrib.tga",
 		lighting = { 0.99, 0.95, 0.67 },
 
 		-- Required callbacks.
 		onTick = function(e)
+			-- Trigger into the spell system.
+			if (not e:trigger()) then
+				return
+			end
+
+			-- Teleport the caster.
 			local teleportParams = {
 				reference = e.sourceInstance.caster,
 				position = params.positionCell.position,

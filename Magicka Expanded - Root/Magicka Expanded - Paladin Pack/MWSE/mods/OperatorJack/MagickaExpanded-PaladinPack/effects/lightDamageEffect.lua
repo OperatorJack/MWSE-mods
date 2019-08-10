@@ -49,7 +49,7 @@ local function addLightDamageEffect()
 		nonRecastable = true,
 
 		-- Graphics/sounds.
-		icon = "OJ\\ME\\LightEffectIcon.tga",
+		icon = "RFD\\RFD_pd_lightdmg.dds",
 		particleTexture = "OJ\\ME\\VFX_whiteglowalpha.tga",
 		castSound = "destruction cast",
 		castVFX = "VFX_IllusionCast",

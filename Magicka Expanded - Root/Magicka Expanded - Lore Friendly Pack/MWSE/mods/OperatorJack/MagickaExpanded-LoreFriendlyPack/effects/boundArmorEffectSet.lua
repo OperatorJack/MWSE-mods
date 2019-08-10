@@ -17,7 +17,8 @@ local function addBoundArmorEffects()
         name = "Bound Greaves",
         description = getDescription("Daedric Greaves"),
         cost = 2,
-        armorId = "OJ_ME_BoundGreaves"
+        armorId = "OJ_ME_BoundGreaves",
+		icon = "RFD\\RFD_lf_greaves.dds"
     })
     framework.effects.conjuration.createBasicBoundWeaponEffect({
         id = tes3.effect.boundPauldrons,
@@ -25,7 +26,8 @@ local function addBoundArmorEffects()
         description = getDescription("Daedric Pauldrons"),
         cost = 2,
         armorId = "OJ_ME_BoundPauldronLeft",
-        armorId2 = "OJ_ME_BoundPauldronRight"
+        armorId2 = "OJ_ME_BoundPauldronRight",
+		icon = "RFD\\RFD_lf_pauldrons.dds"
     })
 end
 

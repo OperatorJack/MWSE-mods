@@ -51,6 +51,7 @@ local function addSummoningEffects()
 		description = getDescription("Ascended Sleeper"),
 		cost = 65,
 		creatureId = "OJ_ME_AscendedSleeper",
+		icon = "RFD\\RFD_6h_ascslp.dds"
 	})
 	framework.effects.conjuration.createBasicSummoningEffect({
 		id = tes3.effect.summonDraugr,
@@ -114,6 +115,7 @@ local function addSummoningEffects()
 		description = getDescription("Ash Ghoul"),
 		cost = 35,
 		creatureId = "OJ_ME_AshGhoul",
+		icon = "RFD\\RFD_6h_ghoul.dds"
 	})
 	framework.effects.conjuration.createBasicSummoningEffect({
 		id = tes3.effect.summonAshZombie,
@@ -121,6 +123,7 @@ local function addSummoningEffects()
 		description = getDescription("Ash Zombie"),
 		cost = 8,
 		creatureId = "OJ_ME_AshZombie",
+		icon = "RFD\\RFD_6h_zombie.dds"
 	})
 	framework.effects.conjuration.createBasicSummoningEffect({
 		id = tes3.effect.summonAshSlave,
@@ -128,6 +131,7 @@ local function addSummoningEffects()
 		description = getDescription("Ash Slave"),
 		cost = 15,
 		creatureId = "OJ_ME_AshSlave",
+		icon = "RFD\\RFD_6h_slave.dds"
 	})
 end
 

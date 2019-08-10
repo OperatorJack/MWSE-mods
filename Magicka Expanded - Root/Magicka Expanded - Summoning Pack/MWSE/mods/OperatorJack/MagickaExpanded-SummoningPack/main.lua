@@ -26,7 +26,7 @@ local function registerSpells()
   })
   framework.spells.createBasicSpell({
     id = "OJ_ME_SummonAscendedSleeperSpell",
-    name = "Summon Ascended Sleepr",
+    name = "Summon Ascended Sleeper",
     effect = tes3.effect.summonAscendedSleeper,
     range = tes3.effectRange.self,
     duration = 30
@@ -75,7 +75,7 @@ local function registerSpells()
   })
   framework.spells.createBasicSpell({
     id = "OJ_ME_SummonCenturionProjectileSpell",
-    name = "Summon Archer Centurion",
+    name = "Summon Centurion Archer",
     effect = tes3.effect.summonCenturionProjectile,
     range = tes3.effectRange.self,
     duration = 30
