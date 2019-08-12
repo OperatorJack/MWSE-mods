@@ -9,7 +9,7 @@ this.createBasicEffect = function(params)
 		school = tes3.magicSchool.alteration,
 
 		-- Basic dials.
-		baseCost = params.cost,
+		baseCost = params.baseCost,
 		speed = params.speed or 1,
 
 		-- Various flags.

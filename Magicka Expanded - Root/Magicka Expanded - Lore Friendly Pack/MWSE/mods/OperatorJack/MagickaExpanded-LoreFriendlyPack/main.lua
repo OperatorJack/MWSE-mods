@@ -1,8 +1,8 @@
 local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
 require("OperatorJack.MagickaExpanded-LoreFriendlyPack.effects.banishDaedraEffect")
-require("OperatorJack.MagickaExpanded-LoreFriendlyPack.effects.boundWeaponEffectSet")
-require("OperatorJack.MagickaExpanded-LoreFriendlyPack.effects.boundArmorEffectSet")
+require("OperatorJack.MagickaExpanded-LoreFriendlyPack.effects.basicBoundWeaponEffects")
+require("OperatorJack.MagickaExpanded-LoreFriendlyPack.effects.basicBoundArmorEffects")
 
 local function registerSpells()
 	framework.spells.createBasicSpell({

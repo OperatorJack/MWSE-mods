@@ -10,7 +10,7 @@ this.createBasicEffect = function(params)
 		school = tes3.magicSchool.mysticism,
 
 		-- Basic dials.
-		baseCost = params.cost,
+		baseCost = params.baseCost,
 		speed = params.speed or 1,
 
 		-- Various flags.
@@ -63,7 +63,7 @@ this.createBasicTeleportationEffect = function(params)
 		description = params.description,
 
 		-- Basic dials.
-		baseCost = params.cost,
+		baseCost = params.baseCost,
 
 		-- Various flags.
 		appliesOnce = true,

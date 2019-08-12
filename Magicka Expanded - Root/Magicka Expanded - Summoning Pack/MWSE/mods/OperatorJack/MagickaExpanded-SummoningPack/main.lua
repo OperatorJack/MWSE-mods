@@ -1,6 +1,6 @@
 local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
-require("OperatorJack.MagickaExpanded-SummoningPack.effects.summonEffectSet")
+require("OperatorJack.MagickaExpanded-SummoningPack.effects.basicSummonEffects")
 
 local function registerSpells()
   framework.spells.createBasicSpell({
@@ -18,11 +18,25 @@ local function registerSpells()
     duration = 30
   })
   framework.spells.createBasicSpell({
+    id = "OJ_ME_SummonGoblinWarchiefSpell",
+    name = "Summon Goblin Warchief",
+    effect = tes3.effect.summonGoblinWarchief,
+    range = tes3.effectRange.self,
+    duration = 30
+  })
+  framework.spells.createBasicSpell({
     id = "OJ_ME_SummonHulkingFabricantSpell",
     name = "Summon Hulking Fabricant",
     effect = tes3.effect.summonHulkingFabricant,
     range = tes3.effectRange.self,
     duration = 30
+  })
+  framework.spells.createBasicSpell({
+    id = "OJ_ME_SummonImperfectSpell",
+    name = "Summon Imperfect",
+    effect = tes3.effect.summonImperfect,
+    range = tes3.effectRange.self,
+    duration = 15
   })
   framework.spells.createBasicSpell({
     id = "OJ_ME_SummonAscendedSleeperSpell",

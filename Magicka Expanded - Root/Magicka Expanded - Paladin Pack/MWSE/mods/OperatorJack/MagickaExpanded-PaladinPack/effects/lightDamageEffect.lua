@@ -1,29 +1,36 @@
 local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
 tes3.claimSpellEffectId("lightDamage", 222)
+local function resistEffect(e)
+	framework.debug("Resist Check start.")
 
-local function onLightDamageTick(e)
-	-- Trigger into the spell system.
-	if (not e:trigger()) then
-		return
-	end
-
-
-	-- Only damage undead opponents.
-	if (e.effectInstance.target.object.type ~= tes3.creatureType.undead) then
-		-- Or Vampires
+	local reference = e.effectInstance.target
+	local mobile = reference.mobile
+	if (reference.baseObject.type ~= tes3.creatureType.undead) then
+		framework.debug("Resist Check: Is Not Undead")
 		local vampirism = tes3.getObject("vampire sun damage")
-		if (e.effectInstance.target.mobile.object.spells:contains(vampirism) == false) then
-			e.effectInstance.state = tes3.spellState.retired
-			return
+		if (mobile.object.spells:contains(vampirism) == false) then
+			framework.debug("Resist Check: Is Not Vampire")
+			return true
 		end
 	end
 
-	local damage = e.effectInstance.magnitude
-	e.effectInstance.target.mobile:applyHealthDamage(damage)
-	framework.debug("Dealt " .. damage .. " to target " .. e.effectInstance.target.id)
+	framework.debug("Resist Check failed. Damage should be done. ")
 
-	e.effectInstance.state = tes3.spellState.retired
+	return false
+end
+
+local function onLightDamageTick(e)
+	-- Get the target's mobile actor.
+    local mobile = e.effectInstance.target.mobile
+
+    -- Trigger the modification to the statistic through the event system.
+    e:trigger({
+        value = mobile.health,
+        type = tes3.effectEventType.modStatistic,
+        negateOnExpiry = false,
+        resistanceCheck = resistEffect,
+    })
 end
 
 -- Written by NullCascade.

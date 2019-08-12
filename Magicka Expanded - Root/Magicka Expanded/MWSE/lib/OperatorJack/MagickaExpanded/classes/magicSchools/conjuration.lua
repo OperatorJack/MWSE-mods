@@ -8,7 +8,7 @@ this.createBasicEffect = function(params)
 		school = tes3.magicSchool.conjuration,
 
 		-- Basic dials.
-		baseCost = params.cost,
+		baseCost = params.baseCost,
 		speed = params.speed or 1,
 
 		-- Various flags.
@@ -63,7 +63,7 @@ this.createBasicBoundArmorEffect = function(params)
 		description = params.description,
 
 		-- Basic dials.
-        baseCost = params.cost,
+        baseCost = params.baseCost,
         
         -- Various flags.
         allowEnchanting = true,
@@ -96,7 +96,7 @@ this.createBasicBoundWeaponEffect = function(params)
 		description = params.description,
 
 		-- Basic dials.
-        baseCost = params.cost,
+        baseCost = params.baseCost,
         
         -- Various flags.
         allowEnchanting = true,
@@ -129,7 +129,7 @@ this.createBasicSummoningEffect = function(params)
 		description = params.description,
 
 		-- Basic dials.
-        baseCost = params.cost,
+        baseCost = params.baseCost,
         
         -- Various flags.
         allowEnchanting = true,

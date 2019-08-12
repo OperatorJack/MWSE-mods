@@ -32,7 +32,7 @@ local function addBanishDaedraEffect()
 		description = "Banishes a daedric creature back to its originating plane. The effect's magnitude is the level of daedra that it can banish.",
 
 		-- Basic dials.
-		baseCost = 20.0,
+		baseCost = 50.0,
 
 		-- Various flags.
 		allowEnchanting = true,

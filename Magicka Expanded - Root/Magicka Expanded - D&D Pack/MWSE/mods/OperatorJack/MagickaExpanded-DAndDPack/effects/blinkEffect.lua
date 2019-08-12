@@ -2,23 +2,22 @@ local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
 tes3.claimSpellEffectId("blink", 221)
 
+local blinkEffect
+
 local function onBlinkCollision(e)
 	if e.collision then
 		local canTeleport = not tes3.worldController.flagTeleportingDisabled
 		if canTeleport then
-			local casterX = e.sourceInstance.caster.position.x
-			local casterY = e.sourceInstance.caster.position.y
-			local collisionX = e.collision.point.x
-			local collisionY = e.collision.point.y
+			local caster = e.sourceInstance.caster
+			tes3.positionCell({ reference = caster, position = e.collision.point, cell = caster.cell })
 
-			local percent = e.sourceInstance.caster.mobile.mysticism.current / 100
-			percent = framework.functions.ternary( (percent >= 1) , .95, percent)
-			percent = framework.functions.ternary( (percent <= .8) , .8, percent)
-			local destX, destY = framework.functions.linearInterpolation(casterX, casterY, collisionX, collisionY, percent)
-
-			e.sourceInstance.caster.position.x = destX
-			e.sourceInstance.caster.position.y = destY
-			e.sourceInstance.caster.position.z = e.collision.point.z
+			-- Play a fancy VFX.
+			e.sourceInstance:playVisualEffect({
+				reference = caster,
+				position = caster.position,
+				visual = blinkEffect.hitVisualEffect,
+				effectIndex = e.sourceInstance.source:getFirstIndexOfEffect(tes3.effect.blink),
+			})
 		else
 			tes3.messageBox("You are not able to cast that spell here.")
 		end
@@ -26,14 +25,15 @@ local function onBlinkCollision(e)
 end
 
 local function addBlinkMagicEffect()
-	framework.effects.mysticism.createBasicEffect({
+	blinkEffect = framework.effects.mysticism.createBasicEffect({
 		-- Base information.
 		id = tes3.effect.blink,
 		name = "Blink",
-		description = "Teleports the caster towards the location they are looking at. Teleportation distance scales with mysticism level.",
+		description = "Teleports the caster towards the location they cast at.",
 
 		-- Basic dials.
 		baseCost = 100.0,
+		speed = 2.0,
 
 		-- Flags
 		allowEnchanting = true,
