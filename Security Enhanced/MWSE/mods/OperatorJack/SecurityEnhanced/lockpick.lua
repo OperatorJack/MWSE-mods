@@ -1,18 +1,20 @@
+local config = require("OperatorJack.SecurityEnhanced.config")
+local options = require("OperatorJack.SecurityEnhanced.options")
 local common = require("OperatorJack.SecurityEnhanced.common")
 
 local function isAutoEquipOnActivateEnabled()
-    if (common.config.lockpickAutoEquipOnActivate == common.options.lockpick.autoEquipOnActivate.On) then
+    if (config.lockpickAutoEquipOnActivate) then
         return true
     end
     return false
 end
 
 local function getHotkeyCycle()
-    return common.config.lockpickEquipHotKeyCycle
+    return config.lockpickEquipHotKeyCycle
 end
 
 local function getEquipOrder()
-    return common.config.lockpickEquipOrder
+    return config.lockpickEquipOrder
 end
 
 local function hasLockpick()
@@ -58,7 +60,7 @@ local function equipLockpick(saveEquipment, cycle)
 
     -- Lockpick isn't equipped. Equip one.
     local equipOrder = getEquipOrder()
-    if (equipOrder == common.options.lockpick.equipOrder.BestLockpickFirst) then
+    if (equipOrder == options.lockpick.equipOrder.BestLockpickFirst) then
         -- Choose highest level lockpick first.
         common.debug("Equipping Lockpick: Best Lockpick First")
         if (cycle) then
@@ -69,7 +71,7 @@ local function equipLockpick(saveEquipment, cycle)
         else
             lockpick = common.getBestObjectByObjectType(tes3.objectType.lockpick)
         end
-    elseif (equipOrder == common.options.lockpick.equipOrder.WorstLockpicKFirst) then
+    elseif (equipOrder == options.lockpick.equipOrder.WorstLockpicKFirst) then
         -- Choose lowest level lockpick first.
         common.debug("Equipping Lockpick: Worst Lockpick First")
         if (cycle) then
@@ -96,12 +98,12 @@ end
 local function cycleLockpick()
     -- Check for cycle option.
     local hotkeyCycle = getHotkeyCycle()
-    if (hotkeyCycle == common.options.lockpick.equipHotKeyCycle.ReequipWeapon) then
+    if (hotkeyCycle == options.lockpick.equipHotKeyCycle.ReequipWeapon) then
         common.debug("Cycling: Requipping weapon.")
         -- Re-equip Weapon
         unequipLockpick()
         common.reequipEquipment()
-    elseif (hotkeyCycle == common.options.lockpick.equipHotKeyCycle.NextLockpick) then
+    elseif (hotkeyCycle == options.lockpick.equipHotKeyCycle.NextLockpick) then
         common.debug("Cycling: Moving to next lockpick.")
         -- Cycle to Next Lockpick
         equipLockpick(false, true)
@@ -116,7 +118,7 @@ local function keybindTest(b, e)
 end
 
 local function toggleLockpick(e)
-    if (not keybindTest(common.config.lockpickEquipHotKey, e)) then
+    if (not keybindTest(config.lockpickEquipHotKey, e)) then
         common.debug("In hotkey event, invalid key pressed. Exiting event.")
         return
     end
@@ -170,7 +172,7 @@ end
 local lockpick = {}
 
 lockpick.registerEvents = function ()
-    event.register("keyDown", toggleLockpick, { filter = common.config.lockpickEquipHotKey.keyCode })
+    event.register("keyDown", toggleLockpick, { filter = config.lockpickEquipHotKey.keyCode })
 
     if (isAutoEquipOnActivateEnabled()) then
         event.register("activate", autoEquipLockpick)

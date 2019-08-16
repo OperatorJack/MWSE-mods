@@ -1,73 +1,8 @@
+local config = require("OperatorJack.SecurityEnhanced.config")
+
 local this = {}
-
-
-this.options = {
-    lockpick ={
-        equipHotKeyCycle = {
-            NextLockpick = "NEXT",
-            ReequipWeapon = "WEAPON"
-        },
-        equipOrder = {
-            BestLockpickFirst = "BEST",
-            WorstLockpicKFirst = "WORST"
-        },
-        autoEquipOnActivate = {
-            On = "On",
-            Off = "Off"
-        }
-    },
-    probe = {
-        equipHotKeyCycle = {
-            NextProbe = "NEXT",
-            ReequipWeapon = "WEAPON"
-        },
-        equipOrder = {
-            BestProbeFirst = "BEST",
-            WorstProbeFirst = "WORST"
-        },
-        autoEquipOnActivate = {
-            On = "On",
-            Off = "Off"
-        }
-    },
-    general = {
-        debugMode = {
-            On = "On",
-            Off = "Off"
-        }
-    }
-}
-
--- Load configuration.
-this.config = mwse.loadConfig("Security Enhanced") or {}
-
--- Initialize lockpick settings.
-this.config.lockpickEquipHotKey = this.config.lockpickEquipHotKey or {
-    keyCode = tes3.scanCode.l,
-    isShiftDown = false,
-    isAltDown = false,
-    isControlDown = false,
-}
-this.config.lockpickEquipHotKeyCycle = this.config.lockpickEquipHotKeyCycle or this.options.lockpick.equipHotKeyCycle.ReequipWeapon
-this.config.lockpickEquipOrder = this.config.lockpickEquipOrder or this.options.lockpick.equipOrder.BestLockpickFirst
-this.config.lockpickAutoEquipOnActivate = this.config.lockpickAutoEquipOnActivate or this.options.lockpick.autoEquipOnActivate.On
-
--- Initialize probe settings.
-this.config.probeEquipHotKey = this.config.probeEquipHotKey or {
-    keyCode = tes3.scanCode.p,
-    isShiftDown = false,
-    isAltDown = false,
-    isControlDown = false,
-}
-this.config.probeEquipHotKeyCycle = this.config.probeEquipHotKeyCycle or this.options.probe.equipHotKeyCycle.ReequipWeapon
-this.config.probeEquipOrder = this.config.probeEquipOrder or this.options.probe.equipOrder.BestProbeFirst
-this.config.probeAutoEquipOnActivate = this.config.probeAutoEquipOnActivate or this.options.probe.autoEquipOnActivate.On
-
--- Initialize other settings.
-this.config.debugMode = this.config.debugMode or this.options.general.debugMode.Off
-
 this.debug = function (message)
-    if (this.config.debugMode == this.options.general.debugMode.On) then
+    if (config.debugMode) then
         local prepend = '[Security Enhanced: DEBUG] '
         mwse.log(prepend .. message)
         tes3.messageBox(prepend .. message)

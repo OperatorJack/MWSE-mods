@@ -1,4 +1,5 @@
-local common = require("OperatorJack.SecurityEnhanced.common")
+local options = require("OperatorJack.SecurityEnhanced.options")
+local config = require("OperatorJack.SecurityEnhanced.config")
 
 local function createLockpickCategory(page)
     local category = page:createCategory{
@@ -12,7 +13,7 @@ local function createLockpickCategory(page)
         allowCombinations = true,
         variable = mwse.mcm.createTableVariable{
             id = "lockpickEquipHotKey",
-            table = common.config,
+            table = config,
             defaultSetting = {
                 keyCode = tes3.scanCode.l,
                 isShiftDown = false,
@@ -30,12 +31,12 @@ local function createLockpickCategory(page)
          " 'Go To Next Lockpick' will cycle to the next lockpick type in your inventory." ..
          " 'Re-equip Weapon' will cycle back to the weapon you had equipped when you pressed the hotkey, if available.",
         options = {
-            { label = "Go to Next Lockpick", value = common.options.lockpick.equipHotKeyCycle.NextLockpick },
-            { label = "Re-equip Weapon", value = common.options.lockpick.equipHotKeyCycle.ReequipWeapon}
+            { label = "Go to Next Lockpick", value = options.lockpick.equipHotKeyCycle.NextLockpick },
+            { label = "Re-equip Weapon", value = options.lockpick.equipHotKeyCycle.ReequipWeapon}
         },
         variable = mwse.mcm.createTableVariable{
             id = "lockpickEquipHotKeyCycle",
-            table = common.config
+            table = config
         }
     }
 
@@ -47,12 +48,12 @@ local function createLockpickCategory(page)
         " 'Worst Lockpick First' will equip the lowest level lockpick you have available first." ..
         " If you have 'Go To Next Lockpick' selected under 'Lockpick Hotkey Cycle Action', you will cycle in this order as well.",
         options = {
-            { label = "Best Lockpick First", value = common.options.lockpick.equipOrder.BestLockpickFirst },
-            { label = "Worst Lockpick First", value = common.options.lockpick.equipOrder.WorstLockpicKFirst}
+            { label = "Best Lockpick First", value = options.lockpick.equipOrder.BestLockpickFirst },
+            { label = "Worst Lockpick First", value = options.lockpick.equipOrder.WorstLockpicKFirst}
         },
         variable = mwse.mcm.createTableVariable{
             id = "lockpickEquipOrder",
-            table = common.config
+            table = config
         }
     }
 
@@ -64,7 +65,7 @@ local function createLockpickCategory(page)
         "locked object.",
         variable = mwse.mcm.createTableVariable{
             id = "lockpickAutoEquipOnActivate",
-            table = common.config,
+            table = config,
             restartRequired = true
         }
     }
@@ -84,7 +85,7 @@ local function createProbeCategory(page)
         allowCombinations = true,
         variable = mwse.mcm.createTableVariable{
             id = "probeEquipHotKey",
-            table = common.config,
+            table = config,
             defaultSetting = {
                 keyCode = tes3.scanCode.p,
                 isShiftDown = false,
@@ -102,12 +103,12 @@ local function createProbeCategory(page)
          " 'Go To Next Probe' will cycle to the next Probe type in your inventory." ..
          " 'Re-equip Weapon' will cycle back to the weapon you had equipped when you pressed the hotkey, if available.",
         options = {
-            { label = "Go to Next Probe", value = common.options.probe.equipHotKeyCycle.NextProbe },
-            { label = "Re-equip Weapon", value = common.options.probe.equipHotKeyCycle.ReequipWeapon}
+            { label = "Go to Next Probe", value = options.probe.equipHotKeyCycle.NextProbe },
+            { label = "Re-equip Weapon", value = options.probe.equipHotKeyCycle.ReequipWeapon}
         },       
         variable = mwse.mcm.createTableVariable{
             id = "probeEquipHotKeyCycle",
-            table = common.config
+            table = config
         }
     }
 
@@ -119,12 +120,12 @@ local function createProbeCategory(page)
         " 'Worst Probe First' will equip the lowest level Probe you have available first." ..
         " If you have 'Go To Next Probe' selected under 'Probe Hotkey Cycle Action', you will cycle in this order as well.",
         options = {
-            { label = "Best Probe First", value = common.options.probe.equipOrder.BestProbeFirst },
-            { label = "Worst Probe First", value = common.options.probe.equipOrder.WorstProbeFirst}
+            { label = "Best Probe First", value = options.probe.equipOrder.BestProbeFirst },
+            { label = "Worst Probe First", value = options.probe.equipOrder.WorstProbeFirst}
         },
         variable = mwse.mcm.createTableVariable{
             id = "probeEquipOrder",
-            table = common.config
+            table = config
         }
     }
 
@@ -136,7 +137,7 @@ local function createProbeCategory(page)
         "trapped object.",
         variable = mwse.mcm.createTableVariable{
             id = "probeAutoEquipOnActivate",
-            table = common.config,
+            table = config,
             restartRequired = true
         }
     }
@@ -155,7 +156,7 @@ local function createGeneralCategory(page)
         description = "Use this option to enable debug mode.",
         variable = mwse.mcm.createTableVariable{
             id = "debugMode",
-            table = common.config
+            table = config
         }
     }
 
@@ -163,19 +164,16 @@ local function createGeneralCategory(page)
 end
 
 -- Handle mod config menu.
-local function registerModConfig()
-    local template = mwse.mcm.createTemplate("Security Enhanced")
-    template:saveOnClose("Security Enhanced", common.config)
+local template = mwse.mcm.createTemplate("Security Enhanced")
+template:saveOnClose("Security-Enhanced", config)
 
-    local page = template:createSideBarPage{
-        label = "Settings Sidebar",
-        description = "Hover over a setting to learn more about it."
-    }
+local page = template:createSideBarPage{
+    label = "Settings Sidebar",
+    description = "Hover over a setting to learn more about it."
+}
 
-    createGeneralCategory(page)
-    createLockpickCategory(page)
-    createProbeCategory(page)
+createGeneralCategory(page)
+createLockpickCategory(page)
+createProbeCategory(page)
 
-    mwse.mcm.register(template)
-end
-event.register("modConfigReady", registerModConfig)
+mwse.mcm.register(template)

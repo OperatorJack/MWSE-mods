@@ -1,18 +1,20 @@
+local config = require("OperatorJack.SecurityEnhanced.config")
+local options = require("OperatorJack.SecurityEnhanced.options")
 local common = require("OperatorJack.SecurityEnhanced.common")
 
 local function isAutoEquipOnActivateEnabled()
-    if (common.config.probeAutoEquipOnActivate == common.options.probe.autoEquipOnActivate.On) then
+    if (config.probeAutoEquipOnActivate) then
         return true
     end
     return false
 end
 
 local function getHotkeyCycle()
-    return common.config.probeEquipHotKeyCycle
+    return config.probeEquipHotKeyCycle
 end
 
 local function getEquipOrder()
-    return common.config.probeEquipOrder
+    return config.probeEquipOrder
 end
 
 local function hasProbe()
@@ -57,7 +59,7 @@ local function equipProbe(saveEquipment, cycle)
 
     -- Probe isn't equipped. Equip one.
     local equipOrder = getEquipOrder()
-    if (equipOrder == common.options.probe.equipOrder.BestProbeFirst) then
+    if (equipOrder == options.probe.equipOrder.BestProbeFirst) then
         -- Choose highest level Probe first.
         common.debug("Equipping Probe: Best Probe First")
         if (cycle) then
@@ -68,7 +70,7 @@ local function equipProbe(saveEquipment, cycle)
         else
             probe = common.getBestObjectByObjectType(tes3.objectType.probe)
         end
-    elseif (equipOrder == common.options.probe.equipOrder.WorstProbeFirst) then
+    elseif (equipOrder == options.probe.equipOrder.WorstProbeFirst) then
         -- Choose lowest level Probe first.
         common.debug("Equipping Probe: Worst Probe First")
         if (cycle) then
@@ -95,12 +97,12 @@ end
 local function cycleProbe()
     -- Check for cycle option.
     local hotkeyCycle = getHotkeyCycle()
-    if (hotkeyCycle == common.options.probe.equipHotKeyCycle.ReequipWeapon) then
+    if (hotkeyCycle == options.probe.equipHotKeyCycle.ReequipWeapon) then
         common.debug("Cycling: Requipping weapon.")
         -- Re-equip Weapon
         unequipProbe()
         common.reequipEquipment()
-    elseif (hotkeyCycle == common.options.probe.equipHotKeyCycle.NextProbe) then
+    elseif (hotkeyCycle == options.probe.equipHotKeyCycle.NextProbe) then
         common.debug("Cycling: Moving to next Probe.")
         -- Cycle to Next Probe
         equipProbe(false, true)
@@ -115,7 +117,7 @@ local function keybindTest(b, e)
 end
 
 local function toggleProbe(e)
-    if (not keybindTest(common.config.probeEquipHotKey, e)) then
+    if (not keybindTest(config.probeEquipHotKey, e)) then
         common.debug("In hotkey event, invalid key pressed. Exiting event.")
         return
     end
@@ -170,7 +172,7 @@ end
 local probe = {}
 
 probe.registerEvents = function ()
-    event.register("keyDown", toggleProbe, { filter = common.config.probeEquipHotKey.keyCode })
+    event.register("keyDown", toggleProbe, { filter = config.probeEquipHotKey.keyCode })
 
     if (isAutoEquipOnActivateEnabled()) then
         event.register("activate", autoEquipProbeOnActivate)
