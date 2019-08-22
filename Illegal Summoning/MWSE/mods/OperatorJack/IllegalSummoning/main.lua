@@ -9,10 +9,16 @@ local function onCast(e)
     if (cell.restingIsIllegal) then
         for _, effect in ipairs(e.source.effects) do
             tes3.messageBox("Effect ID: %s", effect.id)
-            tes3.messageBox("Effect: %s", effect.name)
-            if string.startswith(effect.name, "Summon ") then
-                tes3.mobilePlayer.bounty = tes3.mobilePlayer.bounty + 1000
-                tes3.messageBox("You have summoned a creature in an illegal area. Your bounty has been increased!")
+            tes3.messageBox("Effect: %s", effect.object.name)
+            if string.startswith(effect.object.name, "Summon ") then
+                local commitedCrime = tes3.triggerCrime({
+                    criminal = e.caster,
+                    type = tes3.crimeType.trespass,
+                    value = 500
+                })
+                if (commitedCrime) then
+                    tes3.messageBox("It is illegal to summon creatures here. Your crime has been reported!")
+                end                
             end
         end 
     end  
