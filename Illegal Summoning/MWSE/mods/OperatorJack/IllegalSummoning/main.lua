@@ -1,3 +1,10 @@
+local config = require("OperatorJack.IllegalSummoning.config")
+
+-- Register the mod config menu (using EasyMCM library).
+event.register("modConfigReady", function()
+    require("OperatorJack.IllegalSummoning.mcm")
+end)
+
 local function onCast(e)
     if (e.caster ~= tes3.player) then
         return
@@ -8,17 +15,14 @@ local function onCast(e)
 
     if (cell.restingIsIllegal) then
         for _, effect in ipairs(e.source.effects) do
-            tes3.messageBox("Effect ID: %s", effect.id)
-            tes3.messageBox("Effect: %s", effect.object.name)
-            if string.startswith(effect.object.name, "Summon ") then
-                local commitedCrime = tes3.triggerCrime({
-                    criminal = e.caster,
-                    type = tes3.crimeType.trespass,
-                    value = 500
-                })
-                if (commitedCrime) then
-                    tes3.messageBox("It is illegal to summon creatures here. Your crime has been reported!")
-                end                
+            if (effect.object) then
+                if string.startswith(effect.object.name, "Summon ") then
+                    tes3.triggerCrime({
+                        criminal = e.caster,
+                        type = tes3.crimeType.theft,
+                        value = config.bountyValue
+                    })               
+                end
             end
         end 
     end  
