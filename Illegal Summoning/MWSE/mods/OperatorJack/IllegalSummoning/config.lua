@@ -4,12 +4,21 @@ return mwse.loadConfig("Illegal-Summoning") or {
     bountyValue = 500,
 
     effectBlacklist = { 
-        ["summonAshGhoul"] = true,
-        ["summonAshZombie"] = true,
-        ["summonAshSlave"] = true,
-        ["summonAscendedSleeper"] = true
-    } 
+        ["summon ash ghoul"] = true,
+        ["summon ash zombie"] = true,
+        ["summon ash slave"] = true,
+        ["summon ascended sleeper"] = true
+    },
+    effectWhitelist = { 
+        ["summon ancestral ghost"] = true
+    },
     npcWhitelist = { 
-        ["Telvanni Guard"] = true 
+        ["telvanni guard"] = true,
+        ["telvanni sharpshooter"] = true,
+        ["gothren"] = true,
+        ["neloth"] = true,
+        ["therana"] = true,
+        ["dratha"] = true,
+        ["aryon"] = true,
     }
 }

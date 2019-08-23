@@ -17,23 +17,30 @@ event.register("modConfigReady", function()
     dofile("Data Files\\MWSE\\mods\\OperatorJack\\IllegalSummoning\\mcm.lua")
 end)
 
-local function isEffectBlacklisted(id)
-    if (config.effectBlacklist[id]) then 
+local function isEffectBlacklisted(name)
+    if (config.effectBlacklist[name:lower()]) then
         return true
     end
     return false
 end
 
-local function isNpcWhitelisted(id)
-    if (config.npcBlacklist[id]) then 
+local function isEffectWhitelisted(name)
+    if (config.effectWhitelist[name:lower()]) then
         return true
     end
     return false
 end
 
-local function triggerCrime() 
+local function isNpcWhitelisted(name)
+    if (config.npcWhitelist[name:lower()]) then
+        return true
+    end
+    return false
+end
+
+local function triggerCrime(caster) 
     tes3.triggerCrime({
-        criminal = e.caster,
+        criminal = caster,
         type = tes3.crimeType.theft,
         value = config.bountyValue
     })
@@ -46,15 +53,16 @@ local function onCast(e)
     if (cell.restingIsIllegal) then
         for _, effect in ipairs(e.source.effects) do
             if (effect.object) then
-                if (isEffectBlacklisted(effect.object.id)) then
-                    triggerCrime()
-                end
-                if (effect.object.name:startswith("Summon ")) then
-                    if (isNpcWhitelisted(e.caster.object.id)) then
+                if (isEffectWhitelisted(effect.object.name)) then
+                    return
+                elseif (isEffectBlacklisted(effect.object.name)) then
+                    triggerCrime(e.caster)
+                elseif (effect.object.name:lower():startswith("summon ")) then
+                    if (isNpcWhitelisted(e.caster.object.name)) then
                         return
                     end
                     
-                    triggerCrime()
+                    triggerCrime(e.caster)
                 end
             end
         end 

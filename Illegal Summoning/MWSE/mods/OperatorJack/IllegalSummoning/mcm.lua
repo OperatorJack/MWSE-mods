@@ -2,27 +2,36 @@ local config = require("OperatorJack.IllegalSummoning.config")
 
 local function getMagicEffects()
     local list = {}
-    for obj in tes3.iterateObjects(tes3.objectType.magic) do
-        if obj.organic then
-            list[#list+1] = (obj.baseObject or obj).id:lower()
-        end
+    local MGEF = tes3.dataHandler.nonDynamicData.magicEffects
+
+    for i=1, #MGEF do
+        list[#list+1] = MGEF[i].name:lower()
     end
     table.sort(list)
     return list
 end
 
-local funciton getNPCs()
+local function getNPCs()
+    local temp = {}
+    for obj in tes3.iterateObjects(tes3.objectType.npc) do
+        temp[obj.name:lower()] = true
+    end
+    
     local list = {}
-    for obj in tes3.iterateObjects(tes3.objectType.mobileNpc) do
-        if obj.organic then
-            list[#list+1] = (obj.baseObject or obj).id:lower()
-        end
+    for name in pairs(temp) do
+        list[#list+1] = name
     end
+
     table.sort(list)
     return list
 end
 
-local function createGeneralCategory(page)
+local function createGeneralCategory(template)
+    local page = template:createSideBarPage{
+        label = "Settings Sidebar",
+        description = "Hover over a setting to learn more about it."
+    }
+
     local category = page:createCategory{
         label = "General Settings"
     }
@@ -41,28 +50,17 @@ local function createGeneralCategory(page)
         }
     }
 
-    -- Blacklist Page
-    category:createExclusionsPage{
-        label = "Blacklist Magic Effects",
-        description = "Blacklisted magic effects will always trigger a crime, even on whitelisted NPCs.",
-        leftListLabel = "Blacklist",
-        rightListLabel = "Magic Effects",
-        variable = EasyMCM:createTableVariable{
-            id = "effectBlacklist",
-            table = config,
-        },
-        filters = {
-            {callback = getMagicEffects},
-        },
-    }
+    return category
+end
 
+local function createNpcWhitelist(template)
     -- Whitelist Page
-    category:createExclusionsPage{
-        label = "Whitelist",
+    template:createExclusionsPage{
+        label = "Whitelist NPCs",
         description = "Whitelisted NPCs can cast magic effects that are not blacklisted.",
-        leftListLabel = "Whitelist",
+        leftListLabel = "Whitelist NPCs",
         rightListLabel = "NPCs",
-        variable = EasyMCM:createTableVariable{
+        variable = mwse.mcm.createTableVariable{
             id = "npcWhitelist",
             table = config,
         },
@@ -70,19 +68,48 @@ local function createGeneralCategory(page)
             {callback = getNPCs},
         },
     }
+end
 
-    return category
+local function createMagicEffectBlacklist(template)
+    template:createExclusionsPage{
+        label = "Blacklist Magic Effects",
+        description = "Blacklisted magic effects will trigger a crime, even on whitelisted NPCs, unless the effect is whitelisted." 
+            .. " Whitelisted magic effects override blacklisted magic effects.",
+        leftListLabel = "Blacklist Effects",
+        rightListLabel = "Magic Effects",
+        variable = mwse.mcm.createTableVariable{
+            id = "effectBlacklist",
+            table = config,
+        },
+        filters = {
+            {callback = getMagicEffects},
+        },
+    }
+end
+
+local function createMagicEffectWhitelist(template)
+    template:createExclusionsPage{
+        label = "Whitelist Magic Effects",
+        description = "Whitelisted magic effects will never trigger a crime.",
+        leftListLabel = "Whitelist Effects",
+        rightListLabel = "Magic Effects",
+        variable = mwse.mcm.createTableVariable{
+            id = "effectWhitelist",
+            table = config,
+        },
+        filters = {
+            {callback = getMagicEffects},
+        },
+    }
 end
 
 -- Handle mod config menu.
 local template = mwse.mcm.createTemplate("Illegal Summoning")
 template:saveOnClose("Illegal-Summoning", config)
 
-local page = template:createSideBarPage{
-    label = "Settings Sidebar",
-    description = "Hover over a setting to learn more about it."
-}
-
-createGeneralCategory(page)
+createGeneralCategory(template)
+createNpcWhitelist(template)
+createMagicEffectBlacklist(template)
+createMagicEffectWhitelist(template)
 
 mwse.mcm.register(template)
