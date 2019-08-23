@@ -2,7 +2,7 @@ local config = require("OperatorJack.IllegalSummoning.config")
 
 -- Register the mod config menu (using EasyMCM library).
 event.register("modConfigReady", function()
-    require("OperatorJack.IllegalSummoning.mcm")
+    dofile("Data Files\\MWSE\\mods\\OperatorJack\\IllegalSummoning\\mcm.lua")
 end)
 
 local function onCast(e)
