@@ -12,7 +12,7 @@ local function onCast(e)
     if (cell.restingIsIllegal) then
         for _, effect in ipairs(e.source.effects) do
             if (effect.object) then
-                if string.startswith(effect.object.name, "Summon ") then
+                if (effect.object.name:startswith("Summon ")) then
                     tes3.triggerCrime({
                         criminal = e.caster,
                         type = tes3.crimeType.theft,
