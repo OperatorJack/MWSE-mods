@@ -6,10 +6,6 @@ event.register("modConfigReady", function()
 end)
 
 local function onCast(e)
-    if (e.caster ~= tes3.player) then
-        return
-    end
-
     --@type tes3cell
     local cell = e.caster.cell
 
