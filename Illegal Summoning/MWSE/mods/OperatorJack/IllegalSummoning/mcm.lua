@@ -21,14 +21,14 @@ local function getNPCs()
     for name in pairs(temp) do
         list[#list+1] = name
     end
-
+    
     table.sort(list)
     return list
 end
 
 local function createGeneralCategory(template)
     local page = template:createSideBarPage{
-        label = "Settings Sidebar",
+        label = "General Settings",
         description = "Hover over a setting to learn more about it."
     }
 
@@ -56,7 +56,7 @@ end
 local function createNpcWhitelist(template)
     -- Whitelist Page
     template:createExclusionsPage{
-        label = "Whitelist NPCs",
+        label = "Whitelist",
         description = "Whitelisted NPCs can cast magic effects that are not blacklisted.",
         leftListLabel = "Whitelist NPCs",
         rightListLabel = "NPCs",
@@ -73,8 +73,7 @@ end
 local function createMagicEffectBlacklist(template)
     template:createExclusionsPage{
         label = "Blacklist Magic Effects",
-        description = "Blacklisted magic effects will trigger a crime, even on whitelisted NPCs, unless the effect is whitelisted." 
-            .. " Whitelisted magic effects override blacklisted magic effects.",
+        description = "Blacklisted magic effects will trigger a crime, even on whitelisted NPCs. Whitelisted magic effects override blacklisted magic effects.",
         leftListLabel = "Blacklist Effects",
         rightListLabel = "Magic Effects",
         variable = mwse.mcm.createTableVariable{
