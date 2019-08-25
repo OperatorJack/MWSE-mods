@@ -42,10 +42,24 @@ local function createGeneralCategory(template)
         description = "Use this option to configure the amount of bounty received when getting caught during an illegal summon.",
         min = 0,
         max = 10000,
-        step = 50,
+        step = 100,
         jump = 500,
         variable = mwse.mcm.createTableVariable{
             id = "bountyValue",
+            table = config
+        }
+    }
+
+    -- Create option to capture debug mode.
+    category:createSlider{
+        label = "NPC Crime Trigger Distance",
+        description = "Use this option to configure the distance at which guards will attack an NPC during an illegal summon. This ONLY applies to NPCs.",
+        min = 0,
+        max = 10000,
+        step = 100,
+        jump = 500,
+        variable = mwse.mcm.createTableVariable{
+            id = "npcTriggerDistance",
             table = config
         }
     }
@@ -56,7 +70,7 @@ end
 local function createNpcWhitelist(template)
     -- Whitelist Page
     template:createExclusionsPage{
-        label = "Whitelist",
+        label = "Whitelist NPCs",
         description = "Whitelisted NPCs can cast magic effects that are not blacklisted.",
         leftListLabel = "Whitelist NPCs",
         rightListLabel = "NPCs",

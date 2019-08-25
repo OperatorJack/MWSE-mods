@@ -2,7 +2,8 @@
 return mwse.loadConfig("Illegal-Summoning") or {
     -- Initialize Settings
     bountyValue = 500,
-
+    npcTriggerDistance = 3000,
+    
     effectBlacklist = { 
         ["summon ash ghoul"] = true,
         ["summon ash zombie"] = true,

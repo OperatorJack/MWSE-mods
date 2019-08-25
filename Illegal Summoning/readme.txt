@@ -19,14 +19,26 @@ By: OperatorJack
 - MGE XE 0.10.1
 - MWSE 2.1+
 
-This mod requires the most recently nightly build of MWSE. Please be sure to run the mwse-update.exe before playing this mod.
+This mod requires the most recently nightly build of MWSE, as of August 21, 2019. Please be sure to run the mwse-update.exe before playing this mod.
 
 ====Description====
 This mod makes it so that performing a summoning spell in a town or city is illegal, as it was originally intended to be. Performing a summoning spell and being caught while doing it will give you a bounty of 500 gold per summoning effect, per cast! If you cast a spell with 8 summoning effects, you will gain a bounty of 4000 gold. However, like with other crimes, it is possible to cast a summoning spell and not get caught. Guards will respond similarly to as if you stole an item or attacked someone.
 
 This functionality applies to NPCs and creatures as well.
 
-The bounty value of 500 can be changed through a slider, to 0 - 10,000, in the provided MCM.
+MCM Configuration options:
+1) General Settings
+ - Set the bounty value that is applied to the player when a crime is committed.
+ - Set the distance at which guards will be called when an NPC performs an illegal summon.
+
+2) Whitelisted NPCs
+ - Choose NPCs that are allowed to cast summoning spells. Telvanni guards and certain high-ranking Telvanni Faction leaders are whitelisted by default.
+
+3) Blacklisted Magic Effects
+ - Choose any magic effects which will trigger a crime, even if the NPC is whitelisted. Future compatability with my upcoming Magic Framework is already included, blacklisting summoning spells for Ash creatures.
+
+4) Whitelisted Magic Effects
+ - Choose any magic effects which will never trigger a crime. Summon Ancestral Ghost is whitelisted by default.
 
 This mod IS NOT compatible with OpenMW, at least until support for MWSE mods is added.
 

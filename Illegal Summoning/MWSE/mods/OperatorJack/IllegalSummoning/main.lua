@@ -17,52 +17,72 @@ event.register("modConfigReady", function()
     dofile("Data Files\\MWSE\\mods\\OperatorJack\\IllegalSummoning\\mcm.lua")
 end)
 
-local function isEffectBlacklisted(name)
-    if (config.effectBlacklist[name:lower()]) then
-        return true
+local function getNearbyGuards(caster)
+    local actors = {}
+    for ref in caster.cell:iterateReferences(tes3.objectType.npc) do
+        if (ref.object.class.id == "Guard") then
+            local distance = math.abs(caster.position:distance(ref.position))
+            if (distance <= config.npcTriggerDistance) then
+                table.insert(actors, ref)
+            end
+        end
     end
-    return false
+    return actors
 end
 
-local function isEffectWhitelisted(name)
-    if (config.effectWhitelist[name:lower()]) then
-        return true
+local function triggerCrime(caster, isPlayer) 
+    if (isPlayer == true) then
+        -- Since it is the player, we can use the built in crime mechanics.
+        tes3.triggerCrime({
+            criminal = caster,
+            type = tes3.crimeType.theft,
+            value = config.bountyValue
+        })
+    else
+        -- Built in crime mechanics don't apply to NPCs, so we must do it manually.
+        local guards = getNearbyGuards(caster)
+        for _, guard in pairs(guards) do
+            local isDetected = mwscript.getDetected({
+                reference = guard,
+                target = caster
+            })
+
+            if (isDetected == true) then
+                mwscript.startCombat({
+                    reference = guard,
+                    target = caster
+                })
+            end
+        end
     end
-    return false
 end
 
-local function isNpcWhitelisted(name)
-    if (config.npcWhitelist[name:lower()]) then
-        return true
+local function onCast(e)   
+    local isPlayer = false
+    if (e.caster == tes3.player) then
+        isPlayer = true
     end
-    return false
-end
 
-local function triggerCrime(caster) 
-    tes3.triggerCrime({
-        criminal = caster,
-        type = tes3.crimeType.theft,
-        value = config.bountyValue
-    })
-end
-
-local function onCast(e)
     --@type tes3cell
     local cell = e.caster.cell
 
     if (cell.restingIsIllegal) then
         for _, effect in ipairs(e.source.effects) do
             if (effect.object) then
-                if (isEffectWhitelisted(effect.object.name)) then
+                local name = effect.object.name:lower()
+                if (config.effectWhitelist[name]) then
                     return
-                elseif (isEffectBlacklisted(effect.object.name)) then
-                    triggerCrime(e.caster)
-                elseif (effect.object.name:lower():startswith("summon ")) then
-                    if (isNpcWhitelisted(e.caster.object.name)) then
-                        return
+                elseif (config.effectBlacklist[name]) then
+                    triggerCrime(e.caster, isPlayer)
+                elseif (name:lower():startswith("summon ")) then
+                    if (isPlayer == false) then
+                        local casterName = e.caster.object.name:lower()
+                        if (config.npcWhitelist[casterName]) then
+                            return
+                        end
                     end
                     
-                    triggerCrime(e.caster)
+                    triggerCrime(e.caster, isPlayer)
                 end
             end
         end 
