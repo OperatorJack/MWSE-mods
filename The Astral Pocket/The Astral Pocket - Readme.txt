@@ -2,14 +2,6 @@ The Astral Pocket
 
 By: OperatorJack
 
-====Contents====
-
-1. Requirements
-2. Description
-3. Permissions
-4. Installation
-5. Removal
-6. Credits
 
 ====Requirements====
 
@@ -18,14 +10,17 @@ By: OperatorJack
 - Bloodmoon
 - MGE XE 0.10.1
 - MWSE 2.1+
+- Magicka Expanded
 
 This mod requires the most recently nightly build of MWSE. Please be sure to run the mwse-update.exe before playing this mod.
 
 ====Description====
-This mod adds a miniquest to unlock a new spell, "Teleport to Astral Pocket". When you cast the spell, you will be teleported to a new location known as the Astral Pocket. Herein, you'll follow the very brief story of a Telvanni wizard and lay claim to his housepod. 
+This mod adds a miniquest to unlock a new spell effect and spell, "Teleport to Astral Pocket". When you cast the spell, you will be teleported to a new location known as the Astral Pocket. Herein, you'll follow the very brief story of a Telvanni wizard and lay claim to his housepod. 
 Then, you can teleport back to your previous location in a very similar way to mark-recall spells.
 
 To begin the miniquest, talk to your local bookseller about the latest rumours, or look for the text "Astrological Elements."
+
+This mod requires the MAgicka Expanded Framework base package.
 
 This mod IS NOT compatible with OpenMW, at least until support for MWSE mods is added.
 
