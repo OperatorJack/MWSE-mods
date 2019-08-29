@@ -29,7 +29,7 @@ local function loaded(e)
 
 	--local shortcut
 	this.data = data.OJ_AP_data
-	print("[Astral Pocket: INFO] player data loaded")
+	print("[Astral Pocket: INFO] Player data loaded.")
 end
 event.register("loaded", loaded )
 
