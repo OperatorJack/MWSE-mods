@@ -1,4 +1,5 @@
-if (mwse.buildDate == nil) or (mwse.buildDate < 20190711) then
+-- Check MWSE Build.
+if (mwse.buildDate == nil) or (mwse.buildDate < 20190821) then
     local function warning()
         tes3.messageBox(
             "[Chrysopoeia ERROR] Your MWSE is out of date!"
@@ -10,6 +11,25 @@ if (mwse.buildDate == nil) or (mwse.buildDate < 20190711) then
     return
 end
 
+-- Check Magicka Expanded framework.
+local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
+if (framework == nil) then
+    local function warning()
+        tes3.messageBox(
+            "[Chrysopoeia ERROR] Magicka Expanded framework is not installed!"
+            .. " You will need to install it to use this mod."
+        )
+    end
+    event.register("initialized", warning)
+    event.register("loaded", warning)
+    return
+end
+
+
+-- Register the Spell Effect ID.
+tes3.claimSpellEffectId("chrysopoeia", 266)
+
+-- Function Section --
 local function calculateItemValue(item)
     return item.value
 end
@@ -17,8 +37,6 @@ end
 local function filterItems(e)
     return calculateItemValue(e.item) > 0
 end
-
-
 
 local function getMultiplier()
     -- Calculate Damage Health multiplier, based on Alteration and Willpower.
@@ -33,9 +51,16 @@ local function getMultiplier()
 
     return multiplier
 end
+--------------------
 
+-- Effect Section --
 
 local function onInventoryItemSelected(e)
+    -- Make sure the player selected an item.
+    if (e.item == nil) then
+        return
+    end
+
     -- Remove transmuted item.
     tes3.removeItem({
         reference = tes3.player,
@@ -62,107 +87,71 @@ local function onInventoryItemSelected(e)
     if (tes3.mobilePlayer.health.current > 0) then
         tes3.messageBox("The blood price has been paid. You  lost " .. damageAmount .. " health." ..
          " You receive " .. goldAmount .. " gold from the transmutation.")
-         print("[Chrysopoeia: DEBUG] Spell Cast: Multiplier = " .. multiplier ..
-         ", Value = " .. count ..
-         ", GoldAmt = " .. goldAmount ..
-         ", DmgAmt = " .. damageAmount)
     else
         tes3.messageBox("The blood price proved too great for your body.")
     end
 end
 
-local function onCastChrysopoeia(e)
+local function onChrysopoeiaTick(e)
+    -- Trigger into the spell system.
+    if (not e:trigger()) then
+        return
+    end
+
 	tes3ui.showInventorySelectMenu({
 		title = "Chrysopoeia",
 		noResultsText = "No possible items found.",
 		filter = filterItems,
         callback = onInventoryItemSelected
 	})
+    
+    e.effectInstance.state = tes3.spellState.retired
 end
 
-local function createSpellSchoolLineBlock(parentBlock, schoolText)
-    local schoolBlock = parentBlock:createBlock({ id = tes3ui.registerID("Chrysopoeia:spellSchoolBlock")})
-    schoolBlock.autoHeight = true
-    schoolBlock.autoWidth = true
-    schoolBlock.flowDirection = "left_to_right"
-    schoolBlock.borderAllSides = 4
+local function addChrysopoeiaEffect()
+	framework.effects.alteration.createBasicEffect({
+		-- Base information.
+		id = tes3.effect.chrysopoeia,
+		name = "Chrysopoeia",
+		description = "Transmute an item into Gold, with the cost paid in blood.",
 
-        local schoolLabel = schoolBlock:createLabel({ id=tes3ui.registerID("Chryopoeia:spellSchoolTextLabel"), text = schoolText })
-        schoolLabel.autoHeight = false
-        schoolLabel.autoWidth = false
-        schoolLabel.height = 18
+		-- Basic dials.
+		baseCost = 0,
 
-    return schoolBlock
+        -- Various flags.
+        allowSpellmaking = true,
+        allowEnchanting = true,
+		appliesOnce = true,
+		canCastSelf = true,
+		hasNoDuration = true,
+		hasNoMagnitude = true,
+		nonRecastable = true,
+
+		-- Graphics/sounds.
+		icon = "RFD\\RFD_chrysopoeia.dds",
+
+		-- Required callbacks.
+		onTick = onChrysopoeiaTick,
+	})
 end
 
-local function createSpellEffectIconBlock(parentBlock, iconPath)
-    local iconBlock = parentBlock:createBlock({})
-    iconBlock.autoHeight = false
-    iconBlock.autoWidth = false
-    iconBlock.height = 20
-    iconBlock.width = 16
-    iconBlock.flowDirection = "left_to_right"
-    iconBlock.borderRight = 10
+event.register("magicEffectsResolved", addChrysopoeiaEffect)
+-------------------
 
-        local icon = iconBlock:createImage({ id=tes3ui.registerID("Chryopoeia:effectIconImage"), path=iconPath})
-        icon.autoHeight = false
-        icon.autoWidth = false
-        icon.height = 16
-        icon.width = 16
-
-    return iconBlock
+-- Spell Section --
+local function registerSpells()
+    framework.spells.createBasicSpell({
+        id = "OJ_CH_ChrysopoeiaSpell",
+        name = "Chrysopoeia",
+        effect = tes3.effect.chrysopoeia,
+        range = tes3.effectRange.self
+    })
 end
 
-local function createSpellEffectTextBlock(parentBlock, effectText)
-    local textBlock = parentBlock:createBlock({ id=tes3ui.registerID("Chryopoeia:effectTopRightBlock") })
-    textBlock.autoHeight = false
-    textBlock.autoWidth = true
-    textBlock.height = 18
-    textBlock.paddingTop = 2
-    textBlock.flowDirection = "top_to_bottom"
+event.register("MagickaExpanded:Register", registerSpells)
+------------------
 
-        local skillLabel = textBlock:createLabel({ id=tes3ui.registerID("Chryopoeia:effectTextLabel"), text = effectText })
-        skillLabel.autoHeight = true
-        skillLabel.autoWidth = true
-
-    return textBlock
-end
-
-local function createSpellEffectLineBlock(parentBlock, iconPath, effectText)
-    local effectLineBlock = parentBlock:createBlock({ id=tes3ui.registerID("Chryopoeia:effectTopBlock") })
-    effectLineBlock.autoHeight = true
-    effectLineBlock.autoWidth = true
-    effectLineBlock.borderAllSides = 4
-
-    createSpellEffectIconBlock(effectLineBlock, iconPath)
-    createSpellEffectTextBlock(effectLineBlock, effectText)
-
-    return effectLineBlock
-end
-
-local function createSpellEffectBlock(parentBlock, schoolText, iconPath, effectText)
-    local outerBlock = parentBlock:createBlock({ id=tes3ui.registerID("Chryopoeia:effectOuterBlock") })
-	outerBlock.flowDirection = "top_to_bottom"
-    outerBlock.autoWidth = true
-    outerBlock.autoHeight = true
-    outerBlock.borderAllSides = 4
-
-    createSpellSchoolLineBlock(outerBlock, schoolText)
-    createSpellEffectLineBlock(outerBlock, iconPath, effectText)
-
-    return outerBlock
-end
-
-local function setChrysopoeiaTooltip(e)
-    local schoolText = "School:  Alteration"
-    local effectText = "Transmute an item into Gold, with the cost paid in blood."
-    local iconPath = "Icons/s/Tx_S_Drain_Health.tga"
-
-    e.tooltip:findChild(tes3ui.registerID("effect")):destroy()
-
-    createSpellEffectBlock(e.tooltip, schoolText, iconPath, effectText)
-end
-
+-- Book Section --
 local function readChrysopoeia(e)
     local player = tes3.getPlayerRef()
     local chrysopoeiaSpell = tes3.getObject( "OJ_CH_ChrysopoeiaSpell" )
@@ -174,18 +163,19 @@ local function readChrysopoeia(e)
     end
 end
 
-local function onInitialized()
-    local chrysopoeiaSpell = tes3.getObject( "OJ_CH_ChrysopoeiaSpell" ) or "nothing"
+---------------------------
+
+-- Initilization Section --
+local function onInitialized()	
+    if not tes3.isModActive("Chrysopoeia.ESP") then
+        print("[Chrysopoeia: INFO] ESP not loaded")
+        return
+    end
+
     local chrysopoeiaBook = tes3.getObject("OJ_CH_ChrysopoeiaBook") or "nothing"
-
-	--Watch for "Chrysopoeia" spellcast.
-	event.register("spellCasted", onCastChrysopoeia, { filter = chrysopoeiaSpell })
-    event.register("uiSpellTooltip", setChrysopoeiaTooltip, { filter = chrysopoeiaSpell } )
-
-    -- Watch for book reading
     event.register("bookGetText", readChrysopoeia, { filter = chrysopoeiaBook } )
-
 
 	print("[Chrysopoeia: INFO] Initialized Chrysopoeia")
 end
 event.register("initialized", onInitialized)
+----------------------------

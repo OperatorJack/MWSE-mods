@@ -2,14 +2,6 @@ Chrysopoeia
 
 By: OperatorJack
 
-====Contents====
-
-1. Requirements
-2. Description
-3. Permissions
-4. Installation
-5. Removal
-6. Credits
 
 ====Requirements====
 
@@ -18,8 +10,11 @@ By: OperatorJack
 - Bloodmoon
 - MGE XE 0.10.1
 - MWSE 2.1+
+- Magicka Expanded
 
 This mod requires the most recently nightly build of MWSE. Please be sure to run the mwse-update.exe before playing this mod.
+
+This mod requires the Magicka Expanded base package.
 
 ====Description====
 This mod adds a miniquest to unlock a new spell, "Chrysopoeia". When you cast the spell, you will be able to select an item in your inventory to transmute into gold. 
