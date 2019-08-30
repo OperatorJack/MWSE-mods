@@ -41,9 +41,9 @@ local function createGeneralCategory(template)
         label = "Bounty Value",
         description = "Use this option to configure the amount of bounty received when getting caught during an illegal summon.",
         min = 0,
-        max = 10000,
-        step = 100,
-        jump = 500,
+        max = 2500,
+        step = 1,
+        jump = 50,
         variable = mwse.mcm.createTableVariable{
             id = "bountyValue",
             table = config
@@ -55,9 +55,9 @@ local function createGeneralCategory(template)
         label = "NPC Crime Trigger Distance",
         description = "Use this option to configure the distance at which guards will attack an NPC during an illegal summon. This ONLY applies to NPCs.",
         min = 0,
-        max = 10000,
-        step = 100,
-        jump = 500,
+        max = 5000,
+        step = 1,
+        jump = 100,
         variable = mwse.mcm.createTableVariable{
             id = "npcTriggerDistance",
             table = config

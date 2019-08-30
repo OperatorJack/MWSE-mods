@@ -2,15 +2,6 @@ Illegal Summoning
 
 By: OperatorJack
 
-====Contents====
-
-1. Requirements
-2. Description
-3. Permissions
-4. Installation
-5. Removal
-6. Credits
-
 ====Requirements====
 
 - Morrowind
