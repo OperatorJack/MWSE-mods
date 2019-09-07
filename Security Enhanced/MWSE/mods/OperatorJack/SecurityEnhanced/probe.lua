@@ -91,7 +91,7 @@ local function equipProbe(saveEquipment, cycle)
     common.debug("Equipping Probe.")
     tes3.mobilePlayer:equip{
         item = probe
-    }
+    }  
 end
 
 local function cycleProbe()
@@ -161,6 +161,9 @@ local function autoEquipProbeOnActivate(e)
             if (isProbeEquipped() == nil) then
                 -- Equip Probe based on configuration.
                 equipProbe(true, false)
+
+                -- Draw probe.
+                tes3.mobilePlayer.weaponReady = true
 
                 -- Return false to stop current activation.
                 return false

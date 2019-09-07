@@ -163,6 +163,9 @@ local function autoEquipLockpick(e)
             if (isLockpickEquipped() == nil) then
                 -- Equip lockpick based on configuration.
                 equipLockpick(true, false)
+
+                -- Draw lockpick
+                tes3.mobilePlayer.weaponReady = true
             end
         end
     end

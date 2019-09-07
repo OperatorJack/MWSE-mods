@@ -59,7 +59,7 @@ local function createLockpickCategory(page)
 
     -- Create option to capture auto-equip on activation.
     category:createOnOffButton{
-        label = "Enable Lockpick Auto-Equip On Locked Object Acitivation",
+        label = "Enable Lockpick Auto-Equip On Locked Object Activation",
         description = "Use this option to enable auto-equip functionality. If enabled, a lockpick will automatically " ..
         "be equipped based on your other configuration options, as if you had pressed the hotkey, when you activate a " ..
         "locked object.",
@@ -131,7 +131,7 @@ local function createProbeCategory(page)
 
     -- Create option to capture auto-equip on activation.
     category:createOnOffButton{
-        label = "Enable Probe Auto-Equip On Trapped Object Acitivation",
+        label = "Enable Probe Auto-Equip On Trapped Object Activation",
         description = "Use this option to enable auto-equip functionality. If enabled, a Probe will automatically " ..
         "be equipped based on your other configuration options, as if you had pressed the hotkey, when you activate a " ..
         "trapped object.",
