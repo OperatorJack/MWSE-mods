@@ -10,11 +10,21 @@ if (mwse.buildDate == nil) or (mwse.buildDate < 20181211) then
     return
 end
 
+local config = require("OperatorJack.RealisticMovementSpeeds.config")
+
+-- Register the mod config menu (using EasyMCM library).
+event.register("modConfigReady", function()
+    require("OperatorJack.RealisticMovementSpeeds.mcm")
+end)
+
+
 local function onCalcMoveSpeed(e)
     if e.mobile.isMovingBack then
-        e.speed = e.speed * .6
+        local multiplier = config.backwardsMovementMultiplier / 100
+        e.speed = e.speed * multiplier
     elseif e.mobile.isMovingLeft or e.mobile.isMovingRight then
-        e.speed = e.speed * .8
+        local multiplier = config.strafingMovementMultiplier / 100
+        e.speed = e.speed * multiplier
     end
 end
 

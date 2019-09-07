@@ -27,6 +27,8 @@ If you are backpedaling (walking backwards while looking forwards), then movemen
 
 These changes automatically apply to the player and any NPCs / Creatures (modded or vanilla) without using a plugin or altering your savegame.
 
+As of V1.1, you can configure the percentages in the included MCM.
+
 This mod IS NOT compatible with OpenMW, at least until support for MWSE mods is added.
 
 ====Permissions====
