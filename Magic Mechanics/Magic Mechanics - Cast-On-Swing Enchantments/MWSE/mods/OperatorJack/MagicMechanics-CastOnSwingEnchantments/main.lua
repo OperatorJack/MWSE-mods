@@ -54,6 +54,12 @@ local function onAttack(e)
         return
     end
 
+    -- Only allow cast-on-use and cast-on-strike
+    if (weapon.object.enchantment.castType ~= tes3.enchantmentType.onStrike and
+        weapon.object.enchantment.castType ~= tes3.enchantmentType.onUse) then
+        return
+    end
+
     local effects = {}
     for i=1, #weapon.object.enchantment.effects do
         local enchantmentEffect = weapon.object.enchantment.effects[i]
