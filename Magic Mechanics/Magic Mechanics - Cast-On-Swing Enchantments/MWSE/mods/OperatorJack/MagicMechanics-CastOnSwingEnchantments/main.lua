@@ -42,6 +42,10 @@ local function onAttack(e)
     if (weapon == nil) then
         return
     end
+
+    if (weapon.object.enchantment == nil) then
+        return
+    end
  
     local chargeCost = weapon.object.enchantment.chargeCost * 1.1
     -- If not enough charge is remaining on the enchantment, don't cast.
