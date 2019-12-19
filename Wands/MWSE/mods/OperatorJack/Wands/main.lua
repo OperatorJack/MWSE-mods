@@ -58,6 +58,10 @@ local function onAttack(e)
     if (weapon == nil) then
         return
     end
+
+    if (weapon.object.enchantment == nil) then
+        return
+    end
     
     local continue
     if (config.wands[weapon.object.mesh]) then
