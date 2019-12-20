@@ -1,4 +1,4 @@
-Anchor Teleportaiton
+Anchor Teleportation
 
 By: OperatorJack
 
