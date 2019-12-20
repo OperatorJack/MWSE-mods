@@ -10,6 +10,8 @@ By: OperatorJack
 - MGE XE 0.10.1
 - MWSE 2.1+
 
+This mod uses a new feature of MWSE. You MUST update MWSE to build December,20, 2019, or newer, before using this mod. To update MWSE, run mwse-update.exe in your data files folder.
+
 ====Description====
 This mod makes mark and recall behave like in Daggerfall. Whenever you use recall, the location you have marked will be lost and you must cast mark again, creating an "anchor".
 
@@ -26,3 +28,4 @@ Delete the mod's mwse folder from your Data Files folder.
 
 ====Credits====
 - Corsair on the Morrowind Modding Discord for the idea & mod request.
+- NullCascade for adding the functionality used by this mod.
