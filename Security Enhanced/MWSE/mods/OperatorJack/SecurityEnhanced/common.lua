@@ -12,9 +12,6 @@ end
 -- Store currently equipped weapon for re-equip.
 this.lastWeapon = nil
 this.saveCurrentEquipment = function ()
-    if (this.lastWeapon) then
-        return
-    end
     this.lastWeapon = nil
 
     -- Store the currently equipped weapon, if any.

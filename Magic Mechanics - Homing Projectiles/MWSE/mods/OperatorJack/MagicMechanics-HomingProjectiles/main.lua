@@ -1,5 +1,9 @@
 local actives = {}
 local function projectileTimerCallback()
+	if (tes3.menuMode()) then
+		return
+	end
+	
 	for reference, _ in pairs(actives) do
 		local mobile = reference.mobile
 		if (mobile) then
@@ -10,22 +14,22 @@ local function projectileTimerCallback()
     end
 end
 
-local registered = false
 local projectileTimer = nil
 local function onLoaded(e)
-  if (registered == false) then
     actives = {}
 
-    projectileTimer = timer.start({
+	if (projectileTimer) then
+		projectileTimer:cancel()
+		print("[Magic Mechanics - Homing Projectiles: INFO] Restarting timer after save load.")
+	end
+
+    projectileTimer =  timer.start({
       iterations = -1,
       duration = .01,
       callback = projectileTimerCallback
     })
 
     print("[Magic Mechanics - Homing Projectiles: INFO] Initialized.")
-
-    registered = true
-  end
 end
 event.register("loaded", onLoaded)
 
