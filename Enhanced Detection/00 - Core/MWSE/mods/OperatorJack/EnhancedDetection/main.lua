@@ -1,4 +1,16 @@
-local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
+-- Check MWSE Build --
+if (mwse.buildDate == nil) or (mwse.buildDate < 20200111) then
+  local function warning()
+      tes3.messageBox(
+          "[Enhanced Detection ERROR] Your MWSE is out of date!"
+          .. " You will need to update to a more recent version to use this mod."
+      )
+  end
+  event.register("initialized", warning)
+  event.register("loaded", warning)
+  return
+end
+----------------------------
 
 -- Check Magicka Expanded framework --
 local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
