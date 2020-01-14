@@ -571,26 +571,25 @@ event.register("spellResist", onSpellResist)
 
 
 -- Register Mod Initialization Event Handler --
-local registered = false
 local function onLoaded(e)
-  timerController.active = false
 
   -- Initialize any active effects. Will auto-stop timer if no effect is active.
+  if (timerController.active == true) then
+    timerController:cancel()
+  end
+  timerController.active = false
   timerController:start()
 
-  if (registered == false) then
-    for _, referenceController in pairs(referenceControllers) do
-      referenceController.visualController:load()
-    end
-
-    print("[Enhanced Detection: INFO] Initialized.")
-    registered = true
-  else
-    -- Clean list of references. This removes vfx from all references when changing saves, if needed.
-    for _, referenceController in pairs(referenceControllers) do
-      referenceController:clean()
-    end
+  for _, referenceController in pairs(referenceControllers) do
+    referenceController.visualController:load()
   end
+
+  -- Clean list of references. This removes vfx from all references when changing saves, if needed.
+  for _, referenceController in pairs(referenceControllers) do
+    referenceController:clean()
+  end
+
+  print("[Enhanced Detection: INFO] Initialized.")
 end
 event.register("loaded", onLoaded)
 -------------------------
