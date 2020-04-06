@@ -1,5 +1,5 @@
 -- Check MWSE Build --
-if (mwse.buildDate == nil) or (mwse.buildDate < 20200320) then
+if (mwse.buildDate == nil) or (mwse.buildDate < 20200405) then
     local function warning()
         tes3.messageBox(
             "[Cosmetic Overrides ERROR] Your MWSE is out of date!"
@@ -126,10 +126,10 @@ end
 -- Enable costmetic overrides.
 local function onBodyPartAssigned(e)
   -- We only care about item-based assignment on the player.
-  if (e.reference == tes3.player and e.item) then
+  if (e.reference == tes3.player and e.object) then
     -- Do we have an override for it?
-    local slotName = getSlotNameFromObject(e.item)
-    local objectTypeString = mwse.longToString(e.item.objectType)
+    local slotName = getSlotNameFromObject(e.object)
+    local objectTypeString = mwse.longToString(e.object.objectType)
 
     local overrideItem = getOverrideObject(objectTypeString, slotName)
     if (overrideItem) then
@@ -211,7 +211,7 @@ event.register("menuExit", onMenuExit)
 -----------------------------------
 ------------ Add MCM --------------
 -----------------------------------
-function sortedKeys(query, sortFunction)
+local function sortedKeys(query, sortFunction)
   local keys, len = {}, 0
   for k,_ in pairs(query) do
     len = len + 1
