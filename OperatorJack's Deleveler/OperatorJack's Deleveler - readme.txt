@@ -1,5 +1,5 @@
 OperatorJack's Deleveler
-By: OperatorJack
+By: OperatorJack & RedFurryDemon
 
 
 ====Requirements====
@@ -26,4 +26,5 @@ Use the provided BAIN installer in a mod management tool to install the desired 
 Use a mod management tool to remove any installed files from your mod directory.
 
 ====Credits====
+- Thanks to RedFurryDemon for implementing the MCM configuration.
 - Thanks to Abot for his original deleveling mod, found here: https://www.nexusmods.com/morrowind/mods/45625?tab=description
