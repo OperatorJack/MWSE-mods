@@ -10,7 +10,7 @@ By: OperatorJack
 ====Description====
 This mod delevels all levelled lists. similarly to Abot's Deleveler. Whereas Abot's mod is a batch tool that requires manual use, this mod is automatic and requires no maintenance.
 
-Simply install the mod, and all levelled lists will be deleveled. This includes vanilla lists, mod added lists, and lists added mid-playthrough. 
+Simply install the mod, and all levelled lists will be deleveled. This includes vanilla lists, mod added lists, and lists added mid-playthrough. If you want to select the type of levelled lists to delevel, you can use the in-game MCM to change the configuration settings. You can choose to delevel creature lists, item lists, or both.
 
 For mods that edit the same list, you still need to merge levelled lists using a list merging tool.
 
