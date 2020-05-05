@@ -1002,12 +1002,12 @@ local effects = {
     [tes3.effect.waterBreathing] = function (params)
         if (params.caster == tes3.player and isBreathingDisabled == false) then 
             local duration = functions.getModifiedDurationFromEffect(params.effect)
-            iterations = math.ceiling(duration / 2)
+            iterations = math.ceil(duration / 2)
             functions.gatedMessageBox("You are unable to breath air.")
             isBreathingDisabled = true
             timer.start({
                 duration = 2,
-                iterations = duration,
+                iterations = iterations,
                 callback = function()
                     if (isBreathingDisabled == true and 
                     tes3.mobilePlayer.underwater == false
