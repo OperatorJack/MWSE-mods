@@ -801,7 +801,7 @@ local effects = {
 
             local soulgems = {}
             for _, stack in pairs(tes3.player.object.inventory) do
-                if (stack.object.isSoulGem == true) then
+                if (stack.object.isSoulGem == true and stack.object.id ~= "Misc_SoulGem_Azura") then
                     table.insert(soulgems, stack.object.id)
                 end
             end
