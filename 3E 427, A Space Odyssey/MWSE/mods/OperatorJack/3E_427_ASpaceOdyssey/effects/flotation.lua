@@ -24,7 +24,7 @@ local function addFloatEffect()
 		description = "Causes the target to float upwards in the air. The magnitude of the effect and the weight of the target determines the velocity of the flotation.",
 
 		-- Basic dials.
-		baseCost = 2.0,
+		baseCost = 1.25,
 
 		-- Various flags.
 		allowEnchanting = true,
