@@ -37,5 +37,5 @@ Use a mod management tool to install this mod, or just install it manually, if t
 ### Credits
 
 - Thanks to NullCascade and Merzaphor for tremendous help in implementing MWSE functionality used by this mod.
-- Thanks to RedFurryDemon for the new, custom, Dwemer editor marker.
+- Thanks to RedFurryDemon & Greatness7 for the new, custom, Dwemer editor marker.
 - Thanks to Pherim for the mesh, icon, and textures used for the Dwemer Teleportation Box. I also stole their modpage screenshot.... Thanks mate! They are from their mod, found here: https://www.nexusmods.com/morrowind/mods/48025?tab=files. You can use our mods alongside each other with no issues.
