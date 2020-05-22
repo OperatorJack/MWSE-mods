@@ -23,16 +23,19 @@ local function onEquip(e)
     if (reference) then
       tes3ui.leaveMenuMode()
 
-      timer.delayOneFrame({
-        callback = function()
-          tes3.positionCell({
-            reference = tes3.player,
-            position = reference.position,
-            orientation = reference.orientation,
-            cell = reference.cell
-          })
-        end
+      tes3.playSound({
+        sound = "mysticism hit",
+        reference = tes3.player
       })
+
+      timer.delayOneFrame(
+        tes3.positionCell({
+          reference = tes3.player,
+          position = reference.position,
+          orientation = reference.orientation,
+          cell = reference.cell
+        })
+      )
     else
       tes3.messageBox("The Dwemer Teleportation Box fails to function.")
     end
