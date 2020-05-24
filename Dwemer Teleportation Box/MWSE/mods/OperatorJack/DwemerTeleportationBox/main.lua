@@ -16,30 +16,37 @@ local ids = {
 
 local function onEquip(e)
   if (e.item.id == ids.box) then
-    local reference = tes3.findClosestExteriorReferenceOfObject({
-      object = ids.marker,
-    })
 
-    if (reference) then
-      tes3ui.leaveMenuMode()
-
-      tes3.playSound({
-        sound = "mysticism hit",
-        reference = tes3.player
+		local canTeleport = not tes3.worldController.flagTeleportingDisabled
+    if canTeleport then    
+      local reference = tes3.findClosestExteriorReferenceOfObject({
+        object = ids.marker,
       })
 
-      timer.delayOneFrame(
-        tes3.positionCell({
-          reference = tes3.player,
-          position = reference.position,
-          orientation = reference.orientation,
-          cell = reference.cell
-        })
-      )
-    else
-      tes3.messageBox("The Dwemer Teleportation Box fails to function.")
-    end
+      if (reference) then
+        tes3ui.leaveMenuMode()
 
+        tes3.playSound({
+          sound = "mysticism hit",
+          reference = tes3.player
+        })
+
+        timer.delayOneFrame(
+          tes3.positionCell({
+            reference = tes3.player,
+            position = reference.position,
+            orientation = reference.orientation,
+            cell = reference.cell
+          })
+        )
+        return
+      end
+      -- No reference
+    end
+    -- Cannot teleport
+
+
+    tes3.messageBox("The Dwemer Teleportation Box fails to function.")
     return false
   end
 end
