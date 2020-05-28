@@ -37,6 +37,23 @@ functions.gatedMessageBox = function(message)
         tes3.messageBox(message)
     end
 end
+functions.equipPotion = function(params)
+    tes3.addItem({
+        reference = params.reference,
+        item = params.potion,
+        playSound = false,
+        updateGUI = false
+    })
+
+    mwscript.equip({
+        reference = params.reference,
+        item = params.potion
+    })
+
+    tes3.removeSound({
+        sound = "Drink"
+    })
+end
 functions.getRandomLocation = function()
     local cell = locations[math.random(#locations)]
     local position = {
@@ -115,9 +132,9 @@ functions.handlers.genericInverseEffectHandler = function(params)
         attribute = params.effect.attribute
     })
 
-    mwscript.equip({
+    functions.equipPotion({
         reference = params.reference,
-        item = potion
+        potion = potion
     })
 end
 functions.handlers.genericStandardEffectHandler = function(params)
@@ -139,9 +156,9 @@ functions.handlers.genericStandardEffectHandler = function(params)
         attribute = params.effect.attribute
     })
 
-    mwscript.equip({
+    functions.equipPotion({
         reference = params.reference,
-        item = potion
+        potion = potion
     })
 end
 functions.handlers.genericSummoningEffectHandler = function(params)
@@ -217,9 +234,9 @@ functions.handlers.genericBoundItemHandler = function(params)
         }
     })
 
-    mwscript.equip({
+    functions.equipPotion({
         reference = params.reference,
-        item = potion
+        potion = potion
     })
 end
 functions.handlers.genericCureEffectHandler = function(params)
@@ -241,9 +258,9 @@ functions.handlers.genericCureEffectHandler = function(params)
         range = rangeType
     })
 
-    mwscript.equip({
+    functions.equipPotion({
         reference = params.reference,
-        item = potion
+        potion = potion
     })
 end
 functions.handlers.genericTeleportEffectHandler = function(params)
