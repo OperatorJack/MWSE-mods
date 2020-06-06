@@ -11,6 +11,13 @@ if (mwse.buildDate == nil) or (mwse.buildDate < 2020402) then
     return
 end
 
+local config = require("OperatorJack.GalerionsTools.config")
+
+-- Register the mod config menu (using EasyMCM library).
+event.register("modConfigReady", function()
+    dofile("Data Files\\MWSE\\mods\\OperatorJack\\GalerionsTools\\mcm.lua")
+end)
+
 local ids = {
     tool_SoulExtractor = "OJ_GT_SoulExtractor",
     book_Journal = "OJ_GT_Journal",
@@ -130,10 +137,6 @@ local function updateSoulGemOnPlayer(params)
 
     local creatureId = getCreatureIdForEnchantmentPoints(enchantmentPoints)
 
-    mwse.log("Chose soulgem: %s", soulgemId)
-    mwse.log("Chose creature: %s", creatureId)
-    mwse.log("Adding soulgem to player: %s %s", creatureId, soulgemId)
-
     tes3.removeItem({
         reference = tes3.player,
         item = soulgemId,
@@ -163,17 +166,15 @@ local function getSoulExtractionChance(enchantment)
     chance = (enchant - enchantmentPoints * fEnchantmentChanceMult + 0.2 * intelligence + 0.1 * luck ) 
 
     if (isConstantEffect == true) then
-        chance = chance * fEnchantmentConstantChanceMult
-        mwse.log("Is constant effect. Multiply by %s", fEnchantmentConstantChanceMult)
+        chance = chance * fEnchantmentConstantChanceMult 
     end
 
-    --mwse.log("enchant: %s", enchant)
-    --mwse.log("enchantmentPoints: %s", enchantmentPoints)
-    --mwse.log("fEnchantmentChanceMult: %s", fEnchantmentChanceMult)
-    --mwse.log("intelligence: %s", intelligence)
-    --mwse.log("luck: %s", luck)
-    --mwse.log("enchant - enchantmentPoints * fEnchantmentChanceMult + 0.2 * intelligence + 0.1 * luck ")
-    --mwse.log("%s - %s * %s + 0.2 * %s + 0.1 * %s ", enchant, enchantmentPoints, fEnchantmentChanceMult, intelligence, luck)
+    chance = chance * (config.chanceModifierPercent / 100.0)
+
+    if (chance < 0) then chance = 0 end
+    chance = chance + config.baseChance
+    if (chance > 100) then chance = 100 end
+
 
     return chance, enchantmentPoints
 end
@@ -305,8 +306,6 @@ local function onUiObjectTooltip(e)
 
     local chance, enchantmentPoints = getSoulExtractionChance(e.object.enchantment)
 
-    if (chance > 100) then chance = 100 end
-    if (chance < 0) then chance = 0 end
     
     local outerBlock = e.tooltip:createBlock()
     outerBlock.flowDirection = "top_to_bottom"
