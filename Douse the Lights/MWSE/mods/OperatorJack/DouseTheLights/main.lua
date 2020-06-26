@@ -63,8 +63,16 @@ local function onProjectileHit(e)
 
   if (e.target and e.target.light) then
     removeLight(e.target)
-  elseif (e.collisionPoint) then
+  elseif (e.target and e.collisionPoint) then
     for ref in e.target.cell:iterateReferences() do
+      if (ref.light) then
+        if (ref.position:distance(e.collisionPoint) < 100) then
+          removeLight(ref)
+        end
+      end
+    end
+  elseif (e.firingReference and e.collisionPoint) then
+    for ref in e.firingReference.cell:iterateReferences() do
       if (ref.light) then
         if (ref.position:distance(e.collisionPoint) < 100) then
           removeLight(ref)
