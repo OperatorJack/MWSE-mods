@@ -64,7 +64,7 @@ local function onAttack(e)
     end
     
     local continue
-    if (config.wands[weapon.object.mesh]) then
+    if (config.wands[weapon.object.mesh:lower()]) then
         debug("Using Wand.")
         continue = true
     elseif (config.applyToStaves == true and weapon.object.type == tes3.weaponType.bluntTwoWide) then
@@ -113,6 +113,10 @@ local function onAttack(e)
             item = potion
         })
 
+        tes3.removeSound({
+            sound = "Drink"
+        })
+
         debug("Reducing Enchantment charge.")
         weapon.variables.charge = weapon.variables.charge - chargeCost
     end
@@ -127,3 +131,34 @@ local function onInitialized()
 	print("[Wands: INFO] Initialized Wands")
 end
 event.register("initialized", onInitialized)
+
+function key(e)
+    if (e.keyCode == tes3.scanCode.p and e.isAltDown == true) then
+        local ref = tes3.getPlayerTarget()
+        mwscript.equip({
+            reference = ref,
+            item = "OJ_W_IronWand_TESTENCH"
+        })
+    end
+  end
+  
+  event.register("key", key)
+
+event.register("determinedAction", function(e)
+    local session = e.session
+
+    local ref = session.mobile.reference
+    local enchantedItemStack
+    for _, stack in pairs(ref.object.equipment) do
+		if (stack.object.id == "OJ_W_IronWand_TESTENCH") then
+            enchantedItemStack = stack
+		end
+    end
+    
+    if (enchantedItemStack) then
+        session:changeEquipment(enchantedItemStack)
+        session.selectedAction = 3
+        tes3.messageBox("selected wand! " .. ref.id)
+    end
+
+end)

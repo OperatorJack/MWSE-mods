@@ -3,7 +3,7 @@ local config = require("OperatorJack.Wands.config")
 local function getWeaponMeshes()
     local temp = {}
     for obj in tes3.iterateObjects(tes3.objectType.weapon) do
-        temp[obj.mesh] = true
+        temp[obj.mesh:lower()] = true
     end
     
     local list = {}
