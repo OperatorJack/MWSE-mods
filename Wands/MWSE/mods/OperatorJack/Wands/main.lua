@@ -39,6 +39,26 @@ local function debug(message)
     end   
 end
 
+
+local function equipPotion(params)
+    tes3.addItem({
+        reference = params.reference,
+        item = params.potion,
+        playSound = false,
+        updateGUI = false
+    })
+
+    mwscript.equip({
+        reference = params.reference,
+        item = params.potion
+    })
+
+    tes3.removeSound({
+        sound = "Drink"
+    })
+end
+
+
 local enchantmentPotionId = "OJ_W_EnchantmentPotion"
 local function blockPotionEquipEvent(e)
     if (e.item.id == enchantmentPotionId) then
@@ -85,6 +105,12 @@ local function onAttack(e)
             debug("Valid Target Reference found for On Strike. Returning...")
             return
         end
+        
+        -- Only allow cast-on-use and cast-on-strike
+        if (weapon.object.enchantment.castType ~= tes3.enchantmentType.onStrike) then
+            debug("Not an on strike weapon. Returning...")
+            return
+        end
 
         debug("Creating potion.")
         local effects = {}
@@ -107,14 +133,10 @@ local function onAttack(e)
             effects = effects
         })
 
-        debug("Drinking potion.")
-        mwscript.equip({
+        debug("Drinking potion.")      
+        equipPotion({
             reference = e.reference,
-            item = potion
-        })
-
-        tes3.removeSound({
-            sound = "Drink"
+            potion = potion
         })
 
         debug("Reducing Enchantment charge.")
