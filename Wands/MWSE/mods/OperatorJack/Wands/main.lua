@@ -93,16 +93,20 @@ local function onAttack(e)
     end
 
     if (continue) then  
+        -- If there is a target reference and the enchantment is type On Strike, don't cast.
+        if (e.targetReference and weapon.object.enchantment.castType == tes3.enchantmentType.onStrike) then
+            debug("Valid Target Reference found for On Strike. Returning...")
+            return
+        end
+
         local chargeCost = weapon.object.enchantment.chargeCost * 1.1
         -- If not enough charge is remaining on the enchantment, don't cast.
         if (weapon.variables.charge < chargeCost) then
             debug("Inadequate charge remaining to perform cast. Returning...")
-            return
-        end
-
-        -- If there is a target reference and the enchantment is type On Strike, don't cast.
-        if (e.targetReference and weapon.object.enchantment.castType == tes3.enchantmentType.onStrike) then
-            debug("Valid Target Reference found for On Strike. Returning...")
+            tes3.playSound({
+                reference = e.reference,
+                sound = "spellmake fail"
+            })
             return
         end
         
