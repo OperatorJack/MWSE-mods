@@ -36,7 +36,7 @@ local function debug(message)
         message = prepend .. message
         mwse.log(message)
         tes3.messageBox(message)
-    end   
+    end
 end
 
 
@@ -82,7 +82,7 @@ local function onAttack(e)
     if (weapon.object.enchantment == nil) then
         return
     end
-    
+
     local continue
     if (config.wands[weapon.object.mesh:lower()]) then
         debug("Using Wand.")
@@ -92,7 +92,7 @@ local function onAttack(e)
         continue = true
     end
 
-    if (continue) then  
+    if (continue) then
         -- If there is a target reference and the enchantment is type On Strike, don't cast.
         if (e.targetReference and weapon.object.enchantment.castType == tes3.enchantmentType.onStrike) then
             debug("Valid Target Reference found for On Strike. Returning...")
@@ -109,7 +109,7 @@ local function onAttack(e)
             })
             return
         end
-        
+
         -- Only allow cast-on-use and cast-on-strike
         if (weapon.object.enchantment.castType ~= tes3.enchantmentType.onStrike) then
             debug("Not an on strike weapon. Returning...")
@@ -127,7 +127,7 @@ local function onAttack(e)
             effect.max = enchantmentEffect.max or 0
             effect.duration = enchantmentEffect.duration or 1
             effect.radius = enchantmentEffect.radius or 0
-            
+
             effects[i] = effect
         end
 
@@ -137,7 +137,7 @@ local function onAttack(e)
             effects = effects
         })
 
-        debug("Drinking potion.")      
+        debug("Drinking potion.")
         equipPotion({
             reference = e.reference,
             potion = potion
@@ -154,6 +154,10 @@ local function onInitialized()
     event.register("equip", blockPotionEquipEvent, {priority = 1e+06})
     event.register("equipped", blockPotionEquipEvent, {priority = 1e+06})
 
+
+    -- Add update wands to existing configs.
+    config.wands["oj\\rem\\w_wand_ash.nif"] = true
+
 	print("[Wands: INFO] Initialized Wands")
 end
 event.register("initialized", onInitialized)
@@ -167,7 +171,7 @@ function key(e)
         })
     end
   end
-  
+
   event.register("key", key)
 
 event.register("determinedAction", function(e)
@@ -180,7 +184,7 @@ event.register("determinedAction", function(e)
             enchantedItemStack = stack
 		end
     end
-    
+
     if (enchantedItemStack) then
         session:changeEquipment(enchantedItemStack)
         session.selectedAction = 3

@@ -20,5 +20,6 @@ return mwse.loadConfig("Wands", {
         ["oj\\str\\w_wand_stalhrim.nif"] = true,
         ["oj\\str\\w_wand_telvanni.nif"] = true,
         ["oj\\wl\\wl_mabrigash_wand.nif"] = true,
+        ["oj\\rem\\w_wand_ash.nif"] = true,
     }
 })

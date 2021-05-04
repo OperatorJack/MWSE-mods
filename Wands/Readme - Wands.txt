@@ -38,7 +38,7 @@ Use the MCM to enable / disable treating staves as wands, as well as make other 
 ============
 Permissions
 ============
-Please do not redistribute the wand models without the permissions of the authors (see credits). 
+Please do not redistribute the wand models without the permissions of the authors (see credits).
 
 Otherwise, this mod may be utilized for any purpose for Morrowind, as long as you credit me as the original author. It may not be used for other games.
 
@@ -60,3 +60,4 @@ Wolli for the mabrigash wand model.
 BigBoss for the daedric, orcish, and steel wand models.
 Stripes for the silver, telvani, and stalhrim wand models.
 RedFurryDemon for the bonemold wand model and for help in naming & settuping the wands in the CS.
+Remiros for the Ash wand and improvements to the daedric, orcish, and steel wands.
