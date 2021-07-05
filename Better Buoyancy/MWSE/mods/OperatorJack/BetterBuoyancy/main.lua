@@ -7,7 +7,7 @@ local config = require("OperatorJack.BetterBuoyancy.config")
 
 event.register("simulate", function(e)
     if (tes3.mobilePlayer.underwater == true and config.underwaterControlsEnabled == true) then
-        local delta = 5 * (tes3.mobilePlayer.athletics.current + tes3.mobilePlayer.acrobatics.current + tes3.mobilePlayer.agility.current) / 300 * (1 - tes3.mobilePlayer.encumbrance.normalized)
+        local delta = e.delta * (tes3.mobilePlayer.isRunning and tes3.mobilePlayer.swimRunSpeed or tes3.mobilePlayer.swimSpeed)
 
         local inputController = tes3.worldController.inputController
         local isUpPressed = inputController:keybindTest(tes3.keybind.jump, tes3.keyTransition.up)
@@ -23,7 +23,7 @@ event.register("simulate", function(e)
                 }
             })
             if rayhit then
-                if (eyepos:distance(rayhit.intersection) <= 20) then
+                if (eyepos:distance(rayhit.intersection) <= delta + 20) then
                     return
                 end
             end
@@ -39,19 +39,19 @@ event.register("simulate", function(e)
     end
 
     if (tes3.mobilePlayer.levitate > 0 and config.levitationControlsEnabled == true) then
-        local delta = 10 * tes3.mobilePlayer.levitate
+        local delta = tes3.mobilePlayer.flySpeed
 
         local inputController = tes3.worldController.inputController
         local isUpPressed = inputController:keybindTest(tes3.keybind.jump, tes3.keyTransition.up)
         local isDownPressed = inputController:keybindTest(tes3.keybind.sneak, tes3.keyTransition.up)
 
         if (isUpPressed == true) then
-            tes3.mobilePlayer.velocity = tes3vector3.new(0, 0, delta)
+            tes3.mobilePlayer.velocity.z = delta
             return
         end
         
         if (isDownPressed == true and (tes3.player.position.z - tes3.mobilePlayer.lastGroundZ) >= delta) then
-            tes3.mobilePlayer.velocity = tes3vector3.new(0, 0, delta * -1)
+            tes3.mobilePlayer.velocity.z = delta * -1
             return
         end
     end
