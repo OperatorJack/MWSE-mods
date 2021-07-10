@@ -39,34 +39,6 @@ local function debug(message)
     end
 end
 
-
-local function equipPotion(params)
-    tes3.addItem({
-        reference = params.reference,
-        item = params.potion,
-        playSound = false,
-        updateGUI = false
-    })
-
-    mwscript.equip({
-        reference = params.reference,
-        item = params.potion
-    })
-
-    tes3.removeSound({
-        sound = "Drink"
-    })
-end
-
-
-local enchantmentPotionId = "OJ_W_EnchantmentPotion"
-local function blockPotionEquipEvent(e)
-    if (e.item.id == enchantmentPotionId) then
-        debug("Blocking Potion equip event.")
-        e.claim = true
-    end
-end
-
 local function onAttack(e)
     -- Ignore non-player references as they will only swing when in range due to AI.
     if (e.reference ~= tes3.player) then
@@ -116,12 +88,12 @@ local function onAttack(e)
             return
         end
 
-        debug("Creating potion.")
         local effects = {}
         for i=1, #weapon.object.enchantment.effects do
             local enchantmentEffect = weapon.object.enchantment.effects[i]
             local effect = {}
             effect.id = enchantmentEffect.id
+            effect.name = enchantmentEffect.name
             effect.range = tes3.effectRange.target
             effect.min = enchantmentEffect.min or 0
             effect.max = enchantmentEffect.max or 0
@@ -131,16 +103,17 @@ local function onAttack(e)
             effects[i] = effect
         end
 
+        local enchantmentPotionId = "OJ_W_EnchantmentPotion"
         local potion = framework.alchemy.createComplexPotion({
             id = enchantmentPotionId,
             name = "Enchantment Potion",
             effects = effects
         })
 
-        debug("Drinking potion.")
-        equipPotion({
+        tes3.applyMagicSource({
             reference = e.reference,
-            potion = potion
+            source = potion,
+            castChance = 100,
         })
 
         debug("Reducing Enchantment charge.")
@@ -151,8 +124,6 @@ end
 local function onInitialized()
 	--Watch for weapon swing.
     event.register("attack", onAttack)
-    event.register("equip", blockPotionEquipEvent, {priority = 1e+06})
-    event.register("equipped", blockPotionEquipEvent, {priority = 1e+06})
 
 
     -- Add update wands to existing configs.
@@ -161,34 +132,3 @@ local function onInitialized()
 	print("[Wands: INFO] Initialized Wands")
 end
 event.register("initialized", onInitialized)
-
-function key(e)
-    if (e.keyCode == tes3.scanCode.p and e.isAltDown == true) then
-        local ref = tes3.getPlayerTarget()
-        mwscript.equip({
-            reference = ref,
-            item = "OJ_W_IronWand_TESTENCH"
-        })
-    end
-  end
-
-  event.register("key", key)
-
-event.register("determinedAction", function(e)
-    local session = e.session
-
-    local ref = session.mobile.reference
-    local enchantedItemStack
-    for _, stack in pairs(ref.object.equipment) do
-		if (stack.object.id == "OJ_W_IronWand_TESTENCH") then
-            enchantedItemStack = stack
-		end
-    end
-
-    if (enchantedItemStack) then
-        session:changeEquipment(enchantedItemStack)
-        session.selectedAction = 3
-        tes3.messageBox("selected wand! " .. ref.id)
-    end
-
-end)
