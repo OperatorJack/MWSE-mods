@@ -9,13 +9,6 @@ local potions = {
     ["OJ_MIS_StandardEffectPotion"] = "OJ_MIS_StandardEffectPotion",
     ["OJ_MIS_BoundItemEffectPotion"] = "OJ_MIS_BoundItemEffectPotion"
 }
-local function blockPotionEquipEvent(e)
-    if (potions[e.item.id]) then
-        e.claim = true
-    end
-end
-event.register("equip", blockPotionEquipEvent, {priority = 1e+06})
-event.register("equipped", blockPotionEquipEvent, {priority = 1e+06})
 
 local locations = {}
 local function onInit()
@@ -36,23 +29,6 @@ functions.gatedMessageBox = function(message)
     if (config.showMessages == true) then
         tes3.messageBox(message)
     end
-end
-functions.equipPotion = function(params)
-    tes3.addItem({
-        reference = params.reference,
-        item = params.potion,
-        playSound = false,
-        updateGUI = false
-    })
-
-    mwscript.equip({
-        reference = params.reference,
-        item = params.potion
-    })
-
-    tes3.removeSound({
-        sound = "Drink"
-    })
 end
 functions.getRandomLocation = function()
     local cell = locations[math.random(#locations)]
@@ -132,9 +108,10 @@ functions.handlers.genericInverseEffectHandler = function(params)
         attribute = params.effect.attribute
     })
 
-    functions.equipPotion({
+    tes3.applyMagicSource({
         reference = params.reference,
-        potion = potion
+        source = potion,
+        castChance = 100,
     })
 end
 functions.handlers.genericStandardEffectHandler = function(params)
@@ -156,9 +133,10 @@ functions.handlers.genericStandardEffectHandler = function(params)
         attribute = params.effect.attribute
     })
 
-    functions.equipPotion({
+    tes3.applyMagicSource({
         reference = params.reference,
-        potion = potion
+        source = potion,
+        castChance = 100,
     })
 end
 functions.handlers.genericSummoningEffectHandler = function(params)
@@ -234,9 +212,10 @@ functions.handlers.genericBoundItemHandler = function(params)
         }
     })
 
-    functions.equipPotion({
+    tes3.applyMagicSource({
         reference = params.reference,
-        potion = potion
+        source = potion,
+        castChance = 100,
     })
 end
 functions.handlers.genericCureEffectHandler = function(params)
@@ -245,7 +224,7 @@ functions.handlers.genericCureEffectHandler = function(params)
     local rangeType = params.effect.rangeType
     local magnitude = math.random(80, 100)
     local duration = math.random(30,60)
- 
+
     local potion = framework.alchemy.createBasicPotion({
         id = potions.OJ_MIS_StandardEffectPotion,
         name = "Miscast",
@@ -258,9 +237,10 @@ functions.handlers.genericCureEffectHandler = function(params)
         range = rangeType
     })
 
-    functions.equipPotion({
+    tes3.applyMagicSource({
         reference = params.reference,
-        potion = potion
+        source = potion,
+        castChance = 100,
     })
 end
 functions.handlers.genericTeleportEffectHandler = function(params)
@@ -274,14 +254,14 @@ end
 functions.handlers.genericAreaEffectHandler = function(params)
     local distance = params.distance
     local actors = framework.functions.getActorsNearTargetPosition(params.reference.cell, params.reference.position, distance)
-    
+
     for _, actor in pairs(actors) do
         functions.handlers.genericStandardEffectHandler({
             effectIdToUse = params.effectIdToUse,
             effect = params.effect,
             reference = actor
         })
-    end   
+    end
 end
 
 functions.getSchoolHandler = function(schoolId)
