@@ -2,10 +2,8 @@ local config = require("OperatorJack.IllegalSummoning.config")
 
 local function getMagicEffects()
     local list = {}
-    local MGEF = tes3.dataHandler.nonDynamicData.magicEffects
-
-    for i=1, #MGEF do
-        list[#list+1] = MGEF[i].name:lower()
+    for id, effect in pairs(tes3.dataHandler.nonDynamicData.magicEffects) do
+        table.insert(list, effect.name:lower())
     end
     table.sort(list)
     return list
