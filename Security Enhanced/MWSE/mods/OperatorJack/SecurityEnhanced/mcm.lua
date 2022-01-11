@@ -12,8 +12,8 @@ local function createLockpickCategory(page)
         description = "Use this option to set the hotkey for equipping a lockpick. Click on the option and follow the prompt.",
         allowCombinations = true,
         variable = mwse.mcm.createTableVariable{
-            id = "lockpickEquipHotKey",
-            table = config,
+            id = "hotKey",
+            table = config.lockpick,
             defaultSetting = {
                 keyCode = tes3.scanCode.l,
                 isShiftDown = false,
@@ -31,12 +31,12 @@ local function createLockpickCategory(page)
          " 'Go To Next Lockpick' will cycle to the next lockpick type in your inventory." ..
          " 'Re-equip Weapon' will cycle back to the weapon you had equipped when you pressed the hotkey, if available.",
         options = {
-            { label = "Go to Next Lockpick", value = options.lockpick.equipHotKeyCycle.NextLockpick },
-            { label = "Re-equip Weapon", value = options.lockpick.equipHotKeyCycle.ReequipWeapon}
+            { label = "Go to Next Lockpick", value = options.equipHotKeyCycle.Next },
+            { label = "Re-equip Weapon", value = options.equipHotKeyCycle.ReequipWeapon}
         },
         variable = mwse.mcm.createTableVariable{
-            id = "lockpickEquipHotKeyCycle",
-            table = config
+            id = "equipHotKeyCycle",
+            table = config.lockpick
         }
     }
 
@@ -48,12 +48,12 @@ local function createLockpickCategory(page)
         " 'Worst Lockpick First' will equip the lowest level lockpick you have available first." ..
         " If you have 'Go To Next Lockpick' selected under 'Lockpick Hotkey Cycle Action', you will cycle in this order as well.",
         options = {
-            { label = "Best Lockpick First", value = options.lockpick.equipOrder.BestLockpickFirst },
-            { label = "Worst Lockpick First", value = options.lockpick.equipOrder.WorstLockpicKFirst}
+            { label = "Best Lockpick First", value = options.equipOrder.BestFirst },
+            { label = "Worst Lockpick First", value = options.equipOrder.WorstFirst}
         },
         variable = mwse.mcm.createTableVariable{
-            id = "lockpickEquipOrder",
-            table = config
+            id = "equipOrder",
+            table = config.lockpick
         }
     }
 
@@ -64,8 +64,8 @@ local function createLockpickCategory(page)
         "be equipped based on your other configuration options, as if you had pressed the hotkey, when you activate a " ..
         "locked object.",
         variable = mwse.mcm.createTableVariable{
-            id = "lockpickAutoEquipOnActivate",
-            table = config,
+            id = "autoEquipOnActivate",
+            table = config.lockpick,
             restartRequired = true
         }
     }
@@ -84,8 +84,8 @@ local function createProbeCategory(page)
         description = "Use this option to set the hotkey for equipping a Probe. Click on the option and follow the prompt.",
         allowCombinations = true,
         variable = mwse.mcm.createTableVariable{
-            id = "probeEquipHotKey",
-            table = config,
+            id = "hotKey",
+            table = config.probe,
             defaultSetting = {
                 keyCode = tes3.scanCode.p,
                 isShiftDown = false,
@@ -103,12 +103,12 @@ local function createProbeCategory(page)
          " 'Go To Next Probe' will cycle to the next Probe type in your inventory." ..
          " 'Re-equip Weapon' will cycle back to the weapon you had equipped when you pressed the hotkey, if available.",
         options = {
-            { label = "Go to Next Probe", value = options.probe.equipHotKeyCycle.NextProbe },
-            { label = "Re-equip Weapon", value = options.probe.equipHotKeyCycle.ReequipWeapon}
-        },       
+            { label = "Go to Next Probe", value = options.equipHotKeyCycle.Next },
+            { label = "Re-equip Weapon", value = options.equipHotKeyCycle.ReequipWeapon}
+        },
         variable = mwse.mcm.createTableVariable{
-            id = "probeEquipHotKeyCycle",
-            table = config
+            id = "equipHotKeyCycle",
+            table = config.probe
         }
     }
 
@@ -120,12 +120,12 @@ local function createProbeCategory(page)
         " 'Worst Probe First' will equip the lowest level Probe you have available first." ..
         " If you have 'Go To Next Probe' selected under 'Probe Hotkey Cycle Action', you will cycle in this order as well.",
         options = {
-            { label = "Best Probe First", value = options.probe.equipOrder.BestProbeFirst },
-            { label = "Worst Probe First", value = options.probe.equipOrder.WorstProbeFirst}
+            { label = "Best Probe First", value = options.equipOrder.BestFirst },
+            { label = "Worst Probe First", value = options.equipOrder.WorstFirst}
         },
         variable = mwse.mcm.createTableVariable{
-            id = "probeEquipOrder",
-            table = config
+            id = "equipOrder",
+            table = config.probe
         }
     }
 
@@ -136,8 +136,8 @@ local function createProbeCategory(page)
         "be equipped based on your other configuration options, as if you had pressed the hotkey, when you activate a " ..
         "trapped object.",
         variable = mwse.mcm.createTableVariable{
-            id = "probeAutoEquipOnActivate",
-            table = config,
+            id = "autoEquipOnActivate",
+            table = config.probe,
             restartRequired = true
         }
     }

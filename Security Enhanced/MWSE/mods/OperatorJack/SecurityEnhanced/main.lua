@@ -48,7 +48,7 @@ local function equipLockpick(saveEquipment, cycle)
     local lockpick
 
     -- Lockpick isn't equipped. Equip one.
-    local equipOrder = config.lockpickEquipOrder
+    local equipOrder = config.lockpick.equipOrder
     if (equipOrder == options.lockpick.equipOrder.BestLockpickFirst) then
         -- Choose highest level lockpick first.
         common.debug("Equipping Lockpick: Best Lockpick First")
@@ -86,7 +86,7 @@ end
 
 local function cycleLockpick()
     -- Check for cycle option.
-    local hotkeyCycle = config.lockpickEquipHotKeyCycle
+    local hotkeyCycle = config.lockpick.equipHotKeyCycle
     if (hotkeyCycle == options.lockpick.equipHotKeyCycle.ReequipWeapon) then
         common.debug("Cycling: Requipping weapon.")
         -- Re-equip Weapon
@@ -107,7 +107,7 @@ local function keybindTest(b, e)
 end
 
 local function toggleLockpick(e)
-    if (not keybindTest(config.lockpickEquipHotKey, e)) then
+    if (not keybindTest(config.lockpick.equipHotKey, e)) then
         common.debug("In hotkey event, invalid key pressed. Exiting event.")
         return
     end
@@ -153,7 +153,7 @@ local function equipProbe(saveEquipment, cycle)
     local probe
 
     -- Probe isn't equipped. Equip one.
-    local equipOrder = config.probeEquipOrder
+    local equipOrder = config.probe.equipOrder
     if (equipOrder == options.probe.equipOrder.BestProbeFirst) then
         -- Choose highest level Probe first.
         common.debug("Equipping Probe: Best Probe First")
@@ -191,7 +191,7 @@ end
 
 local function cycleProbe()
     -- Check for cycle option.
-    local hotkeyCycle = config.probeEquipHotKeyCycle
+    local hotkeyCycle = config.probe.equipHotKeyCycle
     if (hotkeyCycle == options.probe.equipHotKeyCycle.ReequipWeapon) then
         common.debug("Cycling: Requipping weapon.")
         -- Re-equip Weapon
@@ -205,7 +205,7 @@ local function cycleProbe()
 end
 
 local function toggleProbe(e)
-    if (not keybindTest(config.probeEquipHotKey, e)) then
+    if (not keybindTest(config.probe.equipHotKey, e)) then
         common.debug("In hotkey event, invalid key pressed. Exiting event.")
         return
     end
@@ -243,7 +243,7 @@ local function autoEquipTool(e)
     common.debug("Registered auto-equip for locked object event.")
 
     -- Check for Probe first.
-    if  config.probeAutoEquipOnActivate and
+    if  config.probe.autoEquipOnActivate and
             tes3.getTrap({reference = e.target}) and
             hasKey(e.target) == false then
           if (hasTool(tes3.objectType.probe)) then
@@ -291,7 +291,7 @@ local function autoEquipTool(e)
         end
 
     -- Check for lockpick second.
-    elseif config.lockpickAutoEquipOnActivate and
+    elseif config.lockpick.autoEquipOnActivate and
             not tes3.getTrap({reference = e.target}) and
             hasKey(e.target) == false then
         if (hasTool(tes3.objectType.lockpick)) then
@@ -341,8 +341,8 @@ local function autoEquipTool(e)
 end
 
 local function initialized()
-    event.register("keyDown", toggleLockpick, { filter = config.lockpickEquipHotKey.keyCode })
-    event.register("keyDown", toggleProbe, { filter = config.probeEquipHotKey.keyCode })
+    event.register("keyDown", toggleLockpick, { filter = config.lockpick.hotKey.keyCode })
+    event.register("keyDown", toggleProbe, { filter = config.probe.hotKey.keyCode })
 
 
     if (config.lockpickAutoEquipOnActivate or config.probeAutoEquipOnActivate) then

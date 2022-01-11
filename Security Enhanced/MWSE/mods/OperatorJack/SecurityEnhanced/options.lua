@@ -1,22 +1,10 @@
 return {
-    lockpick ={
-        equipHotKeyCycle = {
-            NextLockpick = "NEXT",
-            ReequipWeapon = "WEAPON"
-        },
-        equipOrder = {
-            BestLockpickFirst = "BEST",
-            WorstLockpicKFirst = "WORST"
-        }
+    equipHotKeyCycle = {
+        Next = "NEXT",
+        ReequipWeapon = "WEAPON"
     },
-    probe = {
-        equipHotKeyCycle = {
-            NextProbe = "NEXT",
-            ReequipWeapon = "WEAPON"
-        },
-        equipOrder = {
-            BestProbeFirst = "BEST",
-            WorstProbeFirst = "WORST"
-        }
+    equipOrder = {
+        BestFirst = "BEST",
+        WorstFirst = "WORST"
     }
 }
