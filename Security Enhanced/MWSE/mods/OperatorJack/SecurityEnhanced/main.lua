@@ -302,6 +302,7 @@ local function autoEquipTool(e)
             tes3.getTrap({reference = e.target}) and
             hasKey(e.target) == false then
 
+        debug("Auto-equipping probe.")
         callback(tes3.objectType.probe)
 
     -- Check for lockpick second.
@@ -309,6 +310,7 @@ local function autoEquipTool(e)
             not tes3.getTrap({reference = e.target}) and
             hasKey(e.target) == false then
 
+        debug("Auto-equipping lockpick.")
         callback(tes3.objectType.lockpick)
     else
         processing = nil
