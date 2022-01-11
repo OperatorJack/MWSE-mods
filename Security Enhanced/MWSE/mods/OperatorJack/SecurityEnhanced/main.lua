@@ -1,6 +1,5 @@
 local config = require("OperatorJack.SecurityEnhanced.config")
-local lockpick = require("OperatorJack.SecurityEnhanced.lockpick")
-local probe = require("OperatorJack.SecurityEnhanced.probe")
+local tools = require("OperatorJack.SecurityEnhanced.tools")
 
 -- Register the mod config menu (using EasyMCM library).
 event.register("modConfigReady", function()
@@ -8,8 +7,7 @@ event.register("modConfigReady", function()
 end)
 
 local function initialized()
-    lockpick.registerEvents()
-    probe.registerEvents()
+    tools.registerEvents()
 
     print("[Security Enhanced: INFO] Security Enhanced Initialized")
 end
