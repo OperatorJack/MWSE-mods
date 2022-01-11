@@ -22,10 +22,6 @@ this.saveCurrentEquipment = function ()
         this.debug('Saving Weapon ID: ' .. weaponStack.object.id)
         lastWeaponItem = weaponStack.object
         lastWeaponItemData = weaponStack.itemData
-    else
-        this.debug('Clearing saved weapon.')
-        lastWeaponItem = nil
-        lastWeaponItemData = nil
     end
 end
 
