@@ -1,12 +1,123 @@
+-- Check MWSE Build --
+if (mwse.buildDate == nil) or (mwse.buildDate < 20220111) then
+    local function warning()
+        tes3.messageBox(
+            "[Security Enhanced ERROR] Your MWSE is out of date!"
+            .. " You will need to update to a more recent version to use this mod."
+        )
+    end
+    event.register("initialized", warning)
+    event.register("loaded", warning)
+    return
+end
+----------------------------
+
 local config = require("OperatorJack.SecurityEnhanced.config")
+local options = require("OperatorJack.SecurityEnhanced.options")
 
 -- Register the mod config menu (using EasyMCM library).
 event.register("modConfigReady", function()
     require("OperatorJack.SecurityEnhanced.mcm")
 end)
 
-local options = require("OperatorJack.SecurityEnhanced.options")
-local common = require("OperatorJack.SecurityEnhanced.common")
+
+local function debug(message)
+    if (config.debugMode) then
+        local prepend = '[Security Enhanced: DEBUG] '
+        mwse.log(prepend .. message)
+        tes3.messageBox(prepend .. message)
+    end
+end
+
+-- Store currently equipped weapon for re-equip.
+local lastWeaponItem = nil
+local lastWeaponItemData = nil
+local function saveCurrentEquipment()
+    -- Store the currently equipped weapon, if any.
+    local weaponStack = tes3.getEquippedItem({
+        actor = tes3.player,
+        objectType = tes3.objectType.weapon
+    })
+    if (weaponStack) then
+        debug('Saving Weapon ID: ' .. weaponStack.object.id)
+        lastWeaponItem = weaponStack.object
+        lastWeaponItemData = weaponStack.itemData
+    end
+end
+
+local function reequipEquipment()
+    -- If we had a weapon equipped before, re-equip it.
+    if (lastWeaponItem) then
+        if (not tes3.mobilePlayer:equip({ item = lastWeaponItem, itemData = lastWeaponItemData })) then
+            tes3.mobilePlayer:equip({ item = lastWeaponItem, selectBestCondition = true })
+        end
+
+        lastWeaponItem = nil
+        lastWeaponItemData = nil
+    end
+end
+
+local function hasKey(reference)
+    if not reference.lockNode then return false end
+    if not reference.lockNode.key then return false end
+    return tes3.getItemCount({
+        reference = tes3.player,
+        item = reference.lockNode.key
+    }) > 0
+end
+
+local function getSortedInventoryByObjectType(objectType)
+    local objects = {}
+    for node in tes3.iterate(tes3.player.object.inventory.iterator) do
+        if (node.object.objectType == objectType) then
+            table.insert(objects, node.object)
+        end
+    end
+    table.sort(
+        objects,
+        function(a, b)
+            return a.quality < b.quality
+        end
+    )
+    return objects
+end
+
+local function getBestObjectByObjectType(objectType)
+    local objects = getSortedInventoryByObjectType(objectType)
+    local object = objects[#objects]
+
+    debug("Found Best Object: Selected Object:" .. object.id)
+    return object
+end
+
+local function getNextBestObjectByObjectType(objectType, currentObject)
+    local objects = getSortedInventoryByObjectType(objectType)
+    local object
+
+    for i = 1,#objects do
+        local nodeObject = objects[i]
+        if (nodeObject.quality > currentObject.quality) then
+            object = nodeObject
+            break
+        end
+    end
+
+    if (object == nil) then
+        object = objects[1]
+    end
+
+    debug("Found Next Best Object: Selected Object:" .. object.id)
+    return object
+end
+
+
+local function getWorstObjectByObjectType(objectType)
+    local objects = getSortedInventoryByObjectType(objectType)
+    local object = objects[1]
+
+    debug("Found Worst Object: Selected Object:" .. object.id)
+    return object
+end
 
 local function hasTool(type)
     for node in tes3.iterate(tes3.player.object.inventory.iterator) do
@@ -32,7 +143,7 @@ end
 
 local function equipLockpick(saveEquipment, cycle)
     if (saveEquipment) then
-        common.saveCurrentEquipment()
+        saveCurrentEquipment()
     end
 
     local currentLockpickStack = tes3.getEquippedItem({
@@ -51,34 +162,34 @@ local function equipLockpick(saveEquipment, cycle)
     local equipOrder = config.lockpick.equipOrder
     if (equipOrder == options.equipOrder.BestFirst) then
         -- Choose highest level lockpick first.
-        common.debug("Equipping Lockpick: Best Lockpick First")
+        debug("Equipping Lockpick: Best Lockpick First")
         if (cycle) then
-            lockpick = common.getNextBestObjectByObjectType(
+            lockpick = getNextBestObjectByObjectType(
                 tes3.objectType.lockpick,
                 currentLockpick
             )
         else
-            lockpick = common.getBestObjectByObjectType(tes3.objectType.lockpick)
+            lockpick = getBestObjectByObjectType(tes3.objectType.lockpick)
         end
     elseif (equipOrder == options.equipOrder.WorstFirst) then
         -- Choose lowest level lockpick first.
-        common.debug("Equipping Lockpick: Worst Lockpick First")
+        debug("Equipping Lockpick: Worst Lockpick First")
         if (cycle) then
-            lockpick = common.getNextBestObjectByObjectType(
+            lockpick = getNextBestObjectByObjectType(
                 tes3.objectType.lockpick,
                 currentLockpick
             )
         else
-            lockpick = common.getWorstObjectByObjectType(tes3.objectType.lockpick)
+            lockpick = getWorstObjectByObjectType(tes3.objectType.lockpick)
         end
     end
 
     if (lockpick == nil) then
-        common.debug("Could not find Lockpick.")
+        debug("Could not find Lockpick.")
         return;
     end
 
-    common.debug("Equipping Lockpick.")
+    debug("Equipping Lockpick.")
     tes3.mobilePlayer:equip{
         item = lockpick
     }
@@ -88,31 +199,25 @@ local function cycleLockpick()
     -- Check for cycle option.
     local hotkeyCycle = config.lockpick.equipHotKeyCycle
     if (hotkeyCycle == options.equipHotKeyCycle.ReequipWeapon) then
-        common.debug("Cycling: Requipping weapon.")
+        debug("Cycling: Requipping weapon.")
         -- Re-equip Weapon
         unequipTool(tes3.objectType.lockpick)
-        common.reequipEquipment()
+        reequipEquipment()
     elseif (hotkeyCycle == options.equipHotKeyCycle.Next) then
-        common.debug("Cycling: Moving to next lockpick.")
+        debug("Cycling: Moving to next lockpick.")
         -- Cycle to Next Lockpick
         equipLockpick(false, true)
     end
 end
 
-local function keybindTest(b, e)
-    return (b.keyCode == e.keyCode) and
-    (b.isShiftDown == e.isShiftDown) and
-    (b.isAltDown == e.isAltDown) and
-    (b.isControlDown == e.isControlDown)
-end
 
 local function toggleLockpick(e)
-    if (not keybindTest(config.lockpick.equipHotKey, e)) then
-        common.debug("In hotkey event, invalid key pressed. Exiting event.")
+    if (tes3.isKeyEqual(config.lockpick.equipHotKey, e) == true) then
+        debug("In hotkey event, invalid key pressed. Exiting event.")
         return
     end
 
-    common.debug("Registered hotkey event.")
+    debug("Registered hotkey event.")
 
     -- Don't do anything in menu mode.
     if tes3.menuMode() then
@@ -123,11 +228,11 @@ local function toggleLockpick(e)
     if (hasTool(tes3.objectType.lockpick)) then
         -- Check if a lockpick is already equipped.
         if (isToolEquipped(tes3.objectType.lockpick)) then
-            common.debug("Lockpick is equipped. Cycling.")
+            debug("Lockpick is equipped. Cycling.")
             -- Cycle to next item based on configuration.
             cycleLockpick()
         else
-            common.debug("Lockpick is not equipped. Equipping.")
+            debug("Lockpick is not equipped. Equipping.")
             -- Equip lockpick based on configuration.
             equipLockpick(true, false)
         end
@@ -137,7 +242,7 @@ end
 local function equipProbe(saveEquipment, cycle)
     if (saveEquipment) then
         -- Store current equipment.
-        common.saveCurrentEquipment()
+        saveCurrentEquipment()
     end
 
     local currentProbeStack = tes3.getEquippedItem({
@@ -156,34 +261,34 @@ local function equipProbe(saveEquipment, cycle)
     local equipOrder = config.probe.equipOrder
     if (equipOrder == options.equipOrder.BestFirst) then
         -- Choose highest level Probe first.
-        common.debug("Equipping Probe: Best Probe First")
+        debug("Equipping Probe: Best Probe First")
         if (cycle) then
-            probe = common.getNextBestObjectByObjectType(
+            probe = getNextBestObjectByObjectType(
                 tes3.objectType.probe,
                 currentProbe
             )
         else
-            probe = common.getBestObjectByObjectType(tes3.objectType.probe)
+            probe = getBestObjectByObjectType(tes3.objectType.probe)
         end
     elseif (equipOrder == options.equipOrder.WorstFirst) then
         -- Choose lowest level Probe first.
-        common.debug("Equipping Probe: Worst Probe First")
+        debug("Equipping Probe: Worst Probe First")
         if (cycle) then
-            probe = common.getNextBestObjectByObjectType(
+            probe = getNextBestObjectByObjectType(
                 tes3.objectType.probe,
                 currentProbe
             )
         else
-            probe = common.getWorstObjectByObjectType(tes3.objectType.probe)
+            probe = getWorstObjectByObjectType(tes3.objectType.probe)
         end
     end
 
     if (probe == nil) then
-        common.debug("Could not find Probe.")
+        debug("Could not find Probe.")
         return;
     end
 
-    common.debug("Equipping Probe.")
+    debug("Equipping Probe.")
     tes3.mobilePlayer:equip{
         item = probe
     }
@@ -193,24 +298,24 @@ local function cycleProbe()
     -- Check for cycle option.
     local hotkeyCycle = config.probe.equipHotKeyCycle
     if (hotkeyCycle == options.equipHotKeyCycle.ReequipWeapon) then
-        common.debug("Cycling: Requipping weapon.")
+        debug("Cycling: Requipping weapon.")
         -- Re-equip Weapon
         unequipTool(tes3.objectType.probe)
-        common.reequipEquipment()
+        reequipEquipment()
     elseif (hotkeyCycle == options.equipHotKeyCycle.Next) then
-        common.debug("Cycling: Moving to next Probe.")
+        debug("Cycling: Moving to next Probe.")
         -- Cycle to Next Probe
         equipProbe(false, true)
     end
 end
 
 local function toggleProbe(e)
-    if (not keybindTest(config.probe.equipHotKey, e)) then
-        common.debug("In hotkey event, invalid key pressed. Exiting event.")
+    if (tes3.isKeyEqual(config.probe.equipHotKey, e) == true) then
+        debug("In hotkey event, invalid key pressed. Exiting event.")
         return
     end
 
-    common.debug("Registered hotkey event.")
+    debug("Registered hotkey event.")
 
     -- Don't do anything in menu mode.
     if tes3.menuMode() then
@@ -221,11 +326,11 @@ local function toggleProbe(e)
     if (hasTool(tes3.objectType.probe)) then
         -- Check if a Probe is already equipped.
         if (isToolEquipped(tes3.objectType.probe)) then
-            common.debug("Probe is equipped. Cycling.")
+            debug("Probe is equipped. Cycling.")
             -- Cycle to next item based on configuration.
             cycleProbe()
         else
-            common.debug("Probe is not equipped. Equipping.")
+            debug("Probe is not equipped. Equipping.")
             -- Equip Probe based on configuration.
             equipProbe(true, false)
         end
@@ -240,7 +345,7 @@ local function autoEquipTool(e)
         return
     end
 
-    common.debug("Registered auto-equip for locked object event.")
+    debug("Registered auto-equip for locked object event.")
 
     -- Check for Probe first.
     if  config.probe.autoEquipOnActivate and
@@ -265,7 +370,7 @@ local function autoEquipTool(e)
                         local target = tes3.getPlayerTarget()
                         if not target or target ~= equipReference then
                             unequipTool(tes3.objectType.probe)
-                            common.reequipEquipment()
+                            reequipEquipment()
                             equipReference = nil
                             equipTimer:cancel()
                             equipTimer = nil
@@ -279,7 +384,7 @@ local function autoEquipTool(e)
                                 duration = .8,
                                 callback = function ()
                                     unequipTool(tes3.objectType.probe)
-                                    common.reequipEquipment()
+                                    reequipEquipment()
                                 end
                             })
                         end
@@ -313,7 +418,7 @@ local function autoEquipTool(e)
                         local target = tes3.getPlayerTarget()
                         if not target or target ~= equipReference then
                             unequipTool(tes3.objectType.lockpick)
-                            common.reequipEquipment()
+                            reequipEquipment()
                             equipReference = nil
                             equipTimer:cancel()
                             equipTimer = nil
@@ -327,7 +432,7 @@ local function autoEquipTool(e)
                                 duration = .8,
                                 callback = function ()
                                     unequipTool(tes3.objectType.lockpick)
-                                    common.reequipEquipment()
+                                    reequipEquipment()
                                 end
                             })
                         end
