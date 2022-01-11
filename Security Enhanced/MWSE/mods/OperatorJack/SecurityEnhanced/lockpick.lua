@@ -156,9 +156,7 @@ local function autoEquipLockpick(e)
 
     common.debug("Registered auto-equip for locked object event.")
 
-    if (tes3.getLocked({
-        reference = e.target
-    })) then
+    if tes3.getLocked({reference = e.target}) and not tes3.getTrap({reference = e.target}) then
         -- Check if lockpick is available.
         if (hasLockpick()) then
             -- Check if a lockpick is not already equipped.

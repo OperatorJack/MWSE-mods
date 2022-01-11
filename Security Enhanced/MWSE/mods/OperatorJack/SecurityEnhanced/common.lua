@@ -10,10 +10,9 @@ this.debug = function (message)
 end
 
 -- Store currently equipped weapon for re-equip.
-this.lastWeapon = nil
+local lastWeaponItem = nil
+local lastWeaponItemData = nil
 this.saveCurrentEquipment = function ()
-    this.lastWeapon = nil
-
     -- Store the currently equipped weapon, if any.
     local weaponStack = tes3.getEquippedItem({
         actor = tes3.player,
@@ -21,14 +20,24 @@ this.saveCurrentEquipment = function ()
     })
     if (weaponStack) then
         this.debug('Saving Weapon ID: ' .. weaponStack.object.id)
-        this.lastWeapon = weaponStack.object
+        lastWeaponItem = weaponStack.object
+        lastWeaponItemData = weaponStack.itemData
+    else
+        this.debug('Clearing saved weapon.')
+        lastWeaponItem = nil
+        lastWeaponItemData = nil
     end
 end
 
 this.reequipEquipment = function ()
     -- If we had a weapon equipped before, re-equip it.
-    if (this.lastWeapon) then
-        mwscript.equip{ reference = tes3.player, item = this.lastWeapon }
+    if (lastWeaponItem) then
+        if (not tes3.mobilePlayer:equip({ item = lastWeaponItem, itemData = lastWeaponItemData })) then
+            tes3.mobilePlayer:equip({ item = lastWeaponItem, selectBestCondition = true })
+        end
+
+        lastWeaponItem = nil
+        lastWeaponItemData = nil
     end
 end
 
