@@ -242,17 +242,12 @@ local function autoEquipTool(e)
 
     debug("Registered auto-equip for locked object event.")
 
-    -- Check for Probe first.
-    if  config.probe.autoEquipOnActivate and
-            tes3.getTrap({reference = e.target}) and
-            hasKey(e.target) == false then
-          if (hasTool(tes3.objectType.probe)) then
-            -- Check if a probe is not already equipped.
-            if (isToolEquipped(tes3.objectType.probe) == nil) then
-                -- Equip probe based on configuration.
-                equipTool(tes3.objectType.probe, true, false)
+    local function callback(type)
+        if hasTool(type) then
+            if isToolEquipped(type) == nil then
+                equipTool(type, true, false)
 
-                -- Draw probe
+                -- Draw tool
                 tes3.mobilePlayer.weaponReady = true
 
                 -- Detect target change and reset to weapon when ready.
@@ -264,13 +259,16 @@ local function autoEquipTool(e)
                     callback = function()
                         local target = tes3.getPlayerTarget()
                         if not target or target ~= equipReference then
-                            unequipTool(tes3.objectType.probe)
+                            unequipTool(type)
                             reequipEquipment()
                             equipReference = nil
                             equipTimer:cancel()
                             equipTimer = nil
                         end
-                        if equipReference and equipTimer and not tes3.getTrap({reference = equipReference}) then
+                        if equipReference and
+                            equipTimer and
+                            ((type == tes3.objectType.lockpick and tes3.getLocked({reference = equipReference}) == false) or
+                            (type == tes3.objectType.probe and not tes3.getTrap({reference = equipReference}))) then
                             equipReference = nil
                             equipTimer:cancel()
                             equipTimer = nil
@@ -278,7 +276,7 @@ local function autoEquipTool(e)
                             timer.start({
                                 duration = .8,
                                 callback = function ()
-                                    unequipTool(tes3.objectType.probe)
+                                    unequipTool(type)
                                     reequipEquipment()
                                 end
                             })
@@ -289,54 +287,21 @@ local function autoEquipTool(e)
                 return -- Exit event handler.
             end
         end
+    end
+
+    -- Check for Probe first.
+    if  config.probe.autoEquipOnActivate and
+            tes3.getTrap({reference = e.target}) and
+            hasKey(e.target) == false then
+
+        callback(tes3.objectType.probe))
 
     -- Check for lockpick second.
     elseif config.lockpick.autoEquipOnActivate and
             not tes3.getTrap({reference = e.target}) and
             hasKey(e.target) == false then
-        if (hasTool(tes3.objectType.lockpick)) then
-            -- Check if a lockpick is not already equipped.
-            if (isToolEquipped(tes3.objectType.lockpick) == nil) then
-                -- Equip lockpick based on configuration.
-                equipTool(tes3.objectType.lockpick, true, false)
 
-                -- Draw lockpick
-                tes3.mobilePlayer.weaponReady = true
-
-                -- Detect target change and reset to weapon when ready.
-                equipReference = e.target
-                if equipTimer then equipTimer:cancel() end
-                equipTimer = timer.start({
-                    duration = .5,
-                    iterations = -1,
-                    callback = function()
-                        local target = tes3.getPlayerTarget()
-                        if not target or target ~= equipReference then
-                            unequipTool(tes3.objectType.lockpick)
-                            reequipEquipment()
-                            equipReference = nil
-                            equipTimer:cancel()
-                            equipTimer = nil
-                        end
-                        if equipReference and equipTimer and tes3.getLocked({reference = equipReference}) == false then
-                            equipReference = nil
-                            equipTimer:cancel()
-                            equipTimer = nil
-
-                            timer.start({
-                                duration = .8,
-                                callback = function ()
-                                    unequipTool(tes3.objectType.lockpick)
-                                    reequipEquipment()
-                                end
-                            })
-                        end
-                    end
-                })
-
-                return -- Exit event handler.
-            end
-        end
+        callback(tes3.objectType.lockpick)
     end
 end
 
