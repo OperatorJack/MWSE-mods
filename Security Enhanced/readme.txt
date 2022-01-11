@@ -26,11 +26,13 @@ Lockpicks
 - Hotkey for Lockpick
 - Cycling options for Lockpicks (what happens when you press the hotkey)
 - Auto equip when activating a locked object
+- If Auto Equip is enabled, weapon is automatically re-equipped after unlocking your target or looking away.
 
 Probes
 - Hotkey for Probes
 - Cycling options for Probes (same as before)
 - Auto equip when activating a trapped object
+- If Auto Equip is enabled, weapon is automatically re-equipped after disarming your target or looking away.
 
 All options for the settings above are configureable through the in-game MCM options.
 
