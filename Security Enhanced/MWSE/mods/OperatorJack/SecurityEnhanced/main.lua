@@ -49,7 +49,7 @@ local function equipLockpick(saveEquipment, cycle)
 
     -- Lockpick isn't equipped. Equip one.
     local equipOrder = config.lockpick.equipOrder
-    if (equipOrder == options.lockpick.equipOrder.BestLockpickFirst) then
+    if (equipOrder == options.equipOrder.BestFirst) then
         -- Choose highest level lockpick first.
         common.debug("Equipping Lockpick: Best Lockpick First")
         if (cycle) then
@@ -60,7 +60,7 @@ local function equipLockpick(saveEquipment, cycle)
         else
             lockpick = common.getBestObjectByObjectType(tes3.objectType.lockpick)
         end
-    elseif (equipOrder == options.lockpick.equipOrder.WorstLockpicKFirst) then
+    elseif (equipOrder == options.equipOrder.WorstFirst) then
         -- Choose lowest level lockpick first.
         common.debug("Equipping Lockpick: Worst Lockpick First")
         if (cycle) then
@@ -87,12 +87,12 @@ end
 local function cycleLockpick()
     -- Check for cycle option.
     local hotkeyCycle = config.lockpick.equipHotKeyCycle
-    if (hotkeyCycle == options.lockpick.equipHotKeyCycle.ReequipWeapon) then
+    if (hotkeyCycle == options.equipHotKeyCycle.ReequipWeapon) then
         common.debug("Cycling: Requipping weapon.")
         -- Re-equip Weapon
         unequipTool(tes3.objectType.lockpick)
         common.reequipEquipment()
-    elseif (hotkeyCycle == options.lockpick.equipHotKeyCycle.NextLockpick) then
+    elseif (hotkeyCycle == options.equipHotKeyCycle.Next) then
         common.debug("Cycling: Moving to next lockpick.")
         -- Cycle to Next Lockpick
         equipLockpick(false, true)
@@ -154,7 +154,7 @@ local function equipProbe(saveEquipment, cycle)
 
     -- Probe isn't equipped. Equip one.
     local equipOrder = config.probe.equipOrder
-    if (equipOrder == options.probe.equipOrder.BestProbeFirst) then
+    if (equipOrder == options.equipOrder.BestFirst) then
         -- Choose highest level Probe first.
         common.debug("Equipping Probe: Best Probe First")
         if (cycle) then
@@ -165,7 +165,7 @@ local function equipProbe(saveEquipment, cycle)
         else
             probe = common.getBestObjectByObjectType(tes3.objectType.probe)
         end
-    elseif (equipOrder == options.probe.equipOrder.WorstProbeFirst) then
+    elseif (equipOrder == options.equipOrder.WorstFirst) then
         -- Choose lowest level Probe first.
         common.debug("Equipping Probe: Worst Probe First")
         if (cycle) then
@@ -192,12 +192,12 @@ end
 local function cycleProbe()
     -- Check for cycle option.
     local hotkeyCycle = config.probe.equipHotKeyCycle
-    if (hotkeyCycle == options.probe.equipHotKeyCycle.ReequipWeapon) then
+    if (hotkeyCycle == options.equipHotKeyCycle.ReequipWeapon) then
         common.debug("Cycling: Requipping weapon.")
         -- Re-equip Weapon
         unequipTool(tes3.objectType.probe)
         common.reequipEquipment()
-    elseif (hotkeyCycle == options.probe.equipHotKeyCycle.NextProbe) then
+    elseif (hotkeyCycle == options.equipHotKeyCycle.Next) then
         common.debug("Cycling: Moving to next Probe.")
         -- Cycle to Next Probe
         equipProbe(false, true)
