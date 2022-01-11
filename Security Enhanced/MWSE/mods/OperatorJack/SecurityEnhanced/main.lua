@@ -197,7 +197,7 @@ end
 
 local function toggleTool(type, e)
     local toolConfig = getToolConfig(type)
-    if tes3.isKeyEqual(toolConfig.equipHotKey, e) == true then
+    if tes3.isKeyEqual({expected = toolConfig.hotKey, actual = e}) == false then
         debug("In hotkey event, invalid key pressed. Exiting event.")
         return
     end
@@ -234,13 +234,19 @@ end
 
 local equipTimer
 local equipReference
+local processing
 local function autoEquipTool(e)
     if  e.target.object.objectType ~= tes3.objectType.door and
         e.target.object.objectType ~= tes3.objectType.container then
         return
     end
 
+    if e.actvator ~= tes3.player then return end
+
     debug("Registered auto-equip for locked object event.")
+
+    if processing then return end
+    processing = true
 
     local function callback(type)
         if hasTool(type) then
@@ -264,6 +270,7 @@ local function autoEquipTool(e)
                             equipReference = nil
                             equipTimer:cancel()
                             equipTimer = nil
+                            processing = nil
                         end
                         if equipReference and
                             equipTimer and
@@ -278,6 +285,7 @@ local function autoEquipTool(e)
                                 callback = function ()
                                     unequipTool(type)
                                     reequipEquipment()
+                                    processing = nil
                                 end
                             })
                         end
@@ -294,7 +302,7 @@ local function autoEquipTool(e)
             tes3.getTrap({reference = e.target}) and
             hasKey(e.target) == false then
 
-        callback(tes3.objectType.probe))
+        callback(tes3.objectType.probe)
 
     -- Check for lockpick second.
     elseif config.lockpick.autoEquipOnActivate and
@@ -310,7 +318,7 @@ local function initialized()
     event.register("keyDown", toggleProbe, { filter = config.probe.hotKey.keyCode })
 
 
-    if (config.lockpickAutoEquipOnActivate or config.probeAutoEquipOnActivate) then
+    if (config.lockpick.autoEquipOnActivate or config.probe.autoEquipOnActivate) then
         event.register("activate", autoEquipTool)
     end
 
