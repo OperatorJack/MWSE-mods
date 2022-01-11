@@ -64,7 +64,7 @@ local function equipProbe(saveEquipment, cycle)
         common.debug("Equipping Probe: Best Probe First")
         if (cycle) then
             probe = common.getNextBestObjectByObjectType(
-                tes3.objectType.probe, 
+                tes3.objectType.probe,
                 currentProbe
             )
         else
@@ -75,7 +75,7 @@ local function equipProbe(saveEquipment, cycle)
         common.debug("Equipping Probe: Worst Probe First")
         if (cycle) then
             probe = common.getNextBestObjectByObjectType(
-                tes3.objectType.probe, 
+                tes3.objectType.probe,
                 currentProbe
             )
         else
@@ -91,7 +91,7 @@ local function equipProbe(saveEquipment, cycle)
     common.debug("Equipping Probe.")
     tes3.mobilePlayer:equip{
         item = probe
-    }  
+    }
 end
 
 local function cycleProbe()
@@ -144,8 +144,10 @@ local function toggleProbe(e)
     end
 end
 
+local equipTimer
+local equipReference
 local function autoEquipProbeOnActivate(e)
-    if (e.target.object.objectType ~= tes3.objectType.door and 
+    if (e.target.object.objectType ~= tes3.objectType.door and
         e.target.object.objectType ~= tes3.objectType.container) then
         return
     end
@@ -164,6 +166,37 @@ local function autoEquipProbeOnActivate(e)
 
                 -- Draw probe.
                 tes3.mobilePlayer.weaponReady = true
+
+                -- Detect target change and reset to weapon when ready.
+                equipReference = e.target
+                if equipTimer then equipTimer:cancel() end
+                equipTimer = timer.start({
+                    duration = .5,
+                    iterations = -1,
+                    callback = function()
+                        local target = tes3.getPlayerTarget()
+                        if not target or target ~= equipReference then
+                            unequipProbe()
+                            common.reequipEquipment()
+                            equipReference = nil
+                            equipTimer:cancel()
+                            equipTimer = nil
+                        end
+                        if equipReference and equipTimer and not tes3.getTrap({reference = equipReference}) then
+                            equipReference = nil
+                            equipTimer:cancel()
+                            equipTimer = nil
+
+                            timer.start({
+                                duration = .8,
+                                callback = function ()
+                                    unequipProbe()
+                                    common.reequipEquipment()
+                                end
+                            })
+                        end
+                    end
+                })
 
                 -- Return false to stop current activation.
                 return false

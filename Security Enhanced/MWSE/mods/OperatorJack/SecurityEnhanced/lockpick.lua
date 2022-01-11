@@ -65,7 +65,7 @@ local function equipLockpick(saveEquipment, cycle)
         common.debug("Equipping Lockpick: Best Lockpick First")
         if (cycle) then
             lockpick = common.getNextBestObjectByObjectType(
-                tes3.objectType.lockpick, 
+                tes3.objectType.lockpick,
                 currentLockpick
             )
         else
@@ -76,7 +76,7 @@ local function equipLockpick(saveEquipment, cycle)
         common.debug("Equipping Lockpick: Worst Lockpick First")
         if (cycle) then
             lockpick = common.getNextBestObjectByObjectType(
-                tes3.objectType.lockpick, 
+                tes3.objectType.lockpick,
                 currentLockpick
             )
         else
@@ -145,8 +145,10 @@ local function toggleLockpick(e)
     end
 end
 
+local equipTimer
+local equipReference
 local function autoEquipLockpick(e)
-    if (e.target.object.objectType ~= tes3.objectType.door and 
+    if (e.target.object.objectType ~= tes3.objectType.door and
         e.target.object.objectType ~= tes3.objectType.container
     ) then
         return
@@ -166,6 +168,37 @@ local function autoEquipLockpick(e)
 
                 -- Draw lockpick
                 tes3.mobilePlayer.weaponReady = true
+
+                -- Detect target change and reset to weapon when ready.
+                equipReference = e.target
+                if equipTimer then equipTimer:cancel() end
+                equipTimer = timer.start({
+                    duration = .5,
+                    iterations = -1,
+                    callback = function()
+                        local target = tes3.getPlayerTarget()
+                        if not target or target ~= equipReference then
+                            unequipLockpick()
+                            common.reequipEquipment()
+                            equipReference = nil
+                            equipTimer:cancel()
+                            equipTimer = nil
+                        end
+                        if equipReference and equipTimer and tes3.getLocked({reference = equipReference}) == false then
+                            equipReference = nil
+                            equipTimer:cancel()
+                            equipTimer = nil
+
+                            timer.start({
+                                duration = .8,
+                                callback = function ()
+                                    unequipLockpick()
+                                    common.reequipEquipment()
+                                end
+                            })
+                        end
+                    end
+                })
             end
         end
     end
@@ -183,4 +216,3 @@ lockpick.registerEvents = function ()
 end
 
 return lockpick
-
