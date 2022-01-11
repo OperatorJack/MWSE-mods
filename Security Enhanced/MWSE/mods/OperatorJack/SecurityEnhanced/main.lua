@@ -241,7 +241,7 @@ local function autoEquipTool(e)
         return
     end
 
-    if e.actvator ~= tes3.player then return end
+    if e.activator ~= tes3.player then return end
 
     debug("Registered auto-equip for locked object event.")
 
