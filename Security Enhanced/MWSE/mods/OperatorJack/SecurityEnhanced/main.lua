@@ -310,6 +310,8 @@ local function autoEquipTool(e)
             hasKey(e.target) == false then
 
         callback(tes3.objectType.lockpick)
+    else
+        processing = nil
     end
 end
 
