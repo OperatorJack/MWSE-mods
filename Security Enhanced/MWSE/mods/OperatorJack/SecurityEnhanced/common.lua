@@ -41,6 +41,15 @@ this.reequipEquipment = function ()
     end
 end
 
+this.hasKey = function(reference)
+    if not reference.lockNode then return false end
+    if not reference.lockNode.key then return false end
+    return tes3.getItemCount({
+        reference = tes3.player,
+        item = reference.lockNode.key
+    }) > 0
+end
+
 this.getSortedInventoryByObjectType = function (objectType)
     local objects = {}
     for node in tes3.iterate(tes3.player.object.inventory.iterator) do

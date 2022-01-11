@@ -154,9 +154,8 @@ local function autoEquipProbeOnActivate(e)
 
     common.debug("Registered auto-equip for locked object event.")
 
-    if (tes3.getTrap({
-        reference = e.target
-    })) then
+    if  tes3.getTrap({reference = e.target}) and
+        common.hasKey(e.target) == false then
         -- Check if Probe is available.
         if (hasProbe()) then
             -- Check if a Probe is not already equipped.
