@@ -189,7 +189,7 @@ local function autoEquipProbeOnActivate(e)
 
                             timer.start({
                                 duration = .8,
-                                callback = function ()
+                                callback = function()
                                     unequipProbe()
                                     common.reequipEquipment()
                                 end
