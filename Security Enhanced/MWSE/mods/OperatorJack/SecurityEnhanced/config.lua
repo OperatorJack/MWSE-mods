@@ -1,7 +1,7 @@
 local options = require("OperatorJack.SecurityEnhanced.options")
 
 -- Load configuration.
-return mwse.loadConfig("Security-Enhanced") or {
+return mwse.loadConfig("Security-Enhanced-2") or {
     -- Initialize lockpick settings.
     lockpick = {
         hotKey = {

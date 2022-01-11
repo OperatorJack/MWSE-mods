@@ -165,7 +165,7 @@ end
 
 -- Handle mod config menu.
 local template = mwse.mcm.createTemplate("Security Enhanced")
-template:saveOnClose("Security-Enhanced", config)
+template:saveOnClose("Security-Enhanced-2", config)
 
 local page = template:createSideBarPage{
     label = "Settings Sidebar",
