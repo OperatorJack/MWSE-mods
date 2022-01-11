@@ -141,57 +141,40 @@ local function unequipTool(type)
     }
 end
 
-local function equipLockpick(saveEquipment, cycle)
-    if (saveEquipment) then
-        saveCurrentEquipment()
-    end
+local function equipTool(type, saveEquipment, cycle)
+    if saveEquipment then saveCurrentEquipment() end
 
-    local currentLockpickStack = tes3.getEquippedItem({
+    local currentToolStack = tes3.getEquippedItem({
         actor = tes3.player,
-        objectType = tes3.objectType.lockpick
+        objectType = type
     })
-    local currentLockpick
+    local currentTool = currentToolStack and currentToolStack.object
 
-    if (currentLockpickStack ~= nil) then
-        currentLockpick = currentLockpickStack.object
+    local toolConfig
+    if type == tes3.objectType.lockpick then toolConfig = config.lockpick end
+    if type == tes3.objectType.probe then toolConfig = config.probe end
+
+    local tool
+
+    if cycle then
+        tool = getNextBestObjectByObjectType(type,currentTool)
+    elseif toolConfig.equipOrder == options.equipOrder.BestFirst then
+        debug("Equipping Tool: Best First")
+        tool = getBestObjectByObjectType(type)
+    elseif toolConfig.equipOrder == options.equipOrder.WorstFirst then
+         -- Choose lowest level lockpick first.
+        debug("Equipping Tool: Worst First")
+        tool = getWorstObjectByObjectType(type)
     end
 
-    local lockpick
-
-    -- Lockpick isn't equipped. Equip one.
-    local equipOrder = config.lockpick.equipOrder
-    if (equipOrder == options.equipOrder.BestFirst) then
-        -- Choose highest level lockpick first.
-        debug("Equipping Lockpick: Best Lockpick First")
-        if (cycle) then
-            lockpick = getNextBestObjectByObjectType(
-                tes3.objectType.lockpick,
-                currentLockpick
-            )
-        else
-            lockpick = getBestObjectByObjectType(tes3.objectType.lockpick)
-        end
-    elseif (equipOrder == options.equipOrder.WorstFirst) then
-        -- Choose lowest level lockpick first.
-        debug("Equipping Lockpick: Worst Lockpick First")
-        if (cycle) then
-            lockpick = getNextBestObjectByObjectType(
-                tes3.objectType.lockpick,
-                currentLockpick
-            )
-        else
-            lockpick = getWorstObjectByObjectType(tes3.objectType.lockpick)
-        end
-    end
-
-    if (lockpick == nil) then
-        debug("Could not find Lockpick.")
+    if (tool == nil) then
+        debug("Could not find tool.")
         return;
     end
 
-    debug("Equipping Lockpick.")
+    debug("Equipping tool.")
     tes3.mobilePlayer:equip{
-        item = lockpick
+        item = tool
     }
 end
 
@@ -206,7 +189,7 @@ local function cycleLockpick()
     elseif (hotkeyCycle == options.equipHotKeyCycle.Next) then
         debug("Cycling: Moving to next lockpick.")
         -- Cycle to Next Lockpick
-        equipLockpick(false, true)
+        equipTool(tes3.objectType.lockpick, false, true)
     end
 end
 
@@ -234,64 +217,9 @@ local function toggleLockpick(e)
         else
             debug("Lockpick is not equipped. Equipping.")
             -- Equip lockpick based on configuration.
-            equipLockpick(true, false)
+            equipTool(tes3.objectType.lockpick, true, false)
         end
     end
-end
-
-local function equipProbe(saveEquipment, cycle)
-    if (saveEquipment) then
-        -- Store current equipment.
-        saveCurrentEquipment()
-    end
-
-    local currentProbeStack = tes3.getEquippedItem({
-        actor = tes3.player,
-        objectType = tes3.objectType.probe
-    })
-    local currentProbe
-
-    if (currentProbeStack ~= nil) then
-        currentProbe = currentProbeStack.object
-    end
-
-    local probe
-
-    -- Probe isn't equipped. Equip one.
-    local equipOrder = config.probe.equipOrder
-    if (equipOrder == options.equipOrder.BestFirst) then
-        -- Choose highest level Probe first.
-        debug("Equipping Probe: Best Probe First")
-        if (cycle) then
-            probe = getNextBestObjectByObjectType(
-                tes3.objectType.probe,
-                currentProbe
-            )
-        else
-            probe = getBestObjectByObjectType(tes3.objectType.probe)
-        end
-    elseif (equipOrder == options.equipOrder.WorstFirst) then
-        -- Choose lowest level Probe first.
-        debug("Equipping Probe: Worst Probe First")
-        if (cycle) then
-            probe = getNextBestObjectByObjectType(
-                tes3.objectType.probe,
-                currentProbe
-            )
-        else
-            probe = getWorstObjectByObjectType(tes3.objectType.probe)
-        end
-    end
-
-    if (probe == nil) then
-        debug("Could not find Probe.")
-        return;
-    end
-
-    debug("Equipping Probe.")
-    tes3.mobilePlayer:equip{
-        item = probe
-    }
 end
 
 local function cycleProbe()
@@ -305,7 +233,7 @@ local function cycleProbe()
     elseif (hotkeyCycle == options.equipHotKeyCycle.Next) then
         debug("Cycling: Moving to next Probe.")
         -- Cycle to Next Probe
-        equipProbe(false, true)
+        equipTool(tes3.objectType.probe, false, true)
     end
 end
 
@@ -332,7 +260,7 @@ local function toggleProbe(e)
         else
             debug("Probe is not equipped. Equipping.")
             -- Equip Probe based on configuration.
-            equipProbe(true, false)
+            equipTool(tes3.objectType.probe, true, false)
         end
     end
 end
@@ -355,7 +283,7 @@ local function autoEquipTool(e)
             -- Check if a probe is not already equipped.
             if (isToolEquipped(tes3.objectType.probe) == nil) then
                 -- Equip probe based on configuration.
-                equipProbe(true, false)
+                equipTool(tes3.objectType.probe, true, false)
 
                 -- Draw probe
                 tes3.mobilePlayer.weaponReady = true
@@ -403,7 +331,7 @@ local function autoEquipTool(e)
             -- Check if a lockpick is not already equipped.
             if (isToolEquipped(tes3.objectType.lockpick) == nil) then
                 -- Equip lockpick based on configuration.
-                equipLockpick(true, false)
+                equipTool(tes3.objectType.lockpick, true, false)
 
                 -- Draw lockpick
                 tes3.mobilePlayer.weaponReady = true
