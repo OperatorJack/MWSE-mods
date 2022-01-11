@@ -119,6 +119,11 @@ local function getWorstObjectByObjectType(objectType)
     return object
 end
 
+local function getToolConfig(type)
+    if type == tes3.objectType.lockpick then return config.lockpick end
+    if type == tes3.objectType.probe then return config.probe end
+end
+
 local function hasTool(type)
     for node in tes3.iterate(tes3.player.object.inventory.iterator) do
         if (node.object.objectType == type) then
@@ -150,9 +155,7 @@ local function equipTool(type, saveEquipment, cycle)
     })
     local currentTool = currentToolStack and currentToolStack.object
 
-    local toolConfig
-    if type == tes3.objectType.lockpick then toolConfig = config.lockpick end
-    if type == tes3.objectType.probe then toolConfig = config.probe end
+    local toolConfig = getToolConfig(type)
 
     local tool
 
@@ -162,7 +165,7 @@ local function equipTool(type, saveEquipment, cycle)
         debug("Equipping Tool: Best First")
         tool = getBestObjectByObjectType(type)
     elseif toolConfig.equipOrder == options.equipOrder.WorstFirst then
-         -- Choose lowest level lockpick first.
+         -- Choose lowest level Tool first.
         debug("Equipping Tool: Worst First")
         tool = getWorstObjectByObjectType(type)
     end
@@ -178,24 +181,23 @@ local function equipTool(type, saveEquipment, cycle)
     }
 end
 
-local function cycleLockpick()
-    -- Check for cycle option.
-    local hotkeyCycle = config.lockpick.equipHotKeyCycle
-    if (hotkeyCycle == options.equipHotKeyCycle.ReequipWeapon) then
+local function cycleTool(type)
+    local toolConfig = getToolConfig(type)
+    if toolConfig.equipHotKeyCycle == options.equipHotKeyCycle.ReequipWeapon then
         debug("Cycling: Requipping weapon.")
         -- Re-equip Weapon
-        unequipTool(tes3.objectType.lockpick)
+        unequipTool(type)
         reequipEquipment()
-    elseif (hotkeyCycle == options.equipHotKeyCycle.Next) then
-        debug("Cycling: Moving to next lockpick.")
-        -- Cycle to Next Lockpick
-        equipTool(tes3.objectType.lockpick, false, true)
+    elseif toolConfig.equipHotKeyCycle == options.equipHotKeyCycle.Next then
+        debug("Cycling: Moving to next tool.")
+        -- Cycle to Next Tool
+        equipTool(type, false, true)
     end
 end
 
-
-local function toggleLockpick(e)
-    if (tes3.isKeyEqual(config.lockpick.equipHotKey, e) == true) then
+local function toggleTool(type, e)
+    local toolConfig = getToolConfig(type)
+    if tes3.isKeyEqual(toolConfig.equipHotKey, e) == true then
         debug("In hotkey event, invalid key pressed. Exiting event.")
         return
     end
@@ -207,62 +209,27 @@ local function toggleLockpick(e)
         return
     end
 
-    -- Check if lockpick is available.
-    if (hasTool(tes3.objectType.lockpick)) then
-        -- Check if a lockpick is already equipped.
-        if (isToolEquipped(tes3.objectType.lockpick)) then
-            debug("Lockpick is equipped. Cycling.")
+    -- Check if Tool is available.
+    if hasTool(type) then
+        -- Check if a Tool is already equipped.
+        if isToolEquipped(type) then
+            debug("Tool is equipped. Cycling.")
             -- Cycle to next item based on configuration.
-            cycleLockpick()
+            cycleTool(type)
         else
-            debug("Lockpick is not equipped. Equipping.")
-            -- Equip lockpick based on configuration.
-            equipTool(tes3.objectType.lockpick, true, false)
+            debug("Tool is not equipped. Equipping.")
+            -- Equip Tool based on configuration.
+            equipTool(type, true, false)
         end
     end
 end
 
-local function cycleProbe()
-    -- Check for cycle option.
-    local hotkeyCycle = config.probe.equipHotKeyCycle
-    if (hotkeyCycle == options.equipHotKeyCycle.ReequipWeapon) then
-        debug("Cycling: Requipping weapon.")
-        -- Re-equip Weapon
-        unequipTool(tes3.objectType.probe)
-        reequipEquipment()
-    elseif (hotkeyCycle == options.equipHotKeyCycle.Next) then
-        debug("Cycling: Moving to next Probe.")
-        -- Cycle to Next Probe
-        equipTool(tes3.objectType.probe, false, true)
-    end
+local function toggleLockpick(e)
+    toggleTool(tes3.objectType.lockpick, e)
 end
 
 local function toggleProbe(e)
-    if (tes3.isKeyEqual(config.probe.equipHotKey, e) == true) then
-        debug("In hotkey event, invalid key pressed. Exiting event.")
-        return
-    end
-
-    debug("Registered hotkey event.")
-
-    -- Don't do anything in menu mode.
-    if tes3.menuMode() then
-        return
-    end
-
-    -- Check if Probe is available.
-    if (hasTool(tes3.objectType.probe)) then
-        -- Check if a Probe is already equipped.
-        if (isToolEquipped(tes3.objectType.probe)) then
-            debug("Probe is equipped. Cycling.")
-            -- Cycle to next item based on configuration.
-            cycleProbe()
-        else
-            debug("Probe is not equipped. Equipping.")
-            -- Equip Probe based on configuration.
-            equipTool(tes3.objectType.probe, true, false)
-        end
-    end
+    toggleTool(tes3.objectType.probe, e)
 end
 
 local equipTimer
