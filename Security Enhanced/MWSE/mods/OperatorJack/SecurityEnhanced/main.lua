@@ -307,6 +307,7 @@ local function autoEquipTool(e)
 
     -- Check for lockpick second.
     elseif config.lockpick.autoEquipOnActivate and
+            tes3.getLocked({reference = e.target}) and
             not tes3.getTrap({reference = e.target}) and
             hasKey(e.target) == false then
 
