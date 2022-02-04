@@ -1,0 +1,126 @@
+*****************************************************************
+
+         The Elder Scrolls III
+              MORROWIND: 
+     The Eye of Ariisiss Expansion
+	    Version 1.3
+	     by Geonox
+	  and M(aster) Sam
+
+		
+*****************************************************************
+
+Index:
+1. Installation
+2. What this Mod is About
+3. Playing the Plugin
+4. Save Games
+5. Known Issues/Conflicts
+6. Changes 
+7. Credits
+8. Contact
+
+
+*****************************************************************
+
+     1. INSTALLING THE PLUGIN
+
+*****************************************************************
+
+To install the plugin, unzip the files into the Morrowind/Data Files directory.
+
+If this does not work, try manual installation:
+
+1. Copy the The Eye of Ariisiss.esp into your Morrowind/Data Files Folder
+2. Copy Textures, Meshes, and Icons into their respective folders.
+
+Remember, for the mod to be enabled, you must turn it on in the Data Files screen.
+
+
+*****************************************************************
+
+     2. WHAT THIS MOD IS ABOUT
+
+*****************************************************************
+
+Geonox initally created the Eye of Ariisiss a while back (2005) and it remained one of my favourite house mods, despite the fact that there was little storage and room to move around. The fact that the entire mod was created out of custom meshes was just amazing, a similar mod emerging again when Geonox created Castle Veldoril (2005). Geonox eventually released a furnished version, however it wasn't released to the public as much, more as an exclusive on his website.
+
+I got back into Morrowind in 2010, and attempted to update the house. The original concept of a magical eye that transported you places within an arid/middle east setting was just seductive, and I feel that the house should be seen by a lot more people. Also, I wanted to make it slightly more spacious. Hopefully the new room and additional storage adds a whole new dimension of space without disrupting the original charm Geonox made.
+
+*****************************************************************
+
+     3. PLAYING THE PLUGIN
+
+*****************************************************************
+
+To access Ariisiss, you must drag and drop The Serraila onto your character. You can find The Serraila floating in a barrel outside Balmora, in the Odai River. Just exit town and keep heading forwards to find it.
+
+The house has a great deal of storage now. The kollops in the lower level of the main area do no respawn, and hold up to 100kg, so they are also safe to use as containers. The room you initally port into is the domain of the eye, which can be used to transport to a select number of areas.Stand right before the eye and point on one of the buttons just above the iris and activate it. There are four main buttons which will talke you to Ald-ruhn, Vivec, Balmora and Ebonheart, and additional buttons that teleport to Pelagiad, Vos, Sadrith Mora and Dagon Fel.
+
+*****************************************************************
+
+     4. SAVE GAMES
+
+*****************************************************************
+
+This plugin should not invalidate your old saved games, but you should ALWAYS make a backup prior to installing any new pluggin. If you save your game while this plugin is loaded, you may encounter error messages when you reload the saved game without the plugin. But you should be able to continue on with your original saved game.
+
+*****************************************************************
+
+     5. KNOWN PROBLEMS/CONFLICTS
+
+*****************************************************************
+
+In rare cases, the first time you drag and drop The Serraila on your character it will not transport you to Ariisiss. If this happens, drop the Serraila from your inventory, and pick it up again. Then, drag and drop.
+
+The rocks in the tower can be very 'slippery'. So watch out where you are walkingSome rocks are a bit to high and need to be reached by jumping. Everyone can make the jump, it doesn't mattter what level you are.
+
+*****************************************************************
+
+     6. CHANGES
+
+*****************************************************************
+From Version 1.2 (FUNISHED):
+
+* The Texture Error is now fixed, v1.1 didn't seem to fix the problem but this version
+  does.
+* The teleport script is now changed and tested in different shrines and teleport places
+  These bugs should now be fixed:
+  - Automaticly being teleported to the Ariisiss when loading or saving a game
+  - Automaticly being teleported wile activating a shrine
+* Extra room (The Darhjiin Chamber) added.
+* Water level lowered in The Sarhiilarin to create another room
+* Additional urns added to Ariisiss
+* The Serraila changed to a weapon to prevent warping error
+* Jirrularid Pass changed to act like an exterior
+* Furniture arrangments changed in The Sarhiilarin
+* Additional portals added to the Eye of Ariisiss
+* Additional coda plants and shurbs added to reduce aridity
+
+*****************************************************************
+
+     7. CREDITS
+
+*****************************************************************
+All designs, models and textures are made by Geonox. The models are a modders freeresource but remember to give me proper credits for the models designs and textures, also when a texture is recolored or models are retextured or modified with 3d software.
+
+Original house, design, and mod by Geonox. Updated by MSam, however consent is assumed and the rights of this mod are subject to change.
+
+*****************************************************************
+
+     8. CONTACT
+
+*****************************************************************
+
+Any bugs should be reported to me as soon as possible, so they can be fixed
+or removed from the mod. You can email me directly, but PMing me at
+Canadian Ice and Howndog's Forum will get you a quicker answer.
+
+This mod may be posted on other sites, provided that the site owner contacts
+me for permission or I send it to him/her, and I am credited as the mod author.
+
+Enjoy the mods!
+
+MSam
+Contact Site: http://canadianice.ufrealms.net/forum2/index.php
+EMail: sam_moneybags@hotmail.com
