@@ -1,0 +1,24 @@
+Credits:
+- Geonox (Original)
+   - original mod design
+   - models and textures (template themed items, ESP, etc.)
+   - see original readme for full details.
+- Master Sam (2010s update)
+   - updating the original mod to fix some asset issues 
+   - expanding the original mod
+   - see original readme for full details.
+- OperatorJack (2022 revamp)
+   - major changes to original models and textures: added collisions, simplified geomoetry, cleaned texture paths, merged duplicate geometry, fixed UV tearing, and other technical improvements.
+   - created new desert cave tileset to replace existing rock and cave pieces that were..dubious.
+   - redesign of the plugin cells to use updated or entirely new assets.
+   - integrated OAAB for more diverse asset usage.
+   - many other tweaks and change to bring the mod into current standards.
+- Melchior Dahrk
+   - assisted with finding new and existing assets to repurpose (Fig tree, Shannon's meshes, etc)
+   - assisted with design and testing of cells
+   - fixed some of the more troublesoom meshes that OJ couldn't handle
+   - created the doorjamb and door meshes
+   - created the new planter meshes and textures
+- Shannon & Parsimonious
+   - converted assets from Sims 2 and made them into a modder's resource, "parsimonious meshes by shannon"
+   - many of the new flora meshes and textures: lavender
