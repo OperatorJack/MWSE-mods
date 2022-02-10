@@ -22,3 +22,5 @@ Credits:
 - Shannon & Parsimonious
    - converted assets from Sims 2 and made them into a modder's resource, "parsimonious meshes by shannon"
    - many of the new flora meshes and textures: lavender
+- Vegetto
+   - "The Carpet Pack" resource mod, which I pulled the Hlaalu rugs from.
