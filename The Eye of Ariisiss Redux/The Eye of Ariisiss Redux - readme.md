@@ -14,9 +14,18 @@ From Master Sam's 2010 update of the Eye of Ariisiss:
 
 For the latest updates, check the Nexus mods page for this mod or visit my GitHub: https://github.com/OperatorJack/MWSE-mods.
 
+## Requirements
+
+- Morrowind, Bloodmoon, Tribunal
+- OAAB_Data
+
 ## Installation
 
 I encourage everyone to use a mod manager like Wrye Mash. Otherwise, unzip the files and drop into your Data Files folder. Activate the ESP in the Morrowind launcher.
+
+## Permissions
+
+All assets in this mod are free to use for Morrowind, provided appropriate credit is given and unless those assets are exempted in the original mod readmes.
 
 ## Credits
 
