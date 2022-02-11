@@ -54,3 +54,5 @@ All assets in this mod are free to use for Morrowind, provided appropriate credi
   - many of the new flora meshes and textures: lavender
 - Vegetto
   - "The Carpet Pack" resource mod, which I pulled the Hlaalu rugs from.
+- Greatness7
+  - 2x AI upscale of original mod textures.
