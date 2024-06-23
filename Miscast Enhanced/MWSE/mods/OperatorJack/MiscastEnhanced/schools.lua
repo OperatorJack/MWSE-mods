@@ -1,4 +1,4 @@
-local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
+local framework = require("OperatorJack.MagickaExpanded")
 local functions = require("OperatorJack.MiscastEnhanced.functions")
 
 local potionIds = {
@@ -17,7 +17,7 @@ local function registerSpells()
         range = tes3.effectRange.self,
         min = 5,
         max = 25,
-        duration = 5,
+        duration = 5
     })
     framework.alchemy.createBasicPotion({
         id = potionIds.conjuration,
@@ -26,7 +26,7 @@ local function registerSpells()
         range = tes3.effectRange.self,
         min = 5,
         max = 20,
-        duration = 5,
+        duration = 5
     })
     framework.alchemy.createComplexPotion({
         id = potionIds.destruction,
@@ -60,7 +60,7 @@ local function registerSpells()
         name = "Illusion Miscast",
         effect = tes3.effect.paralyze,
         range = tes3.effectRange.self,
-        duration = 5,
+        duration = 5
     })
     framework.alchemy.createBasicPotion({
         id = potionIds.mysticism,
@@ -89,48 +89,46 @@ local schools = {
         tes3.applyMagicSource({
             reference = e.reference,
             source = potionIds.alteration,
-            castChance = 100,
+            castChance = 100
         })
     end,
     [tes3.magicSchool.conjuration] = function(e)
         tes3.applyMagicSource({
             reference = e.reference,
             source = potionIds.conjuration,
-            castChance = 100,
+            castChance = 100
         })
     end,
     [tes3.magicSchool.destruction] = function(e)
         tes3.applyMagicSource({
             reference = e.reference,
             source = potionIds.destruction,
-            castChance = 100,
+            castChance = 100
         })
     end,
     [tes3.magicSchool.illusion] = function(e)
         tes3.applyMagicSource({
             reference = e.reference,
             source = potionIds.illusion,
-            castChance = 100,
+            castChance = 100
         })
     end,
     [tes3.magicSchool.mysticism] = function(e)
         tes3.applyMagicSource({
             reference = e.reference,
             source = potionIds.mysticism,
-            castChance = 100,
+            castChance = 100
         })
     end,
     [tes3.magicSchool.restoration] = function(e)
         tes3.applyMagicSource({
             reference = e.reference,
             source = potionIds.restoration,
-            castChance = 100,
+            castChance = 100
         })
     end
 }
 local function onRegister()
-    for school, handler in pairs(schools) do
-        functions.setSchoolHandler(school, handler)
-    end
+    for school, handler in pairs(schools) do functions.setSchoolHandler(school, handler) end
 end
 event.register("Miscast:Register", onRegister)

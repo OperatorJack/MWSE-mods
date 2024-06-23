@@ -1,0 +1,26 @@
+[package]
+name = "Chrysopoeia"
+description = "Embark on a short quest to gain the power of transmuting items into gold: Chrysopoeia. Search for the most learned alchemist on the island of Morrowind to find it. But, remember, nothing is free. "
+homepage = "https://www.nexusmods.com/morrowind/mods/47008"
+repository = "https://github.com/OperatorJack/MWSE-mods"
+authors = ["OperatorJack"]
+version = "2.1.0"
+
+# MWSE specific information about this mod
+[tools.mwse]
+lua-mod = "OperatorJack.Chrysopoeia"
+load-order = 100
+wait-until-initialize = false
+
+# Check MWSE version using build number (the number that comes after "v2.1.0" in MWSE.log)
+[dependencies.mwse]
+buildnumber = 3273
+
+# Check MGE XE version
+[dependencies.mge-xe]
+version = ">=0.15.0"
+
+# mwse-module can be a folder or lua file, anywhere in /mods, /lib etc
+[dependencies.mods.MagickaExpanded]
+mwse-module = "OperatorJack.MagickaExpanded"
+version = ">=3.0.0"
