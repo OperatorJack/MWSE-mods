@@ -4,7 +4,7 @@ description = "Adds Wands to Morrowind. Fully functional wands enchanted as norm
 homepage = "https://www.nexusmods.com/morrowind/mods/49427"
 repository = "https://github.com/OperatorJack/MWSE-mods"
 authors = ["OperatorJack"]
-version = "1.4.0"
+version = "1.5.0"
 
 # MWSE specific information about this mod
 [tools.mwse]
