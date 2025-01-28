@@ -1,108 +1,21 @@
-local name = "Cosmetic Overrides"
-local config = mwse.loadConfig(name, {
-    -- Initialize Settings
-    logLevel = "ERROR",
-    showMessages = true
-}); ---@cast config table
+local config = require("OperatorJack.CosmeticOverrides.config")
+local log = require("OperatorJack.CosmeticOverrides.logger")
+local data = require("OperatorJack.CosmeticOverrides.data")
+local mcm = require("OperatorJack.CosmeticOverrides.mcm")
 
-local logger = require("logging.logger")
-local log = logger.getLogger(name) or logger.new({ name = name, logLevel = config.logLevel })
 
-local function getKeyFromValue(tbl, value)
-    for key, tblValue in pairs(tbl) do
-        if (tblValue == value) then return key end
-    end
-    return nil
-end
 
-local function getSlotNameFromObject(obj)
-    log:debug("Getting slot name from object type %s", obj.objectType)
-    local slotName
-    if (obj.objectType == tes3.objectType.armor) then
-        slotName = getKeyFromValue(tes3.armorSlot, obj.slot)
-    else
-        slotName = getKeyFromValue(tes3.clothingSlot, obj.slot)
-    end
-
-    log:debug("Got slot name %s", slotName)
-    if (slotName) then
-        return slotName:lower()
-    else
-        return nil
-    end
-end
-
-local function triggerBodyPartsUpdate()
-    tes3.player:updateEquipment()
-    tes3.player1stPerson:updateEquipment()
-end
-
-local categories = {
-    [mwse.longToString(tes3.objectType.armor)] = {
-        text = "Armor",
-        types = tes3.armorSlot,
-        blockedSlots = { ["shield"] = true }
-    },
-    [mwse.longToString(tes3.objectType.clothing)] = {
-        text = "Clothing",
-        types = tes3.clothingSlot,
-        blockedSlots = { ["amulet"] = true, ["belt"] = true, ["ring"] = true }
-    }
-}
-
-local options = {}
-local function getOptions(objectTypeId, objectTypeName)
-    objectTypeName = objectTypeName:lower()
-    local labels = { { label = "-- None --", value = nil } }
-
-    if (tes3.player == nil) then
-        log:debug("Getting Options - player is nil, so returning default options.")
-        return labels
-    elseif (tes3.player.data.OJ_CosmeticOverrides.Possible[objectTypeId] == nil or
-            tes3.player.data.OJ_CosmeticOverrides.Possible[objectTypeId][objectTypeName] == nil) then
-        log:debug("Getting Options - player vardata is nil, so returning default options.")
-        return labels
-    end
-
-    for id, text in pairs(
-        tes3.player.data.OJ_CosmeticOverrides.Possible[objectTypeId][objectTypeName]) do
-        table.insert(labels, { label = text .. " - " .. id, value = id })
-    end
-
-    log:debug("Getting Options - checks are passed, so returning valid options.")
-    return labels
-end
-
-local function updateOptions(objectTypeId, objectTypeName)
-    objectTypeName = objectTypeName:lower()
-
-    for key in pairs(options[objectTypeId][objectTypeName]) do
-        options[objectTypeId][objectTypeName][key] = nil
-    end
-
-    table.insert(options[objectTypeId][objectTypeName], { label = "-- None --", value = nil })
-
-    if (tes3.player ~= nil and tes3.player.data.OJ_CosmeticOverrides.Possible[objectTypeId] ~= nil) then
-        for id, text in pairs(tes3.player.data.OJ_CosmeticOverrides.Possible[objectTypeId][objectTypeName]) do
-            log:debug("Updating dropdown options.")
-            table.insert(
-                options[objectTypeId][objectTypeName],
-                { label = text .. " - " .. id, value = id }
-            )
-        end
-    end
-end
-
+--- Initializes the mod-data stored in the player.data object so that it can be safely accessed.
 local function initializePlayerData()
-    tes3.player.data.OJ_CosmeticOverrides = tes3.player.data
-        .OJ_CosmeticOverrides or
+    tes3.player.data.OJ_CosmeticOverrides = tes3.player.data.OJ_CosmeticOverrides or
         { Active = {}, Possible = {} }
 end
 
+--- Initializes the MCM dropdown options based on the currently unlocked cosmetic overrides.
 local function initializePlayerDataOptions()
     for objectType, objectTypeTbl in pairs(tes3.player.data.OJ_CosmeticOverrides.Possible) do
         for slotName in pairs(objectTypeTbl) do
-            updateOptions(objectType, slotName)
+            mcm.updateOptions(objectType, slotName)
         end
     end
 end
@@ -115,14 +28,17 @@ local function getOverrideItemId(objectType, objectTypeName)
     return nil
 end
 
+---@type {[string] : tes3armor | tes3clothing}
 local cachedObjects = {}
+
 local function getOverrideObject(objectType, objectTypeName)
     local overrideItemId = getOverrideItemId(objectType, objectTypeName)
     log:debug("Got override item id %s", overrideItemId)
     if (overrideItemId) then
         if (cachedObjects[overrideItemId] == nil) then
             log:debug("No cached override object, loading object")
-            cachedObjects[overrideItemId] = tes3.getObject(overrideItemId)
+            local obj = tes3.getObject(overrideItemId) --- @cast obj tes3armor | tes3clothing
+            cachedObjects[overrideItemId] = obj
         end
 
         return cachedObjects[overrideItemId]
@@ -130,62 +46,93 @@ local function getOverrideObject(objectType, objectTypeName)
     return nil
 end
 
--- Enable costmetic overrides.
-local function onBodyPartAssigned(e)
-    -- We only care about item-based assignment on the player.
-    if (e.reference == tes3.player and e.object) then
-        initializePlayerData()
-        log:debug("Validating body part - init'd player data")
 
-        -- Do we have an override for it?
-        local slotName = getSlotNameFromObject(e.object)
-        local objectTypeString = mwse.longToString(e.object.objectType)
-        log:debug("Validating body part - slot %s, type %s", slotName,
-            objectTypeString)
+--- @param item tes3armor|tes3clothing The item which is being used as the cosmetic override.
+local function hideLayersForPart(item)
+    local hiddenSlotsByType = data.layerOverrides[item.objectType]
+    if (hiddenSlotsByType == nil) then return end
 
-        local overrideItem = getOverrideObject(objectTypeString, slotName)
-        if (overrideItem) then
-            log:debug(
-                "Validating body part - override found, attempting override")
+    local hiddenSlots = hiddenSlotsByType[item.slot]
+    if (hiddenSlots == nil) then return end
 
-            -- Find the matching body part index.
-            for _, potentialPartPair in ipairs(overrideItem.parts) do
-                if (potentialPartPair.type ~= -1 and potentialPartPair.type == e.index) then
-                    log:debug("Validating body part - body part match found, attempting override")
-                    -- We found the right body part on the item. Use it, based on sex assignment.
-                    if (potentialPartPair.female and tes3.player.baseObject.female) then
-                        e.bodyPart = potentialPartPair.female
-                        log:debug("Validating body part - override with female part")
-                    else
-                        e.bodyPart = potentialPartPair.male
-                        log:debug("Validating body part - override with female part")
-                    end
+    for _, hiddenSlotInfo in ipairs(hiddenSlots) do
+        log:info("Hiding layer under override '%s': layer: %s; part: %s",
+            item,
+            table.find(tes3.activeBodyPartLayer, hiddenSlotInfo.layer),
+            table.find(tes3.activeBodyPart, hiddenSlotInfo.part)
+        )
 
-                    return
+        tes3.player.bodyPartManager:removeActiveBodyPart(
+            hiddenSlotInfo.layer,
+            hiddenSlotInfo.part,
+            true,
+            hiddenSlotInfo.override or -1
+        )
+    end
+end
+
+---@param e bodyPartsUpdatedEventData
+local function onBodyPartsUpdated(e)
+    if (e.reference ~= tes3.player) then return end
+
+    -- We initialize the player data to make our data access safe.
+    initializePlayerData()
+
+    -- Then, for each object type
+    for objectType, category in pairs(data.categories) do
+        local objectTypeString = mwse.longToString(objectType)
+        -- Then, for each slot type
+        for slotName, slotValue in pairs(category.types) do
+            -- Skip any blocked slots.
+            if (category.blockedSlots[slotName] ~= true) then
+                -- Check if we have an override set for this slot.
+                local overrideItem = getOverrideObject(objectTypeString, slotName)
+                if (overrideItem) then
+                    log:info("Found override item %s for slot %s", overrideItem.name, slotName)
+
+                    -- Handle hiding lower layers.
+                    hideLayersForPart(overrideItem)
+
+                    overrideItem:setupBodyParts(tes3.player.bodyPartManager, tes3.player.baseObject.female, false)
+                    e.updated = true
                 end
             end
-
-            -- No matching body part for this index? Block the visual.
-            return false
-        else
-            log:debug("Validating body part - no override found, returning")
         end
     end
 end
-event.register("bodyPartAssigned", onBodyPartAssigned)
+event.register(tes3.event.bodyPartsUpdated, onBodyPartsUpdated)
 
+
+local function getSlotNameFromObject(obj)
+    log:debug("Getting slot name from object type %s", obj.objectType)
+    local slotName
+    if (obj.objectType == tes3.objectType.armor) then
+        slotName = table.find(tes3.armorSlot, obj.slot)
+    else
+        slotName = table.find(tes3.clothingSlot, obj.slot)
+    end
+
+    log:debug("Got slot name %s", slotName)
+    if (slotName) then
+        return slotName:lower()
+    else
+        return nil
+    end
+end
+
+---@param e equippedEventData
 local function onEquipped(e)
     local item = e.item
 
     if (item.objectType == tes3.objectType.armor or item.objectType == tes3.objectType.clothing) then
         local slotName = getSlotNameFromObject(item)
-        local objectTypeString = mwse.longToString(e.item.objectType)
-        if (slotName == nil or categories[objectTypeString].blockedSlots[slotName] == true) then
+        if (slotName == nil or data.categories[e.item.objectType].blockedSlots[slotName] == true) then
             return
         end
 
         log:debug("Equipped possible item. Attempting Unlock %s", item.name)
 
+        local objectTypeString = mwse.longToString(e.item.objectType)
         tes3.player.data.OJ_CosmeticOverrides.Possible[objectTypeString] =
             tes3.player.data.OJ_CosmeticOverrides.Possible[objectTypeString] or
             {}
@@ -196,120 +143,29 @@ local function onEquipped(e)
         if (not tes3.player.data.OJ_CosmeticOverrides.Possible[objectTypeString][slotName][item.id] and
                 config.showMessages) then
             log:debug("Unlocked %s", item.name)
-            tes3.messageBox("Unlocked '" .. item.name .. "' Cosmetic")
+            tes3.messageBox("Unlocked '%s' Cosmetic", item.name)
         end
 
         tes3.player.data.OJ_CosmeticOverrides.Possible[objectTypeString][slotName][item.id] = item.name
 
-        updateOptions(objectTypeString, slotName)
+        mcm.updateOptions(objectTypeString, slotName)
     end
 end
-event.register("equipped", onEquipped)
+event.register(tes3.event.equipped, onEquipped)
 
+---@param e loadedEventData
 local function onLoaded(e)
     initializePlayerData()
     initializePlayerDataOptions()
 
-    triggerBodyPartsUpdate()
-
-    print("[Cosmetic Overrides: INFO] Initialized for current save game.")
+    log:info("Initialized for current save game.")
 end
-event.register("loaded", onLoaded)
+event.register(tes3.event.loaded, onLoaded)
 
-event.register("menuExit", function() triggerBodyPartsUpdate() end)
 
------------------------------------
------------- Add MCM --------------
------------------------------------
-local function sortedKeys(query, sortFunction)
-    local keys, len = {}, 0
-    for k, _ in pairs(query) do
-        len = len + 1
-        keys[len] = k
-    end
-    table.sort(keys, sortFunction)
-    return keys
+local function triggerBodyPartsUpdate()
+    tes3.player:updateEquipment()
+    tes3.player1stPerson:updateEquipment()
 end
 
-local function createDropDownsForCategory(category, typeId, typeObject)
-    for _, slotName in pairs(sortedKeys(typeObject.types)) do
-        if (not typeObject.blockedSlots[slotName]) then
-            local slotNameLower = slotName:lower()
-            if (options[typeId] == nil) then options[typeId] = {} end
-            options[typeId][slotNameLower] = getOptions(typeId, slotNameLower)
-
-            category:createDropdown({
-                label = slotName,
-                description = "Set the cosmetic override for the " .. slotName ..
-                    " slot.",
-                options = options[typeId][slotNameLower],
-                variable = mwse.mcm.createPlayerData({
-                    id = slotNameLower,
-                    path = "OJ_CosmeticOverrides.Active." .. typeId
-                })
-            })
-        end
-    end
-end
-
--- Handle mod config menu.
-local function createCategory(template, typeId, typeObject)
-    local page = template:createSideBarPage {
-        label = typeObject.text,
-        description = "Hover over a setting to learn more about it."
-    }
-
-    local category = page:createCategory {
-        label = typeObject.text,
-        description = "Manage the cosmetic overrides for " .. typeObject.text ..
-            "."
-    }
-
-    createDropDownsForCategory(category, typeId, typeObject)
-end
-
-local function registerModConfig()
-    local template = mwse.mcm.createTemplate(name)
-
-    local page = template:createSideBarPage {
-        label = "General",
-        description = "Hover over a setting to learn more about it."
-    }
-
-    local general = page:createCategory { label = "General Settings" }
-
-    -- Create option to capture debug mode.
-    general:createOnOffButton {
-        label = "Enable Unlock Messages",
-        description = "Use this option to enable unlock messages. You will be notified when you unlock a new cosmetic with a message like, 'Unlocked Daedric Helm Cosmetic'.",
-        variable = mwse.mcm.createTableVariable {
-            id = "showMessages",
-            table = config
-        }
-    }
-
-    general:createDropdown {
-        label = "Logging Level",
-        description = "Set the log level.",
-        options = {
-            { label = "TRACE", value = "TRACE" },
-            { label = "DEBUG", value = "DEBUG" },
-            { label = "INFO",  value = "INFO" }, { label = "WARN", value = "WARN" },
-            { label = "ERROR", value = "ERROR" }, { label = "NONE", value = "NONE" }
-        },
-        variable = mwse.mcm.createTableVariable {
-            id = "logLevel",
-            table = config
-        },
-        callback = function(self) log:setLogLevel(self.variable.value) end
-    }
-
-    for key, value in pairs(categories) do
-        createCategory(template, key, value)
-    end
-
-    template:saveOnClose(name, config)
-    mwse.mcm.register(template)
-end
-
-event.register("modConfigReady", registerModConfig)
+event.register(tes3.event.menuExit, function() triggerBodyPartsUpdate() end)
