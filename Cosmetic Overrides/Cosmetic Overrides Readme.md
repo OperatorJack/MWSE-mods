@@ -12,7 +12,7 @@ This mod requires the most recently nightly build of MWSE. Please be sure to run
 
 ## Description
 
-Adds the ability to use cosmetic overrides for clothing and armour. Cosmetic Overrides do not affect enchantments, stats, or other gameplay mechanics; they simply change what is rendered on the player.
+Adds the ability to use cosmetic overrides for clothing and armour. Cosmetic Overrides do not affect enchantments, stats, or other gameplay mechanics; they simply change what is shown on the player.
 
 To unlock an item as a cosmetic override, you have to equip it at least once. The first time you equip the item, you'll be notified that it has been unlocked as an override. After that, it will be stored in your save game as a cosmetic override option.
 

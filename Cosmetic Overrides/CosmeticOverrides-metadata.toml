@@ -4,7 +4,7 @@ description = "Adds the ability to use cosmetic overrides for clothing and armou
 homepage = "https://www.nexusmods.com/morrowind/mods/47713"
 repository = "https://github.com/OperatorJack/MWSE-mods"
 authors = ["OperatorJack"]
-version = "1.3.0"
+version = "1.4.0"
 
 # MWSE specific information about this mod
 [tools.mwse]
@@ -14,7 +14,7 @@ wait-until-initialize = false
 
 # Check MWSE version using build number (the number that comes after "v2.1.0" in MWSE.log)
 [dependencies.mwse]
-buildnumber = 4229
+buildnumber = 4235
 
 # Check MGE XE version
 [dependencies.mge-xe]
