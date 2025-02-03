@@ -87,42 +87,42 @@ event.register("MagickaExpanded:Register", registerSpells)
 local schools = {
     [tes3.magicSchool.alteration] = function(e)
         tes3.applyMagicSource({
-            reference = e.reference,
+            reference = e.caster,
             source = potionIds.alteration,
             castChance = 100
         })
     end,
     [tes3.magicSchool.conjuration] = function(e)
         tes3.applyMagicSource({
-            reference = e.reference,
+            reference = e.caster,
             source = potionIds.conjuration,
             castChance = 100
         })
     end,
     [tes3.magicSchool.destruction] = function(e)
         tes3.applyMagicSource({
-            reference = e.reference,
+            reference = e.caster,
             source = potionIds.destruction,
             castChance = 100
         })
     end,
     [tes3.magicSchool.illusion] = function(e)
         tes3.applyMagicSource({
-            reference = e.reference,
+            reference = e.caster,
             source = potionIds.illusion,
             castChance = 100
         })
     end,
     [tes3.magicSchool.mysticism] = function(e)
         tes3.applyMagicSource({
-            reference = e.reference,
+            reference = e.caster,
             source = potionIds.mysticism,
             castChance = 100
         })
     end,
     [tes3.magicSchool.restoration] = function(e)
         tes3.applyMagicSource({
-            reference = e.reference,
+            reference = e.caster,
             source = potionIds.restoration,
             castChance = 100
         })
