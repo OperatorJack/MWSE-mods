@@ -26,7 +26,7 @@ functions.gatedMessageBox = function(message)
 end
 functions.getRandomLocation = function()
     local cell = locations[math.random(#locations)]
-    local position = {(cell.gridX * 2 + 1) * 4096, (cell.gridY * 2 + 1) * 4096, 0}
+    local position = { (cell.gridX * 2 + 1) * 4096, (cell.gridY * 2 + 1) * 4096, 0 }
     return cell, position
 end
 functions.getModifier = function() return math.random(25, 50) / 100 end
@@ -85,7 +85,7 @@ functions.handlers.genericInverseEffectHandler = function(params)
         attribute = params.effect.attribute
     })
 
-    tes3.applyMagicSource({reference = params.reference, source = potion, castChance = 100})
+    tes3.applyMagicSource({ reference = params.reference, source = potion, castChance = 100 })
 end
 functions.handlers.genericStandardEffectHandler = function(params)
     local effectIdToUse = params.effectIdToUse
@@ -107,8 +107,9 @@ functions.handlers.genericStandardEffectHandler = function(params)
         attribute = params.effect.attribute
     })
 
-    tes3.applyMagicSource({reference = params.reference, source = potion, castChance = 100})
+    tes3.applyMagicSource({ reference = params.reference, source = potion, castChance = 100 })
 end
+
 functions.handlers.genericSummoningEffectHandler = function(params)
     local creatureIdToUse = params.creatureIdToUse
     local duration = functions.getModifiedDurationFromEffect(params.effect)
@@ -133,13 +134,16 @@ functions.handlers.genericSummoningEffectHandler = function(params)
     })
     creature.modified = false
 
-    mwscript.startCombat({reference = creature, target = caster})
+    mwscript.startCombat({ reference = creature, target = caster })
 
     timer.start({
         duration = duration,
         callback = function()
-            creature:disable()
-            timer.delayOneFrame({callback = function() creature.deleted = true end})
+            -- Create the same effect as a normal unsummon.
+            tes3.createVisualEffect({ position = creature.position, effect = "VFX_Soul_Trap", repeatCount = 1 })
+
+            -- Delete can be safely called now without any shenanigans.
+            creature:delete()
         end
     })
 end
@@ -174,7 +178,7 @@ functions.handlers.genericBoundItemHandler = function(params)
         }
     })
 
-    tes3.applyMagicSource({reference = params.reference, source = potion, castChance = 100})
+    tes3.applyMagicSource({ reference = params.reference, source = potion, castChance = 100 })
 end
 functions.handlers.genericCureEffectHandler = function(params)
     local effectIdToUse = params.effectIdToUse
@@ -195,17 +199,17 @@ functions.handlers.genericCureEffectHandler = function(params)
         range = rangeType
     })
 
-    tes3.applyMagicSource({reference = params.reference, source = potion, castChance = 100})
+    tes3.applyMagicSource({ reference = params.reference, source = potion, castChance = 100 })
 end
 functions.handlers.genericTeleportEffectHandler = function(params)
     local cell, position = functions.getRandomLocation()
-    tes3.positionCell({reference = params.reference, cell = cell, position = position})
+    tes3.positionCell({ reference = params.reference, cell = cell, position = position })
 end
 functions.handlers.genericAreaEffectHandler = function(params)
     local distance = params.distance
     local actors = framework.functions.getActorsNearTargetPosition(params.reference.cell,
-                                                                   params.reference.position,
-                                                                   distance)
+        params.reference.position,
+        distance)
 
     for _, actor in pairs(actors) do
         functions.handlers.genericStandardEffectHandler({

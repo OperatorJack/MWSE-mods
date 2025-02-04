@@ -4,7 +4,7 @@ description = "Inspired by the Miscast mod from years ago, this mod adds consequ
 homepage = "https://www.nexusmods.com/morrowind/mods/47948"
 repository = "https://github.com/OperatorJack/MWSE-mods"
 authors = ["OperatorJack"]
-version = "1.3.0"
+version = "1.3.2"
 
 # MWSE specific information about this mod
 [tools.mwse]

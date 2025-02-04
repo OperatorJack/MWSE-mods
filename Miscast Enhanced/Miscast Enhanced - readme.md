@@ -9,9 +9,8 @@ _This is a markdown file. You can use a markdown previewer to render it, or view
 - Morrowind
 - Tribunal
 - Bloodmoon
-- MGE XE 0.10.1
 - MWSE 2.1+
-- Magicka Expanded Framework
+- Magicka Expanded Framework 3.0+
 
 This mod requires the most recently nightly build of MWSE. Please be sure to run the mwse-update.exe before playing this mod.
 
