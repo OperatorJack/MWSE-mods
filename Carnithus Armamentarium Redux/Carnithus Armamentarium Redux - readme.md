@@ -4,7 +4,7 @@
 
 ## Description
 
-In 2005, Carnithus released the Carnithus' Armamentarium, a new storefront selling arms and armor for the evilist among us. Carnithus himself appears in the mod as the head merchant of the store, although there are several other characters. Each sells a unique assortment of "evil" weapons, armors, decorations, and more. To me, this mod is representative of the early 2000s goth-fantasy trend and is a staple in the "classics" of Morrowind modding. Unfortunately, it hasn't aged well. The original mod, even the complete edition, has compatability issues due to the store's location in Maar Gan, and even worse, the textures are shockingly low resolution. Many of the cuirasses, for example, are 256x256 pixels! Compared to the 1024x1024 or even 2048x2048 many play with now, Carnithus' work was left behind in a cloud of blurry dust.
+In 2005, Carnithus released the Carnithus' Armamentarium, a new storefront selling arms and armor for the most evil (or edgy) among us. Carnithus himself appears in the mod as the head merchant of the store, although there are several other characters. Each sells a unique assortment of "evil" weapons, armors, decorations, and more. To me, this mod is representative of the early 2000s goth-fantasy trend and is a staple in the "classics" of Morrowind modding. Unfortunately, it hasn't aged well. The original mod, even the complete edition, has compatibility issues due to the store's location in Maar Gan, and even worse, the textures are shockingly low resolution. Many of the cuirasses, for example, are 256x256 pixels! Compared to the 1024x1024 or even 2048x2048 many play with now, Carnithus' work was left behind in a cloud of blurry dust.
 
 Now, in 2025, I have revamped the mod to meet today's standards. This means upscaled textures, optimized meshes, improved lighting, UV Mapping fixes, and more. Unlike some of my other Redux mods, I have changed very little of the interior of the Armamentarium and tried to keep the original character of the mod intact. I encourage you to play the original--even if only to see the differences.
 
@@ -18,7 +18,7 @@ List of Redux Changes:
 - Relocated storefront from Maar Gan into new, interior cell.
 - Updated the Drow in Mournhold to guide you to the new interior cell. It is not accessible otherwise.
 - Improved some lighting, objects, etc.
-- Cleaned references to Maar Gan & removed many dirty references, increasing mod compatability.
+- Cleaned references to Maar Gan & removed many dirty references, increasing mod compatibility.
 - Cleaned many meshes and textures to reduce technical issues in rendering.
 
 From Carnithus' 2005 description of the mod:
@@ -37,6 +37,7 @@ For the latest updates, check the Nexus mods page for this mod or visit my GitHu
 ## Requirements
 
 - Morrowind, Bloodmoon, Tribunal
+- (Optional) Better Bodies. A small number of clothing / armors are "skimpy" and designed for Better Bodies. You can ignore these if you do not use Better Bodies.
 
 ## Installation
 
@@ -55,7 +56,7 @@ All assets in this mod are free to use for Morrowind, provided appropriate credi
 - OperatorJack (2022 revamp)
 
   - changes to original models and textures: cleaned texture paths, merged duplicate geometry, fixed UV tearing, and other technical improvements.
-  - relocated the storefront into a new interior cell to prevent compatability issues & cleaned all references to Maar Gan.
+  - relocated the storefront into a new interior cell to prevent compatibility issues & cleaned all references to Maar Gan.
   - upscaled textures 4x using Gigapixel 8
   - many other tweaks and change to bring the mod into current standards.
 
