@@ -20,6 +20,23 @@ local function initializePlayerDataOptions()
     end
 end
 
+local function getSlotNameFromObject(obj)
+    log:debug("Getting slot name from object type %s", obj.objectType)
+    local slotName
+    if (obj.objectType == tes3.objectType.armor) then
+        slotName = table.find(tes3.armorSlot, obj.slot)
+    else
+        slotName = table.find(tes3.clothingSlot, obj.slot)
+    end
+
+    log:debug("Got slot name %s", slotName)
+    if (slotName) then
+        return slotName:lower()
+    else
+        return nil
+    end
+end
+
 local function getOverrideItemId(objectType, objectTypeName)
     log:debug("Getting override item id for object type %s and slot %s", objectType, objectTypeName)
     if (tes3.player.data.OJ_CosmeticOverrides.Active[objectType]) then
@@ -46,79 +63,29 @@ local function getOverrideObject(objectType, objectTypeName)
     return nil
 end
 
-
---- @param item tes3armor|tes3clothing The item which is being used as the cosmetic override.
-local function hideLayersForPart(item)
-    local hiddenSlotsByType = data.layerOverrides[item.objectType]
-    if (hiddenSlotsByType == nil) then return end
-
-    local hiddenSlots = hiddenSlotsByType[item.slot]
-    if (hiddenSlots == nil) then return end
-
-    for _, hiddenSlotInfo in ipairs(hiddenSlots) do
-        log:info("Hiding layer under override '%s': layer: %s; part: %s",
-            item,
-            table.find(tes3.activeBodyPartLayer, hiddenSlotInfo.layer),
-            table.find(tes3.activeBodyPart, hiddenSlotInfo.part)
-        )
-
-        tes3.player.bodyPartManager:removeActiveBodyPart(
-            hiddenSlotInfo.layer,
-            hiddenSlotInfo.part,
-            true,
-            hiddenSlotInfo.override or -1
-        )
-    end
-end
-
----@param e bodyPartsUpdatedEventData
-local function onBodyPartsUpdated(e)
+---@param e updateBodyPartsForItemEventData
+local function onUpdateBodyPartsForItem(e)
     if (e.reference ~= tes3.player) then return end
 
     -- We initialize the player data to make our data access safe.
     initializePlayerData()
 
-    -- Then, for each object type
-    for objectType, category in pairs(data.categories) do
-        local objectTypeString = mwse.longToString(objectType)
-        -- Then, for each slot type
-        for slotName, slotValue in pairs(category.types) do
-            -- Skip any blocked slots.
-            if (category.blockedSlots[slotName] ~= true) then
-                -- Check if we have an override set for this slot.
-                local overrideItem = getOverrideObject(objectTypeString, slotName)
-                if (overrideItem) then
-                    log:info("Found override item %s for slot %s", overrideItem.name, slotName)
+    local objectTypeString = mwse.longToString(e.item.objectType)
+    local slotName = getSlotNameFromObject(e.item)
 
-                    -- Handle hiding lower layers.
-                    hideLayersForPart(overrideItem)
+    log:info("Searching for override for item %s for slot %s", e.item.mesh, slotName)
 
-                    overrideItem:setupBodyParts(tes3.player.bodyPartManager, tes3.player.baseObject.female, false)
-                    e.updated = true
-                end
-            end
-        end
+    -- Check if we have an override set for this slot.
+    local overrideItem = getOverrideObject(objectTypeString, slotName)
+    if (overrideItem) then
+        log:info("Found override item %s for slot %s", overrideItem.mesh, slotName)
+
+        -- Override the equipped item with our override.
+        e.item = overrideItem
     end
 end
-event.register(tes3.event.bodyPartsUpdated, onBodyPartsUpdated)
+event.register(tes3.event.updateBodyPartsForItem, onUpdateBodyPartsForItem)
 
-
-local function getSlotNameFromObject(obj)
-    log:debug("Getting slot name from object type %s", obj.objectType)
-    local slotName
-    if (obj.objectType == tes3.objectType.armor) then
-        slotName = table.find(tes3.armorSlot, obj.slot)
-    else
-        slotName = table.find(tes3.clothingSlot, obj.slot)
-    end
-
-    log:debug("Got slot name %s", slotName)
-    if (slotName) then
-        return slotName:lower()
-    else
-        return nil
-    end
-end
 
 ---@param e equippedEventData
 local function onEquipped(e)
