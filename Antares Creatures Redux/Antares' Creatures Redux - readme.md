@@ -62,7 +62,7 @@ This is a direct replacement for the original mod, but you can find the original
 
 ## Cecaelia
 
-Adds a new creature that is half woman, half octupus. The creature can be found in Tusenend, Shrine.
+Adds a new creature that is half woman, half octupus. The creature can be found in Tusenend, Shrine. Cecaelia is unique and does not respawn.
 
 Comparison Sliders:
 
@@ -72,21 +72,9 @@ This is a direct replacement for the original mod, but you can find the original
 
 ## Beholder
 
-From Arcimaestro Antares description of the mod:
+Adds a Beholder creature to Ald Daedroth. Defeeat the Beholder to gain access to its portal, granting travel access to any other Daedric Shrine in Vvardenfell. Beholders are malevolent creatures, appearing as an orb of flesh comprising a large eye and a mouth filled with sharp teeth. On top of the beholder's body are fleshy stalks which each end with another eye. Beholders are strong magical creatures. The Beholder is unique and does not respawn.
 
-> "Horrid carnivores, man-eaters that know no fear. They are evil, stupid, with crude habits.
-> They are sometimes described as turning to stone upon contact with sunlight and able to regenerate."
->
-> Falx Carius, Captain of the imperial guards at Fort Frostmoth.
-
-Adds a new Troll creature that turns to stone during the day. The trolls can be found only in the green areas of Solstheim and in some caves. When turned to stone, they can be attacked and destroyed with no risk.
-
-Comparison Sliders:
-
-- [Troll Skin Texture Before/After Slider](https://imgsli.com/MzQ3Mjcw)
-- [Troll Loincloth Texture Before/After Slider](https://imgsli.com/MzQ3Mjcz)
-
-This is a direct replacement for the original mod, but you can find the original here: https://www.nexusmods.com/morrowind/mods/40073.
+This is a direct replacement for the original mod, but you can find the original here: https://www.nexusmods.com/morrowind/mods/40031.
 
 ## Requirements
 
