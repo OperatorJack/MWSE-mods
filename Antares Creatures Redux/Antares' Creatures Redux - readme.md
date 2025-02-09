@@ -4,7 +4,7 @@
 
 ## Description
 
-In the 2000s-2010s, Arcimaestro Antares released the Trolls, Treants, Frost Giants, Cecaelia, and Beholder creature mods. These mods added exciting new creatures: a new Troll creature that turns to stone during the day, a tree that comes to life, a giant soldier of frost and ice, a dark-elf woman with the lower body of an octupus, and a floating eye that beholds all.
+In the 2000s-2010s, Arcimaestro Antares released a number of creature mods: Trolls, Treants, Frost Giants, Frost Monarch, Hill Giants, Green Slime, Medusa, Gargoyles, Cecaelia, and Beholder creature mods. These mods added exciting new creatures: a new Troll creature that turns to stone during the day, a tree that comes to life, a giant soldier of frost and ice, a dark-elf woman with the lower body of an octupus, a floating eye that beholds all, and more.
 
 While the mods have generally held up well, the textures are lower resolution than MET or IT textures, and the ESPs contain some dirty references. Now, I cleaned the mods and upscaled the textures by 2x to help them better fit in with modern texture packs. Gigapixel 8 was utilized to perform the 2x upscale. These upscales have very few artifacts. I have also combined the mods into a single package, cleaned up several meshes, and created a combined ESP for all of the creatures.
 
@@ -76,6 +76,38 @@ Adds a Beholder creature to Ald Daedroth. Defeeat the Beholder to gain access to
 
 This is a direct replacement for the original mod, but you can find the original here: https://www.nexusmods.com/morrowind/mods/40031.
 
+## Frost Monarch
+
+Adds a new creature, the Frost Monarch, in Solstheim. There is only one of them, located in the Solstheim, Aesliip's Lair, Caverns. It's a unique creature and does not respawn.
+
+This is a direct replacement for the original mod.
+
+## Gargoyles
+
+Adds a new creature, the Gargoyle, in the daedric shrines Maelkashishi (West Gash Region) and Ularradallaku (Red Mountain Region).
+
+This is a direct replacement for the original mod.
+
+## Green Slime
+
+Adds a new creature, the green slime, to the Lleran Ancestral Tomb (Ascadian Isles Region) and Falas Ancestral Tomb (West Gash Region). It looks like an inoffensive green pool of green mud. When approached, it rises and attacks. It attacks using its corrosive touch (a spell) that damages health, armor and weapons, and striking with the bones of its past victims.
+
+It is immune to normal weapons, poison and paralysis, but very vulnerable to fire.
+
+This is a direct replacement for the original mod.
+
+## Hill Giants
+
+Adds a new creature, the Hill Giant, in Solstheim. There is only one of them, located in the Solstheim, Hirstaang Forest Region, on the hill next the Earth Stone. It's a unique creature and does not respawn.
+
+This is a direct replacement for the original mod.
+
+## Medusa
+
+Adds a new creature, the Medusa, in a new daedric shrine named Yshumishali. The shrine is on a small island north of Vvardenfell and south east of the dunmer stronghold of Rotheram.
+
+This is a direct replacement for the original mod.
+
 ## Requirements
 
 - Morrowind
@@ -92,9 +124,14 @@ The archive contains these subfolders, which Wrye Mash will automatically locate
 02 - Frost Giant
 03 - Cecaelia
 04 - Beholder
-05 - Combined ESP
+05 - Frost Monarch
+06 - Gargoyles
+07 - Green Slime
+08 - Hill Giants
+09 - Medusa
+10 - Combined ESP
 
-00-04 contain their respective mods. 05 contains the combined ESP which you can use in place of the ESPs in 00-04, if you are enabling all of the creature mods.
+00-09 contain their respective mods. 10 contains the combined ESP which you can use in place of the ESPs in 00-09, if you are enabling all of the creature mods.
 
 ## Permissions
 
